@@ -166,6 +166,7 @@ android {
                     }
                 }
             }
+
             if (!enableSeparateBuildPerCPUArchitecture) {
                 ndk {
                     abiFilters (*reactNativeArchitectures())

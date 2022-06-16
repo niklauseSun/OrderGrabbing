@@ -1,5 +1,7 @@
 package com.myapp;
 
+import android.annotation.SuppressLint;
+
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
@@ -22,6 +24,23 @@ public class MainActivity extends ReactActivity {
   @Override
   protected ReactActivityDelegate createReactActivityDelegate() {
     return new MainActivityDelegate(this, getMainComponentName());
+  }
+
+  @SuppressLint("WrongConstant")
+  @Override
+  public int checkPermission(String permission, int pid, int uid) {
+    return 0;
+  }
+
+  @SuppressLint("WrongConstant")
+  @Override
+  public int checkSelfPermission(String permission) {
+    return 0;
+  }
+
+  @Override
+  public boolean shouldShowRequestPermissionRationale(String permission) {
+    return false;
   }
 
   public static class MainActivityDelegate extends ReactActivityDelegate {
