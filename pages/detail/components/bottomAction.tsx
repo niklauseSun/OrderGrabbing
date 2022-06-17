@@ -7,6 +7,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import InnerDetail from './innerDetail';
+import CardActions from '../../../components/CardActions';
 
 const BottomAction = (props: any) => {
   const type = props.type || 'wait';
@@ -19,62 +20,7 @@ const BottomAction = (props: any) => {
   return (
     <SafeAreaView style={styles.container}>
       <InnerDetail />
-      <View style={styles.bottomView}>
-        {type === 'wait' && (
-          <TouchableOpacity activeOpacity={0.7} style={styles.bottomButton}>
-            <Text style={styles.buttomButtonTitle}>立刻抢单</Text>
-          </TouchableOpacity>
-        )}
-        {type === 'waitStore' && (
-          <View style={styles.buttonViews}>
-            <TouchableOpacity activeOpacity={0.7} style={styles.bottomCancel}>
-              <Text style={styles.bottomCancelTitle}>取消转单</Text>
-            </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.7} style={styles.bottomConfirm}>
-              <Text style={styles.buttomButtonTitle}>确认到点</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-        {type === 'waitPackage' && (
-          <TouchableOpacity activeOpacity={0.7} style={styles.bottomButton}>
-            <Text style={styles.buttomButtonTitle}>确认取件</Text>
-          </TouchableOpacity>
-        )}
-        {type === 'delivery' && (
-          <TouchableOpacity activeOpacity={0.7} style={styles.bottomButton}>
-            <Text style={styles.buttomButtonTitle}>
-              {confirmType !== 'photo' ? '确认完成' : '拍照完成'}
-            </Text>
-          </TouchableOpacity>
-        )}
-        {/* <TouchableOpacity activeOpacity={0.7} style={styles.bottomButton}>
-          <Text style={styles.buttomButtonTitle}>取消转单</Text>
-        </TouchableOpacity> */}
-        <View style={styles.line} />
-        {type === 'waitStore' && (
-          <View style={styles.actionsView}>
-            <TouchableOpacity activeOpacity={0.7} style={styles.actionButton}>
-              <Text>联系电话</Text>
-            </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.7} style={styles.actionButton}>
-              <Text>导航</Text>
-            </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.7} style={styles.actionButton}>
-              <Text>立即转单</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-        {type !== 'waitStore' && type !== 'wait' && (
-          <View style={styles.actionsView}>
-            <TouchableOpacity activeOpacity={0.7} style={styles.actionButton}>
-              <Text>联系电话</Text>
-            </TouchableOpacity>
-            <TouchableOpacity activeOpacity={0.7} style={styles.actionButton}>
-              <Text>导航</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      </View>
+      <CardActions type={type} confirmType={confirmType} />
     </SafeAreaView>
   );
 };

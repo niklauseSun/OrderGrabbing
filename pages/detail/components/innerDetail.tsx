@@ -9,6 +9,7 @@ import {
   LayoutAnimation,
   ScrollView,
 } from 'react-native';
+import LocationInfo from '../../../components/LocationInfo';
 
 import GoodsInfo from './goodsInfo';
 import OrderInfo from './orderInfo';
@@ -45,6 +46,7 @@ const InnerDetail = () => {
             <Text style={styles.orderStatusTagText}>待抢单</Text>
           </View>
         </View>
+        <LocationInfo />
 
         <GoodsInfo />
         <OrderInfo />
