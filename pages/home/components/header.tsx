@@ -10,12 +10,21 @@ const Header = () => {
   return (
     <View style={styles.container}>
       <View style={styles.headerContent}>
-        <Image
-          style={styles.headLeftIcon}
-          source={require('./assets/icon_person.png')}
-        />
+        <TouchableOpacity activeOpacity={0.7}>
+          <Image
+            style={styles.headLeftIcon}
+            source={require('./assets/icon_person.png')}
+          />
+        </TouchableOpacity>
+
         {type === 'identify' && <IdentifyStatus type={'process'} />}
         {type !== 'identify' && <SwitchStatsu />}
+        <TouchableOpacity activeOpacity={0.7}>
+          <Image
+            style={styles.iconMessage}
+            source={require('./assets/icon_message.png')}
+          />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -64,10 +73,14 @@ const SwitchStatsu = props => {
             </TouchableOpacity>
           </Popover.Item>
         }>
-        <View>
+        <View style={styles.titleView}>
           <Text style={styles.switchTitle}>
             {props.type === 'on' ? '休息中' : '接单中'}
           </Text>
+          <Image
+            style={styles.iconDown}
+            source={require('./assets/icon_arrow_down.png')}
+          />
         </View>
       </Popover>
     </View>
@@ -113,6 +126,7 @@ const styles = StyleSheet.create({
   switchTitle: {
     fontSize: 16,
     color: '#fff',
+    marginRight: 5,
   },
   popButton: {
     width: 120,
@@ -124,6 +138,19 @@ const styles = StyleSheet.create({
   popButtonTitle: {
     fontSize: 16,
     color: '#333',
+  },
+  iconMessage: {
+    width: 24,
+    height: 24,
+  },
+  iconDown: {
+    width: 12,
+    height: 12,
+  },
+  titleView: {
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
 });
 
