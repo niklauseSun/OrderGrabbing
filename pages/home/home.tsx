@@ -1,5 +1,4 @@
-import {Provider} from '@ant-design/react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -21,57 +20,62 @@ import TabContent from './components/tabContent';
 const App = ({navigation}) => {
   const isDarkMode = useColorScheme() === 'dark';
 
+  const [isLogin, setLogStatus] = useState(false);
+
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  useEffect(() => {
+    Identify().then(res => {
+      if (res) {
+        // 如果成功了
+        setLogStatus(true);
+      }
+    });
+  }, []);
+
   return (
     <SafeAreaView style={styles.homeBg}>
-      <Provider>
-        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-        <Header />
-        <TabContent />
-
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={backgroundStyle}>
-          <TouchableOpacity
-            onPress={() => {
-              console.log('去登录');
-              ToLogin({navigation: navigation});
-              // navigation.navigate('Login');
-            }}>
-            <Text>去登录</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('Detail');
-            }}>
-            <Text>去详情</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              const identifyStaus = Identify();
-              console.log('identifyStaus', identifyStaus);
-            }}>
-            <Text>去验证</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              GetOrder({
-                visible: true,
-              });
-            }}>
-            <Text>抢单</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              CancelOrder();
-            }}>
-            <Text>去取消</Text>
-          </TouchableOpacity>
-        </ScrollView>
-      </Provider>
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <Header />
+      <TabContent isLogin={isLogin} />
+      {/*
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        style={backgroundStyle}>
+        <TouchableOpacity
+          onPress={() => {
+            console.log('去登录');
+            ToLogin({navigation: navigation});
+            // navigation.navigate('Login');
+          }}>
+          <Text>去登录</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('Detail');
+          }}>
+          <Text>去详情</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {}}>
+          <Text>去验证</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            GetOrder({
+              visible: true,
+            });
+          }}>
+          <Text>抢单</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            CancelOrder();
+          }}>
+          <Text>去取消</Text>
+        </TouchableOpacity>
+      </ScrollView> */}
     </SafeAreaView>
   );
 };

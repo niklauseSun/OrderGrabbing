@@ -1,26 +1,68 @@
 import React from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 
 import CardActions from '../../../components/CardActions';
 import LocationInfo from '../../../components/LocationInfo';
 
-const OrderCard = () => {
+interface LocationInfoProps {
+  address: string;
+  name: string;
+  phone: string;
+  regionCode: string;
+  storeName: string;
+  longitude: number;
+  latitude: number;
+}
+interface OrderCardProps {
+  sourceLogo?: string;
+  remainArriveTime: string | number; // 预计多少分钟
+  payAmount: number; // 价格
+  receiveMessage: LocationInfoProps;
+  sendMessage: LocationInfoProps;
+  riderToSendAddressDistance: string;
+  sendToReceiveAddressDistance: string;
+  echoButton: number;
+  goodsCategoryName: string;
+  commission: number;
+  remark?: string;
+}
+
+interface OrderProps {
+  order: OrderCardProps;
+  type: string | 'waitGrab' | 'waitPackage' | 'delivery';
+}
+
+const OrderCard = (props: OrderProps) => {
+  console.log('props', props);
   return (
     <View style={styles.card}>
       <View style={styles.cardHead}>
-        <View style={styles.cardHeadIcon} />
-        <Text style={styles.cardHeadInfoText}>预计28分钟送到</Text>
-        <Text style={styles.cardHeadPriceText}>￥8.5</Text>
+        <Image
+          style={styles.cardHeadIcon}
+          source={{uri: props.order.sourceLogo}}
+        />
+        <Text style={styles.cardHeadInfoText}>
+          预计{props.order.remainArriveTime}分钟送到
+        </Text>
+        <Text style={styles.cardHeadPriceText}>￥{props.order.payAmount}</Text>
       </View>
-      <LocationInfo />
+      <LocationInfo
+        riderToSendAddressDistance={props.order.riderToSendAddressDistance}
+        sendToReceiveAddressDistance={props.order.sendToReceiveAddressDistance}
+        receiveMessage={props.order.receiveMessage}
+        sendMessage={props.order.sendMessage}
+        type={props.type}
+      />
       <View style={styles.tagView}>
         <View style={styles.tag}>
-          <Text style={styles.tagTitle}>龙虾</Text>
+          <Text style={styles.tagTitle}>{props.order.goodsCategoryName}</Text>
         </View>
       </View>
-      <View style={styles.orangeTag}>
-        <Text style={styles.orangeTagTitle}>备注：水果放门口</Text>
-      </View>
+      {props.order.remark !== '' && (
+        <View style={styles.orangeTag}>
+          <Text style={styles.orangeTagTitle}>备注：{}</Text>
+        </View>
+      )}
       <CardActions />
     </View>
   );

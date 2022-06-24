@@ -5,14 +5,42 @@ import {
   View,
   TouchableOpacity,
   TextInput,
+  Image,
 } from 'react-native';
+import {rider} from '../../../api';
+import IdUtils from '../../../utils/IdUtils';
+import {Toast} from '@ant-design/react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Identify from '../../../utils/Identify';
 
-const LoginInput = () => {
-  const [canLogin, setLogin] = useState(false);
+interface LoginInputProps {
+  isProtocolSelect?: boolean;
+  navigateReset: Function;
+}
+
+const LoginInput = (props: LoginInputProps) => {
+  const [canLogin, setCanLogin] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
-  const changeText = (e: any) => {
+  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
+  const [hidePassword, setHide] = useState(true);
+  const changeText = (e: string) => {
     console.log(e);
+    setPhone(e);
+    setCanLoginStatus();
   };
+
+  const changePassword = (e: string) => {
+    setPassword(e);
+    setCanLoginStatus();
+  };
+
+  const setCanLoginStatus = () => {
+    if (phone && password) {
+      setCanLogin(true);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.loginSubInfo}>
@@ -36,26 +64,122 @@ const LoginInput = () => {
           onChangeText={changeText}
         />
       </View>
-      <View style={styles.inputLine}>
-        <Text style={styles.inputTitle}>验证码</Text>
-        <TextInput placeholder="请输入您的验证码" style={styles.input} />
-        <TouchableOpacity
-          activeOpacity={0.7}
-          style={styles.getCodeButton}
-          onPress={() => {}}>
-          <Text style={styles.getCodeText}>获取验证码</Text>
-        </TouchableOpacity>
-      </View>
+      {!isPassword && (
+        <View style={styles.inputLine}>
+          <Text style={styles.inputTitle}>验证码</Text>
+          <TextInput
+            placeholder="请输入您的验证码"
+            style={styles.input}
+            onChangeText={changePassword}
+          />
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={styles.getCodeButton}
+            onPress={() => {
+              if (IdUtils.isPhoneNum(phone)) {
+                rider
+                  .sendCaptcha({
+                    phone: phone,
+                  })
+                  .then(res => {
+                    console.log('res', res);
+                    const {message} = res;
+                    Toast.info(message);
+                  });
+              } else {
+                Toast.info('请输入正确手机号');
+              }
+            }}>
+            <Text style={styles.getCodeText}>获取验证码</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      {isPassword && (
+        <View style={styles.inputLine}>
+          <Text style={styles.inputTitle}>密码</Text>
+          <TextInput
+            placeholder="请输入密码"
+            style={styles.input}
+            secureTextEntry={hidePassword}
+            onChangeText={changePassword}
+          />
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => {
+              setHide(!hidePassword);
+            }}>
+            {hidePassword ? (
+              <Image
+                style={styles.passwordIcon}
+                source={require('./assets/icon_password_hide.png')}
+              />
+            ) : (
+              <Image
+                style={styles.passwordIcon}
+                source={require('./assets/icon_password_show.png')}
+              />
+            )}
+          </TouchableOpacity>
+        </View>
+      )}
       <TouchableOpacity
         activeOpacity={0.7}
         style={styles.changeLoginTypeButton}
         onPress={() => setIsPassword(!isPassword)}>
         <Text style={styles.buttonText}>
-          {isPassword ? '密码登录' : '验证码登录'}
+          {!isPassword ? '密码登录' : '验证码登录'}
         </Text>
       </TouchableOpacity>
 
       <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={() => {
+          if (!canLogin) {
+            return;
+          }
+          if (!props.isProtocolSelect) {
+            Toast.info('您还未勾选协议，请勾选后进行下一步');
+            return;
+          }
+
+          if (isPassword) {
+            rider
+              .loginWithPassword({
+                phone: phone,
+                password: password,
+              })
+              .then(res => {
+                console.log('res', res);
+                const {success, result} = res;
+                if (success) {
+                  props.navigateReset();
+
+                  const {token} = result;
+                  AsyncStorage.setItem('localToken', token);
+
+                  Identify().then(re => {
+                    console.log('identify status', re);
+                  });
+                }
+              });
+          } else {
+            rider
+              .loginWithCaptcha({
+                phone: phone,
+                captcha: password,
+              })
+              .then(res => {
+                console.log('res', res);
+                const {success, result} = res;
+                if (success) {
+                  props.navigateReset();
+
+                  const {token} = result;
+                  AsyncStorage.setItem('localToken', token);
+                }
+              });
+          }
+        }}
         style={
           canLogin
             ? [styles.loginButton, styles.isActive]
@@ -86,7 +210,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 23,
     marginTop: 40,
     height: 100,
-    backgroundColor: 'red',
   },
   loginTitle: {
     fontSize: 21,
@@ -110,6 +233,10 @@ const styles = StyleSheet.create({
   getCodeText: {
     fontSize: 13,
     color: '#fff',
+  },
+  passwordIcon: {
+    width: 21,
+    height: 13,
   },
   inputLine: {
     display: 'flex',

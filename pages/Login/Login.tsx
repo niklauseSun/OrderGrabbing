@@ -3,8 +3,6 @@ import {
   SafeAreaView,
   StatusBar,
   StyleSheet,
-  Text,
-  TouchableOpacity,
   useColorScheme,
   View,
 } from 'react-native';
@@ -13,18 +11,31 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 import ConfirmProtocol from './components/ConfirmProtocol';
 import LgoinInput from './components/LoginInput';
 
-const Login = () => {
+const Login = ({navigation}) => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  const [isProtocolSelect, setProtocolSelect] = useState(false);
+
+  const changeSelect = (state: boolean) => {
+    setProtocolSelect(state);
+  };
+
+  const navigateReset = () => {
+    navigation.navigate('Home');
+  };
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <View style={styles.innerContainer}>
-        <LgoinInput />
+        <LgoinInput
+          isProtocolSelect={isProtocolSelect}
+          navigateReset={navigateReset}
+        />
 
         {/* <TouchableOpacity activeOpacity={0.7} style={styles.wxButton}>
           <Text style={styles.buttonText}>微信用户一键登录</Text>
@@ -36,7 +47,10 @@ const Login = () => {
           <Text style={styles.buttonText}>手机登录</Text>
         </TouchableOpacity> */}
 
-        <ConfirmProtocol />
+        <ConfirmProtocol
+          changeSelect={changeSelect}
+          isSelect={isProtocolSelect}
+        />
       </View>
     </SafeAreaView>
   );
@@ -83,7 +97,6 @@ const styles = StyleSheet.create({
   helloImage: {
     width: 120,
     height: 120,
-    backgroundColor: 'red',
     marginTop: 100,
     marginBottom: 70,
   },
@@ -91,7 +104,6 @@ const styles = StyleSheet.create({
   logo: {
     marginTop: 120,
     marginBottom: 100,
-    backgroundColor: 'red',
     width: 90,
     height: 90,
   },
