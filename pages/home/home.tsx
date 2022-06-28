@@ -7,6 +7,7 @@ import {
   useColorScheme,
   Text,
   StyleSheet,
+  DeviceEventEmitter,
 } from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';

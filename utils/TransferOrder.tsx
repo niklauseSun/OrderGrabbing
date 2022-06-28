@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal} from '@ant-design/react-native';
+import Modal from '@ant-design/react-native/lib/modal/Modal';
 import Input from '@ant-design/react-native/lib/input-item/Input';
 import {TouchableOpacity, View, Text} from 'react-native';
 

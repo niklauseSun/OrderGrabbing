@@ -6,7 +6,7 @@ interface LocationInfoProps {
   name: string;
   phone: string;
   regionCode: string;
-  storeName: string;
+  storeName?: string;
   longitude: number;
   latitude: number;
 }
@@ -19,6 +19,7 @@ interface LocationProps {
 }
 
 const LocationInfo = (props: LocationProps) => {
+  console.log('locationInfo', props);
   return (
     <View style={styles.container}>
       <View style={styles.targetView}>
@@ -69,7 +70,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
     paddingBottom: 5,
-    width: '100%',
     flex: 1,
   },
   targetView: {

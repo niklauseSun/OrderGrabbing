@@ -11,20 +11,21 @@
 import React from 'react';
 
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import createNativeStackNavigator from '@react-navigation/native-stack/lib/module/navigators/createNativeStackNavigator';
 
 import HomePage from './pages/home/home';
 import LoginPage from './pages/Login/Login';
 import Detail from './pages/detail/detail';
 import {Text, TouchableOpacity} from 'react-native';
-import {Provider} from '@ant-design/react-native';
+import Provider from '@ant-design/react-native/lib/provider';
+import {navigationRef} from './utils/RootNavigation';
 
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
     <Provider>
-      <NavigationContainer>
+      <NavigationContainer ref={navigationRef}>
         <Stack.Navigator>
           <Stack.Screen
             name="Home"
@@ -32,6 +33,7 @@ const App = () => {
             component={HomePage}
           />
           <Stack.Screen
+            key={'Login'}
             name="Login"
             component={LoginPage}
             options={{title: '登录', headerBackTitle: ''}}

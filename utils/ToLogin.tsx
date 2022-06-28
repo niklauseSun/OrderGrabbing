@@ -1,6 +1,7 @@
-const ToLogin = (props: any) => {
-  const {navigation} = props;
-  navigation.navigate('Login');
+import {navigate} from './RootNavigation';
+
+const ToLogin = () => {
+  navigate('Login', {});
 };
 
 export default ToLogin;

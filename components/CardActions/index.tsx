@@ -1,8 +1,17 @@
 import React from 'react';
 import {TouchableOpacity, Text, View, StyleSheet} from 'react-native';
+import {OrderCardProps} from '../../interfaces/locationsProps';
+import GrabOrder from '../GrabOrder';
 
-const CardActions = (props: any) => {
-  const type = props.type || 'wait';
+interface CardActionsInterface {
+  order: OrderCardProps;
+  type: string | 'wait' | 'waitStore' | 'waitPackage' | 'delivery';
+  confirmType: string;
+}
+
+const CardActions = (props: CardActionsInterface) => {
+  const {type} = props;
+
   const confirmType = props.confirmType || 'photo';
   // type
   // wait: 待抢单 waitStore: 待到店
@@ -11,11 +20,7 @@ const CardActions = (props: any) => {
   // finish 已完成
   return (
     <View style={styles.bottomView}>
-      {type === 'wait' && (
-        <TouchableOpacity activeOpacity={0.7} style={styles.bottomButton}>
-          <Text style={styles.buttomButtonTitle}>立刻抢单</Text>
-        </TouchableOpacity>
-      )}
+      {type === 'wait' && <GrabOrder order={props.order} />}
       {type === 'waitStore' && (
         <View style={styles.buttonViews}>
           <TouchableOpacity activeOpacity={0.7} style={styles.bottomCancel}>
@@ -70,14 +75,6 @@ const CardActions = (props: any) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    zIndex: 1000,
-    position: 'absolute',
-    bottom: 0,
-    display: 'flex',
-    alignItems: 'center',
-    width: '100%',
-  },
   bottomView: {
     width: '100%',
     backgroundColor: '#fff',

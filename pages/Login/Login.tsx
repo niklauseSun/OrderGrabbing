@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {
+  DeviceEventEmitter,
   SafeAreaView,
   StatusBar,
   StyleSheet,
@@ -26,6 +27,8 @@ const Login = ({navigation}) => {
 
   const navigateReset = () => {
     navigation.navigate('Home');
+
+    DeviceEventEmitter.emit('refresh');
   };
 
   return (

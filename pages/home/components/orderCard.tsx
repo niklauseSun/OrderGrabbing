@@ -9,7 +9,7 @@ interface LocationInfoProps {
   name: string;
   phone: string;
   regionCode: string;
-  storeName: string;
+  storeName: string | undefined;
   longitude: number;
   latitude: number;
 }
@@ -25,6 +25,8 @@ interface OrderCardProps {
   goodsCategoryName: string;
   commission: number;
   remark?: string;
+  orderNo: string;
+  id: string;
 }
 
 interface OrderProps {
@@ -33,7 +35,6 @@ interface OrderProps {
 }
 
 const OrderCard = (props: OrderProps) => {
-  console.log('props', props);
   return (
     <View style={styles.card}>
       <View style={styles.cardHead}>
@@ -63,7 +64,11 @@ const OrderCard = (props: OrderProps) => {
           <Text style={styles.orangeTagTitle}>备注：{}</Text>
         </View>
       )}
-      <CardActions />
+      <CardActions
+        order={props.order}
+        type={props.order.echoButton === 1 ? 'wait' : ''}
+        confirmType={'photo'}
+      />
     </View>
   );
 };

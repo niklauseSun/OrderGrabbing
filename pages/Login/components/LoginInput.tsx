@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {rider} from '../../../api';
 import IdUtils from '../../../utils/IdUtils';
-import {Toast} from '@ant-design/react-native';
+import Toast from '@ant-design/react-native/lib/toast';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Identify from '../../../utils/Identify';
 
