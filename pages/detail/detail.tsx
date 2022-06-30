@@ -1,6 +1,5 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-  Modal,
   SafeAreaView,
   StatusBar,
   StyleSheet,
@@ -8,21 +7,40 @@ import {
   View,
 } from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {order} from '../../api';
+import CardActions from '../../components/CardActions';
+import {OrderCardProps} from '../../interfaces/locationsProps';
 
 import BottomAction from './components/bottomAction';
+import InnerDetail from './components/innerDetail';
 
-const Detail = () => {
+const Detail = ({route}) => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  const [orderDetail, setOrderDetails] = useState(undefined);
+
+  useEffect(() => {
+    const {params} = route;
+    const {id} = params;
+
+    order.getOrderDetail(id).then(res => {
+      console.log('orderDetail', res);
+      if (res.success) {
+        setOrderDetails(res.result);
+      }
+    });
+  }, [route]);
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <View style={styles.innerContainer}>
-        <BottomAction />
+        <InnerDetail />
+        {orderDetail && <CardActions order={orderDetail} confirmType={''} />}
       </View>
     </SafeAreaView>
   );

@@ -17,12 +17,7 @@ const BottomAction = (props: any) => {
   // waitPackage 待取货
   // delivery 送货中
   // finish 已完成
-  return (
-    <SafeAreaView style={styles.container}>
-      <InnerDetail />
-      <CardActions type={type} confirmType={confirmType} />
-    </SafeAreaView>
-  );
+  return <SafeAreaView style={styles.container} />;
 };
 
 const styles = StyleSheet.create({

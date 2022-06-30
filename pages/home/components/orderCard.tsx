@@ -1,8 +1,9 @@
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 
 import CardActions from '../../../components/CardActions';
 import LocationInfo from '../../../components/LocationInfo';
+import ToDetail from '../../../utils/ToDetail';
 
 interface LocationInfoProps {
   address: string;
@@ -26,6 +27,7 @@ interface OrderCardProps {
   commission: number;
   remark?: string;
   orderNo: string;
+  status: string;
   id: string;
 }
 
@@ -37,38 +39,43 @@ interface OrderProps {
 const OrderCard = (props: OrderProps) => {
   return (
     <View style={styles.card}>
-      <View style={styles.cardHead}>
-        <Image
-          style={styles.cardHeadIcon}
-          source={{uri: props.order.sourceLogo}}
+      <Pressable
+        onPress={() => {
+          ToDetail(props.order.id);
+        }}>
+        <View style={styles.cardHead}>
+          <Image
+            style={styles.cardHeadIcon}
+            source={{uri: props.order.sourceLogo}}
+          />
+          <Text style={styles.cardHeadInfoText}>
+            预计{props.order.remainArriveTime}分钟送到
+          </Text>
+          <Text style={styles.cardHeadPriceText}>
+            ￥{props.order.payAmount}
+          </Text>
+        </View>
+        <LocationInfo
+          riderToSendAddressDistance={props.order.riderToSendAddressDistance}
+          sendToReceiveAddressDistance={
+            props.order.sendToReceiveAddressDistance
+          }
+          receiveMessage={props.order.receiveMessage}
+          sendMessage={props.order.sendMessage}
+          type={props.type}
         />
-        <Text style={styles.cardHeadInfoText}>
-          预计{props.order.remainArriveTime}分钟送到
-        </Text>
-        <Text style={styles.cardHeadPriceText}>￥{props.order.payAmount}</Text>
-      </View>
-      <LocationInfo
-        riderToSendAddressDistance={props.order.riderToSendAddressDistance}
-        sendToReceiveAddressDistance={props.order.sendToReceiveAddressDistance}
-        receiveMessage={props.order.receiveMessage}
-        sendMessage={props.order.sendMessage}
-        type={props.type}
-      />
-      <View style={styles.tagView}>
-        <View style={styles.tag}>
-          <Text style={styles.tagTitle}>{props.order.goodsCategoryName}</Text>
+        <View style={styles.tagView}>
+          <View style={styles.tag}>
+            <Text style={styles.tagTitle}>{props.order.goodsCategoryName}</Text>
+          </View>
         </View>
-      </View>
-      {props.order.remark !== '' && (
-        <View style={styles.orangeTag}>
-          <Text style={styles.orangeTagTitle}>备注：{}</Text>
-        </View>
-      )}
-      <CardActions
-        order={props.order}
-        type={props.order.echoButton === 1 ? 'wait' : ''}
-        confirmType={'photo'}
-      />
+        {props.order.remark !== '' && (
+          <View style={styles.orangeTag}>
+            <Text style={styles.orangeTagTitle}>备注：{}</Text>
+          </View>
+        )}
+        <CardActions order={props.order} confirmType={'photo'} />
+      </Pressable>
     </View>
   );
 };

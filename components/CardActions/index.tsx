@@ -1,16 +1,17 @@
 import React from 'react';
-import {TouchableOpacity, Text, View, StyleSheet} from 'react-native';
+import {TouchableOpacity, Text, View, StyleSheet, Image} from 'react-native';
 import {OrderCardProps} from '../../interfaces/locationsProps';
+import CancelOrder from '../../utils/CancelOrder';
+import UpdateOrder from '../../utils/UpdateOrder';
 import GrabOrder from '../GrabOrder';
 
 interface CardActionsInterface {
   order: OrderCardProps;
-  type: string | 'wait' | 'waitStore' | 'waitPackage' | 'delivery';
   confirmType: string;
 }
 
 const CardActions = (props: CardActionsInterface) => {
-  const {type} = props;
+  const {status} = props.order;
 
   const confirmType = props.confirmType || 'photo';
   // type
@@ -18,25 +19,69 @@ const CardActions = (props: CardActionsInterface) => {
   // waitPackage 待取货
   // delivery 送货中
   // finish 已完成
+
+  // 待调度 10000000
+  // 待到店 10000005
+  // 待取货 10000010
+  // 配送中 10000015
+  // 已送达 10000020
+  // 已取消 10000025
+  const cancelOrder = () => {
+    CancelOrder(props.order.id as string);
+  };
+
+  const confirmToStore = () => {
+    UpdateOrder.GetStore(props.order.id as string);
+  };
+
+  const confirmGetOrderFromStore = () => {
+    UpdateOrder.confirmGetFromStore(props.order.id as string);
+  };
+
   return (
     <View style={styles.bottomView}>
-      {type === 'wait' && <GrabOrder order={props.order} />}
-      {type === 'waitStore' && (
+      {status === '10000000' && <GrabOrder order={props.order} />}
+      {status === '10000005' && (
         <View style={styles.buttonViews}>
-          <TouchableOpacity activeOpacity={0.7} style={styles.bottomCancel}>
-            <Text style={styles.bottomCancelTitle}>取消转单</Text>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={styles.bottomCancel}
+            onPress={() => {
+              cancelOrder();
+            }}>
+            <Text style={styles.bottomCancelTitle}>取消订单</Text>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.7} style={styles.bottomConfirm}>
-            <Text style={styles.buttomButtonTitle}>确认到点</Text>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={styles.bottomConfirm}
+            onPress={() => {
+              confirmToStore();
+            }}>
+            <Text style={styles.buttomButtonTitle}>确认到店</Text>
           </TouchableOpacity>
         </View>
       )}
-      {type === 'waitPackage' && (
-        <TouchableOpacity activeOpacity={0.7} style={styles.bottomButton}>
+      {status === '10000010' && (
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={styles.bottomButton}
+          onPress={() => {
+            confirmGetOrderFromStore();
+          }}>
           <Text style={styles.buttomButtonTitle}>确认取件</Text>
         </TouchableOpacity>
       )}
-      {type === 'delivery' && (
+      {status === '10000015' && (
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={styles.bottomButton}
+          onPress={() => {
+            confirmGetOrderFromStore();
+          }}>
+          <Text style={styles.buttomButtonTitle}>确认送达</Text>
+        </TouchableOpacity>
+      )}
+      {status === 'delivery' && (
         <TouchableOpacity activeOpacity={0.7} style={styles.bottomButton}>
           <Text style={styles.buttomButtonTitle}>
             {confirmType !== 'photo' ? '确认完成' : '拍照完成'}
@@ -47,26 +92,46 @@ const CardActions = (props: CardActionsInterface) => {
           <Text style={styles.buttomButtonTitle}>取消转单</Text>
         </TouchableOpacity> */}
       <View style={styles.line} />
-      {type === 'waitStore' && (
+      {status === '10000005' && (
         <View style={styles.actionsView}>
           <TouchableOpacity activeOpacity={0.7} style={styles.actionButton}>
-            <Text>联系电话</Text>
+            <Image
+              style={styles.actionIcon}
+              source={require('../assets/icon_phone.png')}
+            />
+            <Text style={styles.actionTitle}>联系电话</Text>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.7} style={styles.actionButton}>
-            <Text>导航</Text>
+            <Image
+              style={styles.actionIcon}
+              source={require('../assets/icon_location.png')}
+            />
+            <Text style={styles.actionTitle}>导航</Text>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.7} style={styles.actionButton}>
-            <Text>立即转单</Text>
+            <Image
+              style={styles.actionIcon}
+              source={require('../assets/icon_transfer.png')}
+            />
+            <Text style={styles.actionTitle}>立即转单</Text>
           </TouchableOpacity>
         </View>
       )}
-      {type !== 'waitStore' && type !== 'wait' && (
+      {(status === '10000010' || status === '10000015') && (
         <View style={styles.actionsView}>
           <TouchableOpacity activeOpacity={0.7} style={styles.actionButton}>
-            <Text>联系电话</Text>
+            <Image
+              style={styles.actionIcon}
+              source={require('../assets/icon_phone.png')}
+            />
+            <Text style={styles.actionTitle}>联系电话</Text>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={0.7} style={styles.actionButton}>
-            <Text>导航</Text>
+            <Image
+              style={styles.actionIcon}
+              source={require('../assets/icon_location.png')}
+            />
+            <Text style={styles.actionTitle}>导航</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -132,10 +197,11 @@ const styles = StyleSheet.create({
   },
   actionsView: {
     height: 67,
+    width: '100%',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-around',
   },
   actionButton: {
     width: 60,
@@ -149,6 +215,14 @@ const styles = StyleSheet.create({
     backgroundColor: 'blue',
     borderTopRightRadius: 10,
     borderTopLeftRadius: 10,
+  },
+  actionIcon: {
+    width: 18,
+    height: 18,
+  },
+  actionTitle: {
+    fontSize: 12,
+    marginTop: 6,
   },
 });
 

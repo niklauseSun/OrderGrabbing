@@ -1,3 +1,4 @@
+import {Toast} from '@ant-design/react-native';
 import {order} from '../api';
 import Identify from './Identify';
 
@@ -14,13 +15,17 @@ const GetOrder = (props: riderOrderInsertReqDTO) => {
 
   order
     .grabOrder({
-      riderOrderInsertReqDTO: {
-        deliveryOrderId: props.deliveryOrderId,
-        transferRiderOrderId: props.transferRiderOrderId,
-      },
+      deliveryOrderId: props.deliveryOrderId,
+      transferRiderOrderId: props.transferRiderOrderId,
     })
     .then(res => {
       console.log('grabOrder', res);
+      const {success} = res;
+      if (success) {
+        Toast.info('抢单成功');
+      } else {
+        Toast.info('抢单失败');
+      }
     });
 };
 

@@ -15,7 +15,7 @@ import GoodsInfo from './goodsInfo';
 import OrderInfo from './orderInfo';
 import OrderPay from './orderPay';
 import TakePic from './takePic';
-const InnerDetail = () => {
+const InnerDetail = ({orderDetail}) => {
   const [bottom, setBottom] = useState(false);
   return (
     <View

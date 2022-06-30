@@ -12,6 +12,7 @@ import {OrderProps} from '../../interfaces/locationsProps';
 
 import LocationInfo from '../LocationInfo';
 import Button from '../Button';
+import GetOrder from '../../utils/GetOrder';
 const GrabOrder = (props: OrderProps) => {
   const {order} = props;
   const [visible, setVisible] = useState(false);
@@ -82,7 +83,17 @@ const GrabOrder = (props: OrderProps) => {
                     setVisible(false);
                   }}
                 />
-                <Button title="确认" type="primary" />
+                <Button
+                  title="确认"
+                  type="primary"
+                  onPress={() => {
+                    setVisible(false);
+                    console.log('order', order);
+                    GetOrder({
+                      deliveryOrderId: order.id,
+                    });
+                  }}
+                />
               </View>
             </View>
           </Pressable>

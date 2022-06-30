@@ -28,6 +28,14 @@ const order = {
     let url = '/api/rider/order/immediate-grab-order';
     return request(url, params);
   },
+  updateOrder: async (params: any) => {
+    let url = '/api/rider/order/update-rider-order-status';
+    return request(url, params);
+  },
+  getOrderDetail: async (id: string) => {
+    let url = '/api/delivery-order/query-delivery-order-app-detail?id=' + id;
+    return query(url);
+  },
 };
 
 export default order;

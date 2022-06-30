@@ -22,6 +22,7 @@ export interface OrderCardProps {
   remark?: string;
   orderNo?: string;
   id?: string;
+  status?: string;
 }
 
 export interface OrderProps {

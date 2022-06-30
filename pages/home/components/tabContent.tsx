@@ -105,7 +105,7 @@ const TabContent = (props: TabContentProps) => {
             data={orderList}
             ListEmptyComponent={<EmptyOrder />}
             renderItem={({item}) => {
-              return <OrderCard order={item} type={'waitGrab'} />;
+              return <OrderCard order={item} type={'waitPackage'} />;
             }}
           />
         )}
