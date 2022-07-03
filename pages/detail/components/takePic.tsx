@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  TouchableOpacity,
-  Text,
-  View,
-  StyleSheet,
-} from 'react-native';
+import {TouchableOpacity, Text, View, StyleSheet, Image} from 'react-native';
 
 const TakePic = () => {
   return (
@@ -15,11 +9,21 @@ const TakePic = () => {
       </View>
       <View style={styles.subInfos}>
         <View style={styles.imagePick}>
-          <TouchableOpacity style={styles.takeButton} activeOpacity={0.7} />
+          <TouchableOpacity style={styles.takeButton} activeOpacity={0.7}>
+            <Image
+              style={styles.takePic}
+              source={require('./assets/icon_take_pic.png')}
+            />
+          </TouchableOpacity>
           <Text>取件拍照</Text>
         </View>
         <View style={styles.imagePick}>
-          <TouchableOpacity style={styles.takeButton} activeOpacity={0.7} />
+          <TouchableOpacity style={styles.takeButton} activeOpacity={0.7}>
+            <Image
+              style={styles.takePic}
+              source={require('./assets/icon_take_pic.png')}
+            />
+          </TouchableOpacity>
           <Text>完成拍照</Text>
         </View>
       </View>
@@ -71,6 +75,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 20,
     borderRadius: 5,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  takePic: {
+    width: 60,
+    height: 60,
   },
 });
 export default TakePic;

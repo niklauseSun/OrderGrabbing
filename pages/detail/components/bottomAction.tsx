@@ -8,16 +8,25 @@ import {
 } from 'react-native';
 import InnerDetail from './innerDetail';
 import CardActions from '../../../components/CardActions';
+import {OrderDetailProps} from '../../../interfaces/OrderDetailProps';
+interface BottomActionProps {
+  orderDetail: OrderDetailProps;
+}
 
-const BottomAction = (props: any) => {
-  const type = props.type || 'wait';
-  const confirmType = props.confirmType || 'photo';
+const BottomAction = (props: BottomActionProps) => {
+  const {orderDetail} = props;
+
   // type
   // wait: 待抢单 waitStore: 待到店
   // waitPackage 待取货
   // delivery 送货中
   // finish 已完成
-  return <SafeAreaView style={styles.container} />;
+  return (
+    <SafeAreaView style={styles.container}>
+      <InnerDetail orderDetail={orderDetail} />
+      <CardActions order={orderDetail} confirmType={''} />
+    </SafeAreaView>
+  );
 };
 
 const styles = StyleSheet.create({

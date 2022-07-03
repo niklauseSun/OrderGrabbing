@@ -8,11 +8,8 @@ import {
 } from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {order} from '../../api';
-import CardActions from '../../components/CardActions';
-import {OrderCardProps} from '../../interfaces/locationsProps';
 
 import BottomAction from './components/bottomAction';
-import InnerDetail from './components/innerDetail';
 
 const Detail = ({route}) => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -39,8 +36,7 @@ const Detail = ({route}) => {
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <View style={styles.innerContainer}>
-        <InnerDetail />
-        {orderDetail && <CardActions order={orderDetail} confirmType={''} />}
+        {orderDetail && <BottomAction orderDetail={orderDetail} />}
       </View>
     </SafeAreaView>
   );

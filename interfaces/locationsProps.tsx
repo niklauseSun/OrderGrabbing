@@ -14,8 +14,8 @@ export interface OrderCardProps {
   payAmount?: number; // 价格
   receiveMessage: LocationInfoProps;
   sendMessage: LocationInfoProps;
-  riderToSendAddressDistance: string;
-  sendToReceiveAddressDistance: string;
+  riderToSendAddressDistance?: string;
+  sendToReceiveAddressDistance?: string;
   echoButton?: number;
   goodsCategoryName?: string;
   commission?: number;

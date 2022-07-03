@@ -1,6 +1,5 @@
 import React from 'react';
 import {
-  SafeAreaView,
   TouchableOpacity,
   Text,
   View,
@@ -8,8 +7,13 @@ import {
   Clipboard,
 } from 'react-native';
 
-const OrderInfo = () => {
-  const orderNum = '123456789012321';
+interface OrderInfoProps {
+  orderId?: string;
+  orderTime?: string;
+}
+
+const OrderInfo = (props: OrderInfoProps) => {
+  const {orderId, orderTime} = props;
   return (
     <View style={styles.container}>
       <View style={styles.head}>
@@ -20,12 +24,12 @@ const OrderInfo = () => {
           <Text style={styles.orderTitle}>订单编号</Text>
         </View>
         <View style={styles.orderInfos}>
-          <Text style={styles.orderNum}>{orderNum}</Text>
+          <Text style={styles.orderNum}>{orderId}</Text>
           <TouchableOpacity
             style={styles.copyButton}
             activeOpacity={0.7}
             onPress={() => {
-              Clipboard.setString(orderNum);
+              Clipboard.setString(orderId as string);
             }}>
             <Text style={styles.copyTitle}>复制</Text>
           </TouchableOpacity>
@@ -36,7 +40,7 @@ const OrderInfo = () => {
           <Text style={styles.orderTitle}>下单时间</Text>
         </View>
         <View style={styles.orderInfos}>
-          <Text style={styles.orderNum}>2022.05.16 10:22:00</Text>
+          <Text style={styles.orderNum}>{orderTime}</Text>
         </View>
       </View>
     </View>
@@ -79,7 +83,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   orderNum: {
-    fontSize: 16,
+    fontSize: 14,
   },
   copyButton: {
     paddingHorizontal: 6,

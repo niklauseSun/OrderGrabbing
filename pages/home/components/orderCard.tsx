@@ -62,7 +62,7 @@ const OrderCard = (props: OrderProps) => {
           }
           receiveMessage={props.order.receiveMessage}
           sendMessage={props.order.sendMessage}
-          type={props.type}
+          status={props.order.status}
         />
         <View style={styles.tagView}>
           <View style={styles.tag}>

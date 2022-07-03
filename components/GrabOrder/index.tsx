@@ -62,7 +62,7 @@ const GrabOrder = (props: OrderProps) => {
                 sendToReceiveAddressDistance={
                   order.sendToReceiveAddressDistance
                 }
-                type={'waitGrab'}
+                status={order.status}
               />
               <View style={styles.tagView}>
                 <View style={styles.tag}>

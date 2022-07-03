@@ -1,13 +1,12 @@
-/* eslint-disable react-native/no-inline-styles */
 import React, {useState} from 'react';
 import {
-  SafeAreaView,
   TouchableOpacity,
   Text,
   View,
   StyleSheet,
   LayoutAnimation,
   ScrollView,
+  Image,
 } from 'react-native';
 import LocationInfo from '../../../components/LocationInfo';
 
@@ -15,12 +14,18 @@ import GoodsInfo from './goodsInfo';
 import OrderInfo from './orderInfo';
 import OrderPay from './orderPay';
 import TakePic from './takePic';
-const InnerDetail = ({orderDetail}) => {
+import {OrderDetailProps} from '../../../interfaces/OrderDetailProps';
+interface InnerDetailProps {
+  orderDetail: OrderDetailProps;
+}
+const InnerDetail = (props: InnerDetailProps) => {
+  const {orderDetail} = props;
   const [bottom, setBottom] = useState(false);
   return (
     <View
       style={[
         styles.contaner,
+        // eslint-disable-next-line react-native/no-inline-styles
         {
           height: bottom ? 500 : 30,
         },
@@ -39,20 +44,62 @@ const InnerDetail = ({orderDetail}) => {
       <ScrollView>
         <View style={styles.orderStatus}>
           <View style={styles.orderNumView}>
-            <View style={styles.orderNumIcon} />
-            <Text style={styles.orderNumText}>8756</Text>
+            <Image
+              source={{uri: orderDetail.sourceLogo}}
+              style={styles.orderNumIcon}
+            />
+            <Text style={styles.orderNumText}>{orderDetail.riderOrderId}</Text>
           </View>
-          <View style={styles.orderStatusTag}>
-            <Text style={styles.orderStatusTagText}>待抢单</Text>
-          </View>
+          {getOderText(orderDetail.status as string)}
         </View>
-        <LocationInfo />
+        <LocationInfo
+          receiveMessage={orderDetail.receiveMessage}
+          sendMessage={orderDetail.sendMessage}
+          riderToSendAddressDistance={orderDetail.riderToSendAddressDistance}
+          sendToReceiveAddressDistance={
+            orderDetail.sendToReceiveAddressDistance
+          }
+          status={orderDetail.status}
+        />
 
-        <GoodsInfo />
-        <OrderInfo />
-        <OrderPay />
+        <GoodsInfo
+          orderGoodsInfos={orderDetail.deliveryOrderGoodsDataDTO}
+          remark={orderDetail.remark}
+          goodsCategory={orderDetail.goodsCategory}
+          totalWeight={orderDetail.totalWeight}
+        />
+        <OrderInfo
+          orderId={orderDetail.orderNo}
+          orderTime={orderDetail.orderDate}
+        />
+        <OrderPay totalAmount={orderDetail.totalAmount} />
         <TakePic />
       </ScrollView>
+    </View>
+  );
+};
+
+const getOderText = (status: string) => {
+  return (
+    <View style={styles.orderStatusTag}>
+      {status === '10000000' && (
+        <Text style={styles.orderStatusTagText}>待抢单</Text>
+      )}
+      {status === '10000005' && (
+        <Text style={styles.orderStatusTagText}>待到店</Text>
+      )}
+      {status === '10000010' && (
+        <Text style={styles.orderStatusTagText}>待取货</Text>
+      )}
+      {status === '10000015' && (
+        <Text style={styles.orderStatusTagText}>配送中</Text>
+      )}
+      {status === '10000020' && (
+        <Text style={styles.orderStatusTagText}>已送达</Text>
+      )}
+      {status === '10000025' && (
+        <Text style={styles.orderStatusTagText}>已取消</Text>
+      )}
     </View>
   );
 };
@@ -112,7 +159,7 @@ const styles = StyleSheet.create({
     borderRadius: 2,
   },
   orderNumText: {
-    fontSize: 22,
+    fontSize: 16,
     color: '#333',
     marginLeft: 8,
   },
@@ -123,7 +170,7 @@ const styles = StyleSheet.create({
   orderStatusTagText: {
     textAlign: 'right',
     marginRight: 15,
-    fontSize: 22,
+    fontSize: 20,
   },
 });
 export default InnerDetail;

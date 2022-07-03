@@ -13,9 +13,9 @@ interface LocationInfoProps {
 interface LocationProps {
   receiveMessage: LocationInfoProps;
   sendMessage: LocationInfoProps;
-  riderToSendAddressDistance: string;
-  sendToReceiveAddressDistance: string;
-  type: string | 'waitGrab' | 'waitPackage' | 'delivery';
+  riderToSendAddressDistance?: string;
+  sendToReceiveAddressDistance?: string;
+  status?: string;
 }
 
 const LocationInfo = (props: LocationProps) => {
@@ -37,7 +37,7 @@ const LocationInfo = (props: LocationProps) => {
           <Text style={styles.targetLocationSubTitle}>
             {props.sendMessage.address}
           </Text>
-          {props.type !== 'waitGrab' && (
+          {props.status !== '10000000' && (
             <Text style={styles.phone}>
               {props.sendMessage.name} {props.sendMessage.phone}
             </Text>
@@ -55,7 +55,7 @@ const LocationInfo = (props: LocationProps) => {
           <Text style={styles.targetLocationSubTitle}>
             {props.receiveMessage.address}
           </Text>
-          {props.type !== 'waitGrab' && (
+          {props.status !== '10000000' && (
             <Text style={styles.phone}>
               {props.receiveMessage.name} {props.receiveMessage.phone}
             </Text>

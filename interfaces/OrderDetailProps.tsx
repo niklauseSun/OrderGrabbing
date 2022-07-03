@@ -25,25 +25,25 @@ export interface DeliveryOrderPriceDataDTO {
 export interface OrderDetailProps {
   collectOrderPicture?: boolean;
   commission?: number;
-  deliveryOrderGoodsDataDTO?: DeliveryOrderDto;
+  deliveryOrderGoodsDataDTO: DeliveryOrderDto;
   deliveryOrderPriceDataDTO?: DeliveryOrderPriceDataDTO;
   echoButton?: number;
   goodsCategory?: string;
   id?: string;
   orderDate?: string;
   orderNo?: string;
-  payAmount?: string;
-  receiveMessage?: LocationInfoProps;
+  payAmount?: number;
+  receiveMessage: LocationInfoProps;
   receiveOrderPicture?: boolean;
   remark?: string;
   riderOrderId?: string;
-  riderToSendAddressDistance?: number;
-  sendMessage?: LocationInfoProps;
-  sendToReceiveAddressDistance?: number;
+  riderToSendAddressDistance?: string;
+  sendMessage: LocationInfoProps;
+  sendToReceiveAddressDistance?: string;
   seq?: number;
   source?: string;
   sourceLogo?: string;
   status?: string;
-  totalAmount?: string;
+  totalAmount?: number;
   totalWeight?: string;
 }

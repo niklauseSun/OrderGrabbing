@@ -1,15 +1,10 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  TouchableOpacity,
-  Text,
-  View,
-  StyleSheet,
-  Clipboard,
-} from 'react-native';
+import {Text, View, StyleSheet} from 'react-native';
+interface OrderPayProps {
+  totalAmount?: number;
+}
 
-const OrderPay = () => {
-  const orderNum = '123456789012321';
+const OrderPay = (props: OrderPayProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.head}>
@@ -18,26 +13,10 @@ const OrderPay = () => {
       </View>
       <View style={styles.subInfos}>
         <View style={styles.subHead}>
-          <Text style={styles.orderTitle}>订单编号</Text>
-        </View>
-        <View style={styles.orderInfos}>
-          <Text style={styles.orderNum}>{orderNum}</Text>
-          <TouchableOpacity
-            style={styles.copyButton}
-            activeOpacity={0.7}
-            onPress={() => {
-              Clipboard.setString(orderNum);
-            }}>
-            <Text style={styles.copyTitle}>复制</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={styles.subInfos}>
-        <View style={styles.subHead}>
           <Text style={styles.orderTitle}>合计</Text>
         </View>
         <View style={styles.orderInfos}>
-          <Text style={styles.orderNum}>￥10.5</Text>
+          <Text style={styles.orderNum}>￥{props.totalAmount}</Text>
         </View>
       </View>
     </View>
