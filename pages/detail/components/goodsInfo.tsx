@@ -22,13 +22,11 @@ const GoodsInfo = (props: GoodsInfoProps) => {
       <View style={styles.goodInfos}>
         {deliveryOrderGoodsDetailDTOList.map((item, index) => {
           return (
-            <>
-              <View style={styles.goodsLineView} key={index}>
-                <Text style={styles.goodsName}>{item.goodsName}</Text>
-                <Text style={styles.goodsNum}>x{item.goodsAmount}</Text>
-                <Text style={styles.goodsPrice}>￥{item.goodsPrice}</Text>
-              </View>
-            </>
+            <View style={styles.goodsLineView} key={index + ''}>
+              <Text style={styles.goodsName}>{item.goodsName}</Text>
+              <Text style={styles.goodsNum}>x{item.goodsAmount}</Text>
+              <Text style={styles.goodsPrice}>￥{item.goodsPrice}</Text>
+            </View>
           );
         })}
       </View>

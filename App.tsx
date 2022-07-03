@@ -16,6 +16,7 @@ import createNativeStackNavigator from '@react-navigation/native-stack/lib/modul
 import HomePage from './pages/home/home';
 import LoginPage from './pages/Login/Login';
 import Detail from './pages/detail/detail';
+import CameraPage from './pages/camera/CameraPage';
 import {Text, TouchableOpacity} from 'react-native';
 import Provider from '@ant-design/react-native/lib/provider';
 import {navigationRef} from './utils/RootNavigation';
@@ -51,6 +52,14 @@ const App = () => {
                   </TouchableOpacity>
                 );
               },
+            }}
+          />
+          <Stack.Screen
+            name="CameraPage"
+            component={CameraPage}
+            options={{
+              title: '拍照',
+              headerBackTitle: '',
             }}
           />
         </Stack.Navigator>

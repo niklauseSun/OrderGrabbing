@@ -1,5 +1,6 @@
 import React from 'react';
 import {TouchableOpacity, Text, View, StyleSheet, Image} from 'react-native';
+import ToTakePic from '../../../utils/ToTakePic';
 
 const TakePic = () => {
   return (
@@ -18,7 +19,13 @@ const TakePic = () => {
           <Text>取件拍照</Text>
         </View>
         <View style={styles.imagePick}>
-          <TouchableOpacity style={styles.takeButton} activeOpacity={0.7}>
+          <TouchableOpacity
+            style={styles.takeButton}
+            activeOpacity={0.7}
+            onPress={() => {
+              console.log('takePick');
+              ToTakePic();
+            }}>
             <Image
               style={styles.takePic}
               source={require('./assets/icon_take_pic.png')}
