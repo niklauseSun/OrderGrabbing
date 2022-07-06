@@ -62,6 +62,19 @@ const UpdateOrder = {
       },
     ]);
   },
+  trasferOrder: (orderId: string, reason: string) => {
+    order
+      .updateOrder({
+        deliveryOrderId: orderId,
+        operateStatus: 0,
+        reason: reason,
+      })
+      .then(res => {
+        if (res.success) {
+          Toast.info('已申请转单！');
+        }
+      });
+  },
 };
 
 export default UpdateOrder;

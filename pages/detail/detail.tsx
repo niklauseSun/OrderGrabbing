@@ -10,6 +10,7 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {order} from '../../api';
 
 import BottomAction from './components/bottomAction';
+import RiderMapView from './components/RiderMapView';
 
 const Detail = ({route}) => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -35,6 +36,7 @@ const Detail = ({route}) => {
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <View style={styles.mapView}>{/* <RiderMapView /> */}</View>
       <View style={styles.innerContainer}>
         {orderDetail && <BottomAction orderDetail={orderDetail} />}
       </View>
@@ -50,6 +52,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#e3e3e3',
     height: '100%',
+  },
+  mapView: {
+    width: '100%',
+    display: 'flex',
+    backgroundColor: '#e3e3e3',
+    height: '100%',
+    position: 'absolute',
   },
   wxButton: {
     marginLeft: 20,

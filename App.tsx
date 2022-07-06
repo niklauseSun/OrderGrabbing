@@ -17,9 +17,20 @@ import HomePage from './pages/home/home';
 import LoginPage from './pages/Login/Login';
 import Detail from './pages/detail/detail';
 import CameraPage from './pages/camera/CameraPage';
+import WebViewPage from './pages/webPage/webPage';
 import {Text, TouchableOpacity} from 'react-native';
 import Provider from '@ant-design/react-native/lib/provider';
 import {navigationRef} from './utils/RootNavigation';
+
+// import {AMapSdk} from 'react-native-amap3d';
+// import {Platform} from 'react-native';
+
+// AMapSdk.init(
+//   Platform.select({
+//     android: 'c52c7169e6df23490e3114330098aaac',
+//     ios: '57b7dcf824bf28a372f2bb5031a8628b',
+//   }),
+// );
 
 const Stack = createNativeStackNavigator();
 
@@ -61,6 +72,11 @@ const App = () => {
               title: '拍照',
               headerBackTitle: '',
             }}
+          />
+          <Stack.Screen
+            name="WebViewPage"
+            component={WebViewPage}
+            options={{title: 'webview', headerShown: false}} // 隐藏头
           />
         </Stack.Navigator>
       </NavigationContainer>

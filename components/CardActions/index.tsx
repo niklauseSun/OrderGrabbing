@@ -1,9 +1,13 @@
-import React from 'react';
+import {Modal, Toast} from '@ant-design/react-native';
+import React, {useState} from 'react';
+import {Linking} from 'react-native';
 import {TouchableOpacity, Text, View, StyleSheet, Image} from 'react-native';
 import {OrderCardProps} from '../../interfaces/locationsProps';
 import CancelOrder from '../../utils/CancelOrder';
+import CancelTransferOrder from '../../utils/CancelTranferOrder';
 import UpdateOrder from '../../utils/UpdateOrder';
 import GrabOrder from '../GrabOrder';
+import TransferOrderModal from './TransferOrderModal';
 
 interface CardActionsInterface {
   order: OrderCardProps;
@@ -14,6 +18,8 @@ const CardActions = (props: CardActionsInterface) => {
   const {status} = props.order;
 
   const confirmType = props.confirmType || 'photo';
+  const [showPhoneView, setPhoneView] = useState(false);
+  const [showTransfer, setTransfer] = useState(false);
   // type
   // wait: 待抢单 waitStore: 待到店
   // waitPackage 待取货
@@ -38,10 +44,31 @@ const CardActions = (props: CardActionsInterface) => {
     UpdateOrder.confirmGetFromStore(props.order.id as string);
   };
 
+  const confirmTransferOrder = (reason: string) => {
+    console.log('transferReason', reason);
+    UpdateOrder.trasferOrder(props.order.id as string, reason);
+  };
+
+  const showPhoneModal = () => {
+    console.log('showPhoneModal');
+    setPhoneView(true);
+  };
+
+  const call = (phone: string) => {
+    let tel = 'tel:' + phone; // 目标电话
+    Linking.canOpenURL(tel).then(res => {
+      if (res) {
+        Linking.canOpenURL(tel);
+      } else {
+        Toast.info('无法拨打电话！');
+      }
+    });
+  };
+
   return (
     <View style={styles.bottomView}>
       {status === '10000000' && <GrabOrder order={props.order} />}
-      {status === '10000005' && (
+      {status === '10000005' && props.order.echoButton !== 3 && (
         <View style={styles.buttonViews}>
           <TouchableOpacity
             activeOpacity={0.7}
@@ -58,6 +85,18 @@ const CardActions = (props: CardActionsInterface) => {
               confirmToStore();
             }}>
             <Text style={styles.buttomButtonTitle}>确认到店</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      {status === '10000005' && props.order.echoButton === 3 && (
+        <View style={styles.buttonViews}>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={styles.bottomButton}
+            onPress={() => {
+              CancelTransferOrder(props.order.id as string);
+            }}>
+            <Text style={styles.buttomButtonTitle}>取消转单</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -94,7 +133,13 @@ const CardActions = (props: CardActionsInterface) => {
       <View style={styles.line} />
       {status === '10000005' && (
         <View style={styles.actionsView}>
-          <TouchableOpacity activeOpacity={0.7} style={styles.actionButton}>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={styles.actionButton}
+            onPress={() => {
+              console.log('fff');
+              showPhoneModal();
+            }}>
             <Image
               style={styles.actionIcon}
               source={require('../assets/icon_phone.png')}
@@ -108,7 +153,12 @@ const CardActions = (props: CardActionsInterface) => {
             />
             <Text style={styles.actionTitle}>导航</Text>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.7} style={styles.actionButton}>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={styles.actionButton}
+            onPress={() => {
+              setTransfer(true);
+            }}>
             <Image
               style={styles.actionIcon}
               source={require('../assets/icon_transfer.png')}
@@ -119,7 +169,12 @@ const CardActions = (props: CardActionsInterface) => {
       )}
       {(status === '10000010' || status === '10000015') && (
         <View style={styles.actionsView}>
-          <TouchableOpacity activeOpacity={0.7} style={styles.actionButton}>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={styles.actionButton}
+            onPress={() => {
+              showPhoneModal();
+            }}>
             <Image
               style={styles.actionIcon}
               source={require('../assets/icon_phone.png')}
@@ -135,6 +190,70 @@ const CardActions = (props: CardActionsInterface) => {
           </TouchableOpacity>
         </View>
       )}
+      <Modal
+        transparent
+        visible={showPhoneView}
+        maskClosable
+        onClose={() => {
+          setPhoneView(false);
+        }}>
+        <View style={styles.phoneModal}>
+          <View style={styles.phoneTitleView}>
+            <Text style={styles.phoneTitle}>联系人电话</Text>
+          </View>
+          <View style={styles.phoneItemView}>
+            <View style={styles.phoneItemTitleView}>
+              <Text style={styles.phoneItemTitle}>取货人</Text>
+            </View>
+            <View style={styles.phoneInfos}>
+              <Text style={styles.nameText}>
+                {props.order.sendMessage.name}
+              </Text>
+              <Text style={styles.phoneText}>
+                {props.order.sendMessage.phone}
+              </Text>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                style={styles.actionButton}
+                onPress={() => {
+                  call(props.order.sendMessage.phone);
+                }}>
+                <Image
+                  style={styles.actionIcon}
+                  source={require('../assets/icon_phone.png')}
+                />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.phoneItemTitleView}>
+              <Text style={styles.phoneItemTitle}>收货人</Text>
+            </View>
+            <View style={styles.phoneInfos}>
+              <Text style={styles.nameText}>
+                {props.order.receiveMessage.name}
+              </Text>
+              <Text style={styles.phoneText}>
+                {props.order.receiveMessage.phone}
+              </Text>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                style={styles.actionButton}
+                onPress={() => {
+                  call(props.order.receiveMessage.phone);
+                }}>
+                <Image
+                  style={styles.actionIcon}
+                  source={require('../assets/icon_phone.png')}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+      <TransferOrderModal
+        show={showTransfer}
+        setTransferShow={setTransfer}
+        confrimTransferOrder={confirmTransferOrder}
+      />
     </View>
   );
 };
@@ -223,6 +342,40 @@ const styles = StyleSheet.create({
   actionTitle: {
     fontSize: 12,
     marginTop: 6,
+  },
+  phoneModal: {},
+  phoneTitleView: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  phoneTitle: {
+    fontSize: 16,
+  },
+  phoneItemView: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  phoneInfos: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+  },
+  phoneItemTitleView: {
+    marginBottom: 9,
+  },
+  phoneItemTitle: {
+    fontSize: 15,
+    color: '#1677FE',
+  },
+  phoneText: {
+    fontSize: 14,
+    color: '#333333',
+  },
+  nameText: {
+    width: 60,
   },
 });
 

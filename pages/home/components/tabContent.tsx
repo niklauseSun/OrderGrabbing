@@ -26,6 +26,8 @@ const TabContent = (props: TabContentProps) => {
   ];
 
   const [orderList, setOrderList] = useState([]);
+  const [tabIndex, setIndex] = useState(0);
+  const [refreshing, setRefresh] = useState(false);
 
   const queryList = async (index: number) => {
     if (index === 0) {
@@ -63,13 +65,22 @@ const TabContent = (props: TabContentProps) => {
     }
   };
 
+  const onRefresh = () => {
+    setOrderList([]);
+    queryList(tabIndex);
+    setTimeout(() => {
+      console.log('close');
+      setRefresh(false);
+    }, 2000);
+  };
+
   useEffect(() => {
     queryList(0);
+    DeviceEventEmitter.addListener('refresh', () => {
+      console.log('refresh');
+      queryList(0);
+    });
   }, []);
-
-  DeviceEventEmitter.addListener('refresh', () => {
-    queryList(0);
-  });
 
   return (
     // <View style={styles.content}>
@@ -80,6 +91,7 @@ const TabContent = (props: TabContentProps) => {
         const {index} = e;
         setOrderList([]);
         queryList(index);
+        setIndex(index);
       }}
       swipeable={false}
       tabBarPosition="top"
@@ -91,6 +103,8 @@ const TabContent = (props: TabContentProps) => {
         {!props.isLogin && <GoToLogin />}
         {props.isLogin && (
           <FlatList
+            onRefresh={onRefresh}
+            refreshing={refreshing}
             data={orderList}
             renderItem={({item}) => {
               return <OrderCard order={item} type={'waitGrab'} />;
@@ -103,6 +117,8 @@ const TabContent = (props: TabContentProps) => {
         {props.isLogin && (
           <FlatList
             data={orderList}
+            onRefresh={onRefresh}
+            refreshing={refreshing}
             ListEmptyComponent={<EmptyOrder />}
             renderItem={({item}) => {
               return <OrderCard order={item} type={'waitPackage'} />;
@@ -114,6 +130,8 @@ const TabContent = (props: TabContentProps) => {
         {!props.isLogin && <GoToLogin />}
         {props.isLogin && (
           <FlatList
+            onRefresh={onRefresh}
+            refreshing={refreshing}
             data={orderList}
             renderItem={({item}) => {
               return <OrderCard order={item} type={'waitGrab'} />;

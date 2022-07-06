@@ -18,14 +18,10 @@ import ToLogin from '../../utils/ToLogin';
 import Header from './components/header';
 import TabContent from './components/tabContent';
 
-const App = ({navigation}) => {
+const App = (props: {navigation: any}) => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const [isLogin, setLogStatus] = useState(false);
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
 
   useEffect(() => {
     Identify().then(res => {
@@ -39,7 +35,7 @@ const App = ({navigation}) => {
   return (
     <SafeAreaView style={styles.homeBg}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <Header />
+      <Header navigation={props.navigation} />
       <TabContent isLogin={isLogin} />
       {/*
       <ScrollView

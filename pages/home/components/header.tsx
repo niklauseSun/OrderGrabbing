@@ -3,14 +3,13 @@ import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 import {Popover} from '@ant-design/react-native';
-const Item = Popover.Item;
 
-const Header = () => {
+const Header = props => {
   const type = 'identifySuccess'; // 认证中;
   return (
     <View style={styles.container}>
       <View style={styles.headerContent}>
-        <TouchableOpacity activeOpacity={0.7}>
+        <TouchableOpacity activeOpacity={0.7} onPress={() => {}}>
           <Image
             style={styles.headLeftIcon}
             source={require('./assets/icon_person.png')}
