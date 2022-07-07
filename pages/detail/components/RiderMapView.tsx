@@ -6,11 +6,17 @@ import {Image, StyleSheet} from 'react-native';
 interface RiderMapViewProps {
   orderDetail: OrderDetailProps;
 }
-class RiderMapView extends React.Component<RiderMapViewProps> {
+
+interface IState {
+  showMark: boolean;
+}
+class RiderMapView extends React.Component<RiderMapViewProps, IState> {
   mapRef?: MapView | null;
   constructor(props: RiderMapViewProps) {
     super(props);
-    this.state = {};
+    this.state = {
+      showMark: false,
+    };
   }
   componentDidMount() {}
   render() {
@@ -32,11 +38,14 @@ class RiderMapView extends React.Component<RiderMapViewProps> {
               },
               zoom: 16,
             });
+          this.setState({
+            showMark: true,
+          });
         }}
         trafficEnabled={true}
         zoomGesturesEnabled={true}
         scrollGesturesEnabled={true}>
-        {receiveMessage && (
+        {this.state.showMark && (
           <Marker
             position={{
               latitude: receiveMessage.latitude,
@@ -48,7 +57,7 @@ class RiderMapView extends React.Component<RiderMapViewProps> {
             />
           </Marker>
         )}
-        {sendMessage && (
+        {this.state.showMark && (
           <Marker
             position={{
               latitude: sendMessage.latitude,

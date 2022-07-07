@@ -4606,6 +4606,11 @@ joi@^17.2.1:
     "@sideway/formula" "^3.0.0"
     "@sideway/pinpoint" "^2.0.0"
 
+jpush-react-native@^2.9.1:
+  version "2.9.1"
+  resolved "https://registry.npmmirror.com/jpush-react-native/-/jpush-react-native-2.9.1.tgz#1907862c045fd907b6894a8a70e376933e1b0fb9"
+  integrity sha512-5Hmn0x4Xq8u/DVbmJjPDUm22y+TMp71Uxf9irPmMM1RMte/fmn9/8shQ9uX9U5G2lRa8MhKJBvdKuwYkuLrhOg==
+
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.npmmirror.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"

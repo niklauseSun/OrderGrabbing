@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {
+  Image,
   SafeAreaView,
   StatusBar,
   StyleSheet,
+  Text,
   useColorScheme,
   View,
 } from 'react-native';
@@ -38,6 +40,22 @@ const Detail = ({route}) => {
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <View style={styles.mapView}>
         {orderDetail && <RiderMapView orderDetail={orderDetail} />}
+      </View>
+      <View style={styles.tipView}>
+        <View style={styles.tipLine}>
+          <Image
+            style={styles.tipIcon}
+            source={require('./components/assets/store_icon.png')}
+          />
+          <Text style={styles.tipTitle}>取货点</Text>
+        </View>
+        <View style={styles.tipLine}>
+          <Image
+            style={styles.tipIcon}
+            source={require('./components/assets/delivery_icon.png')}
+          />
+          <Text style={styles.tipTitle}>送货点</Text>
+        </View>
       </View>
       {orderDetail && <BottomAction orderDetail={orderDetail} />}
     </SafeAreaView>
@@ -102,6 +120,24 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     width: 90,
     height: 90,
+  },
+  tipView: {
+    position: 'absolute',
+    top: 60,
+    left: 20,
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 10,
+    zIndex: 900,
+  },
+  tipLine: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  tipIcon: {
+    width: 24,
+    height: 24,
   },
 });
 
