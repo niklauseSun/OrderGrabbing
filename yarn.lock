@@ -5942,6 +5942,11 @@ react-is@^16.13.0, react-is@^16.13.1, react-is@^16.7.0:
   resolved "https://registry.npmmirror.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
+react-native-amap-geolocation@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.npmmirror.com/react-native-amap-geolocation/-/react-native-amap-geolocation-1.1.2.tgz#4388731828bbe84493ac5894d0df27b4402ae3c5"
+  integrity sha512-M8uUqfnfrKwJka1byooL/NHD7EkTBEwOYswQiqu7bBkB24AkGeFZbd3h1XzaVLVyuBNfjHHm+W+fO8Apghxr5g==
+
 react-native-amap3d@^3.1.1:
   version "3.1.1"
   resolved "https://registry.npmmirror.com/react-native-amap3d/-/react-native-amap3d-3.1.1.tgz#85b421c4d20cd41c828edcf156e7f4480f40698f"

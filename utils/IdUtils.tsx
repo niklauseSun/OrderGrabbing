@@ -8,6 +8,7 @@ const IdUtils = {
       return true;
     }
   },
+  toGetLocation() {},
 };
 
 export default IdUtils;

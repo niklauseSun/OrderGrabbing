@@ -1,19 +1,76 @@
-import {MapView, MapType} from 'react-native-amap3d';
+import {MapView, MapType, Marker} from 'react-native-amap3d';
 import React from 'react';
+import {OrderDetailProps} from '../../../interfaces/OrderDetailProps';
+import {Image, StyleSheet} from 'react-native';
 
-const RiderMapView = () => {
-  return (
-    <MapView
-      mapType={MapType.Satellite}
-      initialCameraPosition={{
-        target: {
-          latitude: 39.91095,
-          longitude: 116.37296,
-        },
-        zoom: 8,
-      }}
-    />
-  );
-};
+interface RiderMapViewProps {
+  orderDetail: OrderDetailProps;
+}
+class RiderMapView extends React.Component<RiderMapViewProps> {
+  mapRef?: MapView | null;
+  constructor(props: RiderMapViewProps) {
+    super(props);
+    this.state = {};
+  }
+  componentDidMount() {}
+  render() {
+    console.log('this', this.props);
+    const {orderDetail} = this.props;
+    const {receiveMessage, sendMessage} = orderDetail;
+    return (
+      <MapView
+        mapType={MapType.Navi}
+        myLocationEnabled={true}
+        labelsEnabled={true}
+        ref={ref => (this.mapRef = ref)}
+        onLoad={() => {
+          this.mapRef &&
+            this.mapRef.moveCamera({
+              target: {
+                latitude: Number(sendMessage.latitude),
+                longitude: Number(sendMessage.longitude),
+              },
+              zoom: 16,
+            });
+        }}
+        trafficEnabled={true}
+        zoomGesturesEnabled={true}
+        scrollGesturesEnabled={true}>
+        {receiveMessage && (
+          <Marker
+            position={{
+              latitude: receiveMessage.latitude,
+              longitude: receiveMessage.longitude,
+            }}>
+            <Image
+              style={styles.image}
+              source={require('./assets/delivery_icon.png')}
+            />
+          </Marker>
+        )}
+        {sendMessage && (
+          <Marker
+            position={{
+              latitude: sendMessage.latitude,
+              longitude: sendMessage.longitude,
+            }}>
+            <Image
+              style={styles.image}
+              source={require('./assets/store_icon.png')}
+            />
+          </Marker>
+        )}
+      </MapView>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  image: {
+    width: 50,
+    height: 50,
+    backgroundColor: 'transparent',
+  },
+});
 
 export default RiderMapView;

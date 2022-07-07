@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  SafeAreaView,
-  TouchableOpacity,
-  Text,
-  View,
-  StyleSheet,
-} from 'react-native';
+import {SafeAreaView, StyleSheet} from 'react-native';
 import InnerDetail from './innerDetail';
 import CardActions from '../../../components/CardActions';
 import {OrderDetailProps} from '../../../interfaces/OrderDetailProps';

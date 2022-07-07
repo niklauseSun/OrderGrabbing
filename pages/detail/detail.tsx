@@ -36,10 +36,10 @@ const Detail = ({route}) => {
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <View style={styles.mapView}>{/* <RiderMapView /> */}</View>
-      <View style={styles.innerContainer}>
-        {orderDetail && <BottomAction orderDetail={orderDetail} />}
+      <View style={styles.mapView}>
+        {orderDetail && <RiderMapView orderDetail={orderDetail} />}
       </View>
+      {orderDetail && <BottomAction orderDetail={orderDetail} />}
     </SafeAreaView>
   );
 };
@@ -50,15 +50,14 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    backgroundColor: '#e3e3e3',
+    backgroundColor: 'transparent',
     height: '100%',
+    position: 'absolute',
   },
   mapView: {
     width: '100%',
     display: 'flex',
-    backgroundColor: '#e3e3e3',
     height: '100%',
-    position: 'absolute',
   },
   wxButton: {
     marginLeft: 20,
