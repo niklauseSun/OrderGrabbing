@@ -32,6 +32,7 @@ AMapSdk.init(
     ios: '57b7dcf824bf28a372f2bb5031a8628b',
   }),
 );
+
 // 定位
 // init({
 //   ios: '9bd6c82e77583020a73ef1af59d0c759',

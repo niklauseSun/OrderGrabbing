@@ -1,6 +1,7 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useRef} from 'react';
 import WebView, {WebViewNavigation} from 'react-native-webview';
-const WebPage = props => {
+const WebPage = async props => {
   console.log('props', props);
   const {route} = props;
   const {params} = route;
@@ -16,6 +17,15 @@ const WebPage = props => {
     }
   };
 
+  const token = await AsyncStorage.getItem('token');
+
+  const injectedJS = `
+    (function() {
+      window.localStorage.setItem('token', ${token});
+      window.location.reload()
+    })();
+  `;
+
   return (
     <WebView
       ref={() => webViewRef}
@@ -23,6 +33,7 @@ const WebPage = props => {
       onMessage={event => {
         console.log('event', event);
       }}
+      injectedJavaScript={injectedJS}
       onNavigationStateChange={handleWebViewNavigationStateChange}
     />
   );

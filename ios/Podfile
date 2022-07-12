@@ -8,7 +8,7 @@ install! 'cocoapods', :deterministic_uuids => false
 
 target 'MyApp' do
   # pod 'boost', :podspec => '../node_modules/react-native/third-party-podspecs/boost.podspec'
-
+  pod 'JPush'
   config = use_native_modules!
 
   # Flags change depending on the env values.
