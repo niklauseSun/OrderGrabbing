@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import {rider} from '../../../api';
 import IdUtils from '../../../utils/IdUtils';
-import Toast from '@ant-design/react-native/lib/toast';
+import {Toast} from '@ant-design/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Identify from '../../../utils/Identify';
 
@@ -24,6 +24,7 @@ const LoginInput = (props: LoginInputProps) => {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [hidePassword, setHide] = useState(true);
+  const [delay, setDelay] = useState(0);
   const changeText = (e: string) => {
     console.log(e);
     setPhone(e);
@@ -40,6 +41,19 @@ const LoginInput = (props: LoginInputProps) => {
       setCanLogin(true);
     }
   };
+
+  useEffect(() => {
+    const timeId = setInterval(() => {
+      if (delay >= 0) {
+        setDelay(delay - 1);
+      } else {
+        clearInterval(timeId);
+      }
+    }, 1000);
+    return () => {
+      clearInterval(timeId);
+    };
+  }, [delay]);
 
   return (
     <View style={styles.container}>
@@ -72,26 +86,31 @@ const LoginInput = (props: LoginInputProps) => {
             style={styles.input}
             onChangeText={changePassword}
           />
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={styles.getCodeButton}
-            onPress={() => {
-              if (IdUtils.isPhoneNum(phone)) {
-                rider
-                  .sendCaptcha({
-                    phone: phone,
-                  })
-                  .then(res => {
-                    console.log('res', res);
-                    const {message} = res;
-                    Toast.info(message);
-                  });
-              } else {
-                Toast.info('请输入正确手机号');
-              }
-            }}>
-            <Text style={styles.getCodeText}>获取验证码</Text>
-          </TouchableOpacity>
+          {delay <= 0 ? (
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={styles.getCodeButton}
+              onPress={() => {
+                if (IdUtils.isPhoneNum(phone)) {
+                  rider
+                    .sendCaptcha({
+                      phone: phone,
+                    })
+                    .then(res => {
+                      console.log('res', res);
+                      setDelay(60);
+                      const {message} = res;
+                      Toast.info(message);
+                    });
+                } else {
+                  Toast.info('请输入正确手机号');
+                }
+              }}>
+              <Text style={styles.getCodeText}>获取验证码</Text>
+            </TouchableOpacity>
+          ) : (
+            <Text>剩余{delay}s</Text>
+          )}
         </View>
       )}
       {isPassword && (
@@ -150,7 +169,7 @@ const LoginInput = (props: LoginInputProps) => {
               })
               .then(res => {
                 console.log('res', res);
-                const {success, result} = res;
+                const {success, result, message} = res;
                 if (success) {
                   props.navigateReset();
 
@@ -160,6 +179,8 @@ const LoginInput = (props: LoginInputProps) => {
                   Identify().then(re => {
                     console.log('identify status', re);
                   });
+                } else {
+                  Toast.info(message);
                 }
               });
           } else {

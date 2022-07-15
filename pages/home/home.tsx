@@ -22,12 +22,16 @@ const App = (props: {navigation: any}) => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const [isLogin, setLogStatus] = useState(false);
+  const [status, setStatus] = useState();
 
   useEffect(() => {
     Identify().then(res => {
+      console.log('Identify', res);
       if (res) {
         // 如果成功了
         setLogStatus(true);
+        const {status: stat} = res.result;
+        setStatus(stat);
       }
     });
   }, []);
@@ -35,7 +39,7 @@ const App = (props: {navigation: any}) => {
   return (
     <SafeAreaView style={styles.homeBg}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <Header navigation={props.navigation} />
+      <Header status={status} navigation={props.navigation} />
       <TabContent isLogin={isLogin} />
       {/*
       <ScrollView

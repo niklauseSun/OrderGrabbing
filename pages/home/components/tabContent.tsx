@@ -13,6 +13,7 @@ import OrderCard from './orderCard';
 import order from '../../../api/order';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import ToLogin from '../../../utils/ToLogin';
+import {Toast} from '@ant-design/react-native';
 
 interface TabContentProps {
   isLogin?: boolean;
@@ -76,8 +77,8 @@ const TabContent = (props: TabContentProps) => {
 
   useEffect(() => {
     queryList(0);
-    DeviceEventEmitter.addListener('refresh', () => {
-      console.log('refresh');
+    DeviceEventEmitter.addListener('refresh', message => {
+      console.log('refresh', message);
       queryList(0);
     });
   }, []);

@@ -17,7 +17,7 @@ import HomePage from './pages/home/home';
 import LoginPage from './pages/Login/Login';
 import Detail from './pages/detail/detail';
 import CameraPage from './pages/camera/CameraPage';
-import WebViewPage from './pages/webPage/webPage';
+import WebPage from './pages/webPage/webPage';
 import {Text, TouchableOpacity} from 'react-native';
 import Provider from '@ant-design/react-native/lib/provider';
 import {navigationRef} from './utils/RootNavigation';
@@ -81,9 +81,9 @@ const App = () => {
             }}
           />
           <Stack.Screen
-            name="WebViewPage"
-            component={WebViewPage}
-            options={{title: 'webview', headerShown: false}} // 隐藏头
+            name="WebPage"
+            component={WebPage}
+            options={{title: '', headerBackTitle: ''}}
           />
         </Stack.Navigator>
       </NavigationContainer>

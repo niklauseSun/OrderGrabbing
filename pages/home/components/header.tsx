@@ -4,8 +4,13 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
 import {Popover} from '@ant-design/react-native';
 import ToWebPage from '../../../utils/ToWebPage';
+interface HeaderProps {
+  infoStatus: string;
+  status: string;
+}
 
-const Header = props => {
+const Header = (props: HeaderProps) => {
+  const {status} = props;
   const type = 'identifySuccess'; // 认证中;
   return (
     <View style={styles.container}>
@@ -24,7 +29,7 @@ const Header = props => {
         </TouchableOpacity>
 
         {type === 'identify' && <IdentifyStatus type={'process'} />}
-        {type !== 'identify' && <SwitchStatsu />}
+        {type !== 'identify' && <SwitchStatsu status={status} />}
         <TouchableOpacity activeOpacity={0.7}>
           <Image
             style={styles.iconMessage}
@@ -64,6 +69,7 @@ const IdentifyStatus = (props: any) => {
 };
 
 const SwitchStatsu = props => {
+  const {status} = props;
   // on || off
 
   return (
@@ -74,14 +80,14 @@ const SwitchStatsu = props => {
           <Popover.Item value={'test'}>
             <TouchableOpacity activeOpacity={0.7} style={styles.popButton}>
               <Text style={styles.popButtonTitle}>
-                {props.type === 'on' ? '接单中' : '休息中'}
+                {status === 'on' ? '接单中' : '休息中'}
               </Text>
             </TouchableOpacity>
           </Popover.Item>
         }>
         <View style={styles.titleView}>
           <Text style={styles.switchTitle}>
-            {props.type === 'on' ? '休息中' : '接单中'}
+            {status === 'on' ? '休息中' : '接单中'}
           </Text>
           <Image
             style={styles.iconDown}

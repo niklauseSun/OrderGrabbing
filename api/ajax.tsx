@@ -1,9 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ToLogin from '../utils/ToLogin';
 
 const query = async (url: string) => {
   try {
     const response = await network(url, 'GET');
     const json = await response.json();
+    if (json.message === 100) {
+      ToLogin();
+    }
     return json;
   } catch (error) {
     console.log(error);
@@ -14,6 +18,9 @@ const request = async (url: string, data: any = null) => {
   try {
     const response = await network(url, 'POST', data);
     const json = await response.json();
+    if (json.code === 100) {
+      ToLogin();
+    }
     return json;
   } catch (error) {
     console.log(error);

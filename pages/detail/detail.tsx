@@ -1,3 +1,4 @@
+import {Toast} from '@ant-design/react-native';
 import React, {useEffect, useState} from 'react';
 import {
   Image,
@@ -26,6 +27,7 @@ const Detail = ({route}) => {
   useEffect(() => {
     const {params} = route;
     const {id} = params;
+    Toast.loading('加载中...');
 
     order.getOrderDetail(id).then(res => {
       console.log('orderDetail', res);
@@ -138,6 +140,9 @@ const styles = StyleSheet.create({
   tipIcon: {
     width: 24,
     height: 24,
+  },
+  tipTitle: {
+    fontSize: 13,
   },
 });
 
