@@ -1,20 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
-  ScrollView,
   StatusBar,
-  TouchableOpacity,
   useColorScheme,
-  Text,
   StyleSheet,
-  DeviceEventEmitter,
 } from 'react-native';
 
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import CancelOrder from '../../utils/CancelOrder';
-import GetOrder from '../../utils/GetOrder';
 import Identify from '../../utils/Identify';
-import ToLogin from '../../utils/ToLogin';
 import Header from './components/header';
 import TabContent from './components/tabContent';
 
@@ -22,7 +14,8 @@ const App = (props: {navigation: any}) => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const [isLogin, setLogStatus] = useState(false);
-  const [status, setStatus] = useState();
+  const [status, setStatus] = useState('');
+  const [infoStatus, setInfoStatus] = useState('');
 
   useEffect(() => {
     Identify().then(res => {
@@ -30,8 +23,9 @@ const App = (props: {navigation: any}) => {
       if (res) {
         // 如果成功了
         setLogStatus(true);
-        const {status: stat} = res.result;
+        const {status: stat, infoStatus: info} = res;
         setStatus(stat);
+        setInfoStatus(info);
       }
     });
   }, []);
@@ -39,8 +33,12 @@ const App = (props: {navigation: any}) => {
   return (
     <SafeAreaView style={styles.homeBg}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <Header status={status} navigation={props.navigation} />
-      <TabContent isLogin={isLogin} />
+      <Header
+        status={status}
+        navigation={props.navigation}
+        infoStatus={infoStatus}
+      />
+      <TabContent isLogin={isLogin} navigation={props.navigation} />
       {/*
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"

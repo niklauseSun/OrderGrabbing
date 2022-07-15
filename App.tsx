@@ -17,6 +17,7 @@ import HomePage from './pages/home/home';
 import LoginPage from './pages/Login/Login';
 import Detail from './pages/detail/detail';
 import CameraPage from './pages/camera/CameraPage';
+import ScanCamera from './pages/scanCamera/scanCamera';
 import WebPage from './pages/webPage/webPage';
 import {Text, TouchableOpacity} from 'react-native';
 import Provider from '@ant-design/react-native/lib/provider';
@@ -77,6 +78,14 @@ const App = () => {
             component={CameraPage}
             options={{
               title: '拍照',
+              headerBackTitle: '',
+            }}
+          />
+          <Stack.Screen
+            name="ScanCamera"
+            component={ScanCamera}
+            options={{
+              title: '扫一扫',
               headerBackTitle: '',
             }}
           />

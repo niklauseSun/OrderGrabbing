@@ -20,11 +20,11 @@ const GetOrder = (props: riderOrderInsertReqDTO) => {
     })
     .then(res => {
       console.log('grabOrder', res);
-      const {success} = res;
+      const {success, message} = res;
       if (success) {
         Toast.info('抢单成功');
       } else {
-        Toast.info('抢单失败');
+        Toast.info(message);
       }
     });
 };

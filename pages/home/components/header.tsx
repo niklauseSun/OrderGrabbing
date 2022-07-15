@@ -7,6 +7,7 @@ import ToWebPage from '../../../utils/ToWebPage';
 interface HeaderProps {
   infoStatus: string;
   status: string;
+  navigation: ReactNavigation;
 }
 
 const Header = (props: HeaderProps) => {

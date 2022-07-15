@@ -6,17 +6,18 @@ import {
   Image,
   Text,
   DeviceEventEmitter,
+  TouchableOpacity,
 } from 'react-native';
 
 import Tabs from '@ant-design/react-native/lib/tabs';
 import OrderCard from './orderCard';
 import order from '../../../api/order';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import ToLogin from '../../../utils/ToLogin';
 import {Toast} from '@ant-design/react-native';
 
 interface TabContentProps {
   isLogin?: boolean;
+  navigation: ReactNavigation;
 }
 
 const TabContent = (props: TabContentProps) => {
@@ -67,12 +68,17 @@ const TabContent = (props: TabContentProps) => {
   };
 
   const onRefresh = () => {
+    Toast.loading('请求中');
     setOrderList([]);
     queryList(tabIndex);
     setTimeout(() => {
       console.log('close');
       setRefresh(false);
     }, 2000);
+  };
+
+  const goToScan = () => {
+    props.navigation.navigate('ScanCamera');
   };
 
   useEffect(() => {
@@ -107,17 +113,20 @@ const TabContent = (props: TabContentProps) => {
             onRefresh={onRefresh}
             refreshing={refreshing}
             data={orderList}
+            ListEmptyComponent={<EmptyOrder />}
             renderItem={({item}) => {
               return <OrderCard order={item} type={'waitGrab'} />;
             }}
           />
         )}
+        <RefershBottom onRefresh={onRefresh} goToScan={goToScan} />
       </View>
       <View style={styles.container}>
         {!props.isLogin && <GoToLogin />}
         {props.isLogin && (
           <FlatList
             data={orderList}
+            style={styles.listStyle}
             onRefresh={onRefresh}
             refreshing={refreshing}
             ListEmptyComponent={<EmptyOrder />}
@@ -126,11 +135,13 @@ const TabContent = (props: TabContentProps) => {
             }}
           />
         )}
+        <RefershBottom onRefresh={onRefresh} goToScan={goToScan} />
       </View>
       <View style={styles.container}>
         {!props.isLogin && <GoToLogin />}
         {props.isLogin && (
           <FlatList
+            style={styles.listStyle}
             onRefresh={onRefresh}
             refreshing={refreshing}
             data={orderList}
@@ -141,6 +152,7 @@ const TabContent = (props: TabContentProps) => {
             ListFooterComponentStyle={styles.emptyContainer}
           />
         )}
+        <RefershBottom onRefresh={onRefresh} goToScan={goToScan} />
       </View>
     </Tabs>
   );
@@ -173,15 +185,40 @@ const GoToLogin = () => {
   );
 };
 
+const RefershBottom = (props: any) => {
+  return (
+    <View style={styles.refreshContainer}>
+      <TouchableOpacity
+        onPress={() => {
+          props.goToScan();
+        }}
+        activeOpacity={0.7}
+        style={styles.scanButton}>
+        <Image
+          style={styles.scanImage}
+          source={require('./assets/icon_scan.png')}
+        />
+        <Text style={styles.scanTitle}>扫码接单</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          props.onRefresh();
+        }}
+        activeOpacity={0.7}
+        style={styles.refreshButton}>
+        <Text style={styles.refreshButtonText}>刷新</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
   content: {
     display: 'flex',
     flex: 1,
     width: '100%',
-    height: '100%',
   },
   container: {
-    height: '100%',
     backgroundColor: '#F6F6F6',
     width: '100%',
     display: 'flex',
@@ -220,6 +257,52 @@ const styles = StyleSheet.create({
   loginButtonTitle: {
     fontSize: 14,
     color: '#fff',
+  },
+  refreshContainer: {
+    flexDirection: 'row',
+    position: 'absolute',
+    backgroundColor: '#fff',
+    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    width: '100%',
+    bottom: 42,
+    padding: 10,
+  },
+  scanButton: {
+    width: 50,
+    height: 50,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  scanImage: {
+    height: 24,
+    width: 24,
+  },
+  scanTitle: {
+    fontSize: 12,
+  },
+  refreshView: {
+    width: '100%',
+  },
+  refreshButton: {
+    backgroundColor: 'blue',
+    marginLeft: 10,
+    display: 'flex',
+    flex: 1,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+    borderRadius: 10,
+  },
+  listStyle: {
+    marginBottom: 110,
+  },
+  refreshButtonText: {
+    color: '#fff',
+    fontSize: 16,
   },
 });
 
