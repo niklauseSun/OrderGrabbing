@@ -1,9 +1,11 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   StatusBar,
   useColorScheme,
   StyleSheet,
+  DeviceEventEmitter,
 } from 'react-native';
 
 import Identify from '../../utils/Identify';
@@ -18,7 +20,7 @@ const App = (props: {navigation: any}) => {
   const [infoStatus, setInfoStatus] = useState('');
 
   useEffect(() => {
-    Identify().then(res => {
+    Identify(false).then(res => {
       console.log('Identify', res);
       if (res) {
         // 如果成功了
@@ -26,7 +28,21 @@ const App = (props: {navigation: any}) => {
         const {status: stat, infoStatus: info} = res;
         setStatus(stat);
         setInfoStatus(info);
+        AsyncStorage.setItem('status', stat);
+        AsyncStorage.setItem('infoStatus', info);
       }
+    });
+    DeviceEventEmitter.addListener('refreshStatus', () => {
+      console.log('refreshStatus');
+      Identify(false).then(res => {
+        console.log('Identify', res);
+        if (res) {
+          // 如果成功了
+          const {status: stat, infoStatus: info} = res;
+          setStatus(stat);
+          setInfoStatus(info);
+        }
+      });
     });
   }, []);
 

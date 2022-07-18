@@ -5,6 +5,7 @@ import {TouchableOpacity, Text, View, StyleSheet, Image} from 'react-native';
 import {OrderCardProps} from '../../interfaces/locationsProps';
 import CancelOrder from '../../utils/CancelOrder';
 import CancelTransferOrder from '../../utils/CancelTranferOrder';
+import ToTakePic from '../../utils/ToTakePic';
 import UpdateOrder from '../../utils/UpdateOrder';
 import GrabOrder from '../GrabOrder';
 import TransferOrderModal from './TransferOrderModal';
@@ -42,6 +43,22 @@ const CardActions = (props: CardActionsInterface) => {
 
   const confirmGetOrderFromStore = () => {
     UpdateOrder.confirmGetFromStore(props.order.id as string);
+  };
+
+  const confirmGetOrderWithPic = () => {
+    ToTakePic((res: string) => {
+      UpdateOrder.confirmGetFromStore(props.order.id as string, res);
+    });
+  };
+
+  const confirmSendOrder = () => {
+    UpdateOrder.deliverySuccess(props.order.id as string);
+  };
+
+  const confirmSendOrderWithPic = () => {
+    ToTakePic((res: string) => {
+      UpdateOrder.deliverySuccess(props.order.id as string, res);
+    });
   };
 
   const confirmTransferOrder = (reason: string) => {
@@ -101,24 +118,18 @@ const CardActions = (props: CardActionsInterface) => {
         </View>
       )}
       {status === '10000010' && (
-        <TouchableOpacity
-          activeOpacity={0.7}
-          style={styles.bottomButton}
-          onPress={() => {
-            confirmGetOrderFromStore();
-          }}>
-          <Text style={styles.buttomButtonTitle}>确认取件</Text>
-        </TouchableOpacity>
+        <CollectButton
+          collectOrderPicture={props.order.collectOrderPicture}
+          confirmGetOrderFromStore={confirmGetOrderFromStore}
+          confirmGetOrderWithPic={confirmGetOrderWithPic}
+        />
       )}
       {status === '10000015' && (
-        <TouchableOpacity
-          activeOpacity={0.7}
-          style={styles.bottomButton}
-          onPress={() => {
-            confirmGetOrderFromStore();
-          }}>
-          <Text style={styles.buttomButtonTitle}>确认送达</Text>
-        </TouchableOpacity>
+        <ConfirmButton
+          receiveOrderPicture={props.order.receiveOrderPicture}
+          confirmSendOrder={confirmSendOrder}
+          confirmSendOrderWithPic={confirmSendOrderWithPic}
+        />
       )}
       {status === 'delivery' && (
         <TouchableOpacity activeOpacity={0.7} style={styles.bottomButton}>
@@ -127,9 +138,6 @@ const CardActions = (props: CardActionsInterface) => {
           </Text>
         </TouchableOpacity>
       )}
-      {/* <TouchableOpacity activeOpacity={0.7} style={styles.bottomButton}>
-          <Text style={styles.buttomButtonTitle}>取消转单</Text>
-        </TouchableOpacity> */}
       <View style={styles.line} />
       {status === '10000005' && (
         <View style={styles.actionsView}>
@@ -255,6 +263,67 @@ const CardActions = (props: CardActionsInterface) => {
         confrimTransferOrder={confirmTransferOrder}
       />
     </View>
+  );
+};
+
+const CollectButton = props => {
+  const {
+    collectOrderPicture = false,
+    confirmGetOrderFromStore,
+    confirmGetOrderWithPic,
+  } = props;
+  if (collectOrderPicture) {
+    return (
+      <TouchableOpacity
+        activeOpacity={0.7}
+        style={styles.bottomButton}
+        onPress={() => {
+          confirmGetOrderWithPic();
+        }}>
+        <Text style={styles.buttomButtonTitle}>拍照取件</Text>
+      </TouchableOpacity>
+    );
+  }
+
+  return (
+    <TouchableOpacity
+      activeOpacity={0.7}
+      style={styles.bottomButton}
+      onPress={() => {
+        confirmGetOrderFromStore();
+      }}>
+      <Text style={styles.buttomButtonTitle}>确认取件</Text>
+    </TouchableOpacity>
+  );
+};
+
+const ConfirmButton = (props: any) => {
+  const {
+    receiveOrderPicture = false,
+    confirmSendOrder,
+    confirmSendOrderWithPic,
+  } = props;
+  if (receiveOrderPicture) {
+    return (
+      <TouchableOpacity
+        activeOpacity={0.7}
+        style={styles.bottomButton}
+        onPress={() => {
+          confirmSendOrderWithPic();
+        }}>
+        <Text style={styles.buttomButtonTitle}>拍照送达</Text>
+      </TouchableOpacity>
+    );
+  }
+  return (
+    <TouchableOpacity
+      activeOpacity={0.7}
+      style={styles.bottomButton}
+      onPress={() => {
+        confirmSendOrder();
+      }}>
+      <Text style={styles.buttomButtonTitle}>确认送达</Text>
+    </TouchableOpacity>
   );
 };
 

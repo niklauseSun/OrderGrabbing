@@ -29,6 +29,8 @@ interface OrderCardProps {
   orderNo: string;
   status: string;
   id: string;
+  collectOrderPicture: boolean;
+  receiveOrderPicture: boolean;
 }
 
 interface OrderProps {

@@ -13,6 +13,9 @@ const rider = {
   getRiderInfo: async () => {
     return query('/api/rider/query-rider-info');
   },
+  switchUserStatus: async (params: any) => {
+    return request('/api/rider/change-rider-status?status=' + params.status);
+  },
 };
 
 export default rider;

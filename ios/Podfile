@@ -10,6 +10,7 @@ target 'MyApp' do
   # pod 'boost', :podspec => '../node_modules/react-native/third-party-podspecs/boost.podspec'
   pod 'JPush'
   config = use_native_modules!
+  pod 'IQKeyboardManager'
 
   # Flags change depending on the env values.
   flags = get_default_flags()

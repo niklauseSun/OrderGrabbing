@@ -7,9 +7,9 @@ interface riderOrderInsertReqDTO {
   transferRiderOrderId?: string;
 }
 
-const GetOrder = (props: riderOrderInsertReqDTO) => {
-  const idStatus = Identify();
-  if (!idStatus) {
+const GetOrder = async (props: riderOrderInsertReqDTO) => {
+  const {success: su} = await Identify();
+  if (!su) {
     return;
   }
 

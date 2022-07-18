@@ -1,9 +1,17 @@
 import React from 'react';
 
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  DeviceEventEmitter,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 import {Popover} from '@ant-design/react-native';
 import ToWebPage from '../../../utils/ToWebPage';
+import {rider} from '../../../api';
 interface HeaderProps {
   infoStatus: string;
   status: string;
@@ -11,8 +19,8 @@ interface HeaderProps {
 }
 
 const Header = (props: HeaderProps) => {
-  const {status} = props;
-  const type = 'identifySuccess'; // 认证中;
+  const {infoStatus, status} = props;
+  console.log('header props', props);
   return (
     <View style={styles.container}>
       <View style={styles.headerContent}>
@@ -29,8 +37,10 @@ const Header = (props: HeaderProps) => {
           />
         </TouchableOpacity>
 
-        {type === 'identify' && <IdentifyStatus type={'process'} />}
-        {type !== 'identify' && <SwitchStatsu status={status} />}
+        {infoStatus !== '10150010' && (
+          <IdentifyStatus infoStatus={infoStatus} />
+        )}
+        {infoStatus === '10150010' && <SwitchStatsu status={status} />}
         <TouchableOpacity activeOpacity={0.7}>
           <Image
             style={styles.iconMessage}
@@ -45,9 +55,16 @@ const Header = (props: HeaderProps) => {
 const IdentifyStatus = (props: any) => {
   //   const type = 'process'; // fail 失败
   return (
-    <>
+    <TouchableOpacity
+      activeOpacity={1}
+      style={styles.idView}
+      onPress={() => {
+        ToWebPage(
+          'https://rider-test-app.zhuopaikeji.com/pages/realName/index',
+        );
+      }}>
       <View style={styles.idLine} />
-      {props.type === 'process' && (
+      {props.infoStatus === '10150000' && (
         <>
           <Text style={styles.idTitle}>审核中</Text>
           <Image
@@ -56,7 +73,16 @@ const IdentifyStatus = (props: any) => {
           />
         </>
       )}
-      {props.type === 'fail' && (
+      {props.infoStatus === '10150005' && (
+        <>
+          <Text style={styles.idTitle}>审核中</Text>
+          <Image
+            style={styles.idIcon}
+            source={require('./assets/id_status_ing.png')}
+          />
+        </>
+      )}
+      {props.infoStatus === '10150015' && (
         <>
           <Text style={styles.idTitle}>认证不通过</Text>
           <Image
@@ -65,7 +91,7 @@ const IdentifyStatus = (props: any) => {
           />
         </>
       )}
-    </>
+    </TouchableOpacity>
   );
 };
 
@@ -79,16 +105,39 @@ const SwitchStatsu = props => {
         placement="bottom"
         overlay={
           <Popover.Item value={'test'}>
-            <TouchableOpacity activeOpacity={0.7} style={styles.popButton}>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={styles.popButton}
+              onPress={() => {
+                if (status === '10100010') {
+                  rider
+                    .switchUserStatus({
+                      status: '10100005',
+                    })
+                    .then(obj => {
+                      console.log('res', obj);
+                      DeviceEventEmitter.emit('refreshStatus');
+                    });
+                } else {
+                  rider
+                    .switchUserStatus({
+                      status: '10100010',
+                    })
+                    .then(obj => {
+                      console.log('res', obj);
+                      DeviceEventEmitter.emit('refreshStatus');
+                    });
+                }
+              }}>
               <Text style={styles.popButtonTitle}>
-                {status === 'on' ? '接单中' : '休息中'}
+                {status === '10100010' ? '接单中' : '休息中'}
               </Text>
             </TouchableOpacity>
           </Popover.Item>
         }>
         <View style={styles.titleView}>
           <Text style={styles.switchTitle}>
-            {status === 'on' ? '休息中' : '接单中'}
+            {status === '10100010' ? '休息中' : '接单中'}
           </Text>
           <Image
             style={styles.iconDown}
@@ -113,7 +162,12 @@ const styles = StyleSheet.create({
     height: 22,
     width: 22,
   },
-
+  idView: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   idLine: {
     height: 12,
     width: 1,

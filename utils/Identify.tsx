@@ -13,7 +13,7 @@ export const onlineInfo = {
   offline: '10100010',
 };
 
-const Identify = async () => {
+const Identify = async (showModal = true) => {
   const res = await rider.getRiderInfo();
   console.log('res', res);
   const {result} = res;
@@ -30,41 +30,84 @@ const Identify = async () => {
   // const identifyStatus = 'identifyFail'; // 'identifySuccess' || 'identifyFail' || identifing
   switch (infoStatus) {
     case IdentifyStatus.identifing:
-      Modal.alert(
-        '认证审核',
-        '上传的认证信息还在审核，通过以后可以进行接单。',
-        [{text: '确认', onPress: () => console.log('ok')}],
-      );
+      showModal &&
+        Modal.alert(
+          '认证审核',
+          '上传的认证信息还在审核，通过以后可以进行接单。',
+          [{text: '确认', onPress: () => console.log('ok')}],
+        );
       return {
         infoStatus,
         status,
+        success: false,
       };
     case IdentifyStatus.unIdentify:
-      Modal.alert('未认证', '未认证，请上传信息进行认证。', [
-        {text: '取消', onPress: () => console.log('cancel')},
-        {text: '确认', onPress: () => console.log('ok')},
-      ]);
+      showModal &&
+        Modal.alert('未认证', '未认证，请上传信息进行认证。', [
+          {text: '取消', onPress: () => console.log('cancel')},
+          {text: '确认', onPress: () => console.log('ok')},
+        ]);
       return {
         infoStatus,
         status,
+        success: false,
       };
     case IdentifyStatus.identifySuccess:
       // 继续接下来的事情
+
+      if (status === '10100010') {
+        showModal &&
+          Modal.alert(
+            '休息中',
+            '当前状态无法进行抢单，请点击“切换”，修改骑手状态',
+            [
+              {text: '取消', onPress: () => console.log('cancel')},
+              {
+                text: '切换',
+                onPress: () => {
+                  rider
+                    .switchUserStatus({
+                      status: '10100005',
+                    })
+                    .then(obj => {
+                      console.log('res', obj);
+                    });
+                },
+              },
+            ],
+          );
+        return {
+          infoStatus,
+          status,
+          success: false,
+        };
+      }
       return {
         infoStatus,
         status,
+        success: true,
       };
     case IdentifyStatus.identifyFail:
-      Modal.alert('认证不通过', '身份证号码错误，请点击“去认证”进行重新认证', [
-        {text: '取消', onPress: () => console.log('cancel')},
-        {text: '去认证', onPress: () => console.log('ok')},
-      ]);
+      showModal &&
+        Modal.alert(
+          '认证不通过',
+          '身份证号码错误，请点击“去认证”进行重新认证',
+          [
+            {text: '取消', onPress: () => console.log('cancel')},
+            {text: '去认证', onPress: () => console.log('ok')},
+          ],
+        );
       return {
         infoStatus,
         status,
+        success: false,
       };
     default:
-      break;
+      return {
+        infoStatus,
+        status,
+        success: false,
+      };
   }
 };
 

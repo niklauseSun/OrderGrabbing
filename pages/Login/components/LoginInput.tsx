@@ -171,13 +171,12 @@ const LoginInput = (props: LoginInputProps) => {
                 console.log('res', res);
                 const {success, result, message} = res;
                 if (success) {
-                  props.navigateReset();
-
                   const {token} = result;
-                  AsyncStorage.setItem('localToken', token);
-
-                  Identify().then(re => {
-                    console.log('identify status', re);
+                  AsyncStorage.setItem('localToken', token).then(() => {
+                    Identify().then(re => {
+                      console.log('identify status', re);
+                    });
+                    props.navigateReset();
                   });
                 } else {
                   Toast.info(message);
@@ -193,10 +192,10 @@ const LoginInput = (props: LoginInputProps) => {
                 console.log('res', res);
                 const {success, result} = res;
                 if (success) {
-                  props.navigateReset();
-
                   const {token} = result;
-                  AsyncStorage.setItem('localToken', token);
+                  AsyncStorage.setItem('localToken', token).then(() => {
+                    props.navigateReset();
+                  });
                 }
               });
           }

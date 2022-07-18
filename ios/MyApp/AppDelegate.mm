@@ -5,6 +5,7 @@
 #import <React/RCTRootView.h>
 
 #import <React/RCTAppSetupUtils.h>
+#import <IQKeyboardManager/IQKeyboardManager.h>
 
 #if RCT_NEW_ARCH_ENABLED
 #import <React/CoreModulesPlugins.h>
@@ -42,6 +43,12 @@
 #endif
 
   UIView *rootView = RCTAppSetupDefaultRootView(bridge, @"MyApp", nil);
+  
+  IQKeyboardManager *manager = [IQKeyboardManager sharedManager];
+  manager.enable = YES;
+  manager.shouldResignOnTouchOutside = YES;
+  manager.shouldToolbarUsesTextFieldTintColor = YES;
+  manager.enableAutoToolbar = NO;
 
   if (@available(iOS 13.0, *)) {
     rootView.backgroundColor = [UIColor systemBackgroundColor];

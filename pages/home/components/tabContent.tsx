@@ -12,7 +12,6 @@ import {
 import Tabs from '@ant-design/react-native/lib/tabs';
 import OrderCard from './orderCard';
 import order from '../../../api/order';
-import ToLogin from '../../../utils/ToLogin';
 import {Toast} from '@ant-design/react-native';
 
 interface TabContentProps {
@@ -107,51 +106,49 @@ const TabContent = (props: TabContentProps) => {
       tabBarUnderlineStyle={styles.underLineStyle}
       tabBarActiveTextColor="#fff">
       <View style={styles.container}>
-        {!props.isLogin && <GoToLogin />}
-        {props.isLogin && (
-          <FlatList
-            onRefresh={onRefresh}
-            refreshing={refreshing}
-            data={orderList}
-            ListEmptyComponent={<EmptyOrder />}
-            renderItem={({item}) => {
-              return <OrderCard order={item} type={'waitGrab'} />;
-            }}
-          />
-        )}
+        {/* {!props.isLogin && <GoToLogin />} */}
+        <FlatList
+          onRefresh={onRefresh}
+          refreshing={refreshing}
+          data={orderList}
+          ListEmptyComponent={<EmptyOrder />}
+          renderItem={({item}) => {
+            return <OrderCard order={item} type={'waitGrab'} />;
+          }}
+        />
         <RefershBottom onRefresh={onRefresh} goToScan={goToScan} />
       </View>
       <View style={styles.container}>
-        {!props.isLogin && <GoToLogin />}
-        {props.isLogin && (
-          <FlatList
-            data={orderList}
-            style={styles.listStyle}
-            onRefresh={onRefresh}
-            refreshing={refreshing}
-            ListEmptyComponent={<EmptyOrder />}
-            renderItem={({item}) => {
-              return <OrderCard order={item} type={'waitPackage'} />;
-            }}
-          />
-        )}
+        {/* {!props.isLogin && <GoToLogin />} */}
+        {/* {props.isLogin && ( */}
+        <FlatList
+          data={orderList}
+          style={styles.listStyle}
+          onRefresh={onRefresh}
+          refreshing={refreshing}
+          ListEmptyComponent={<EmptyOrder />}
+          renderItem={({item}) => {
+            return <OrderCard order={item} type={'waitPackage'} />;
+          }}
+        />
+        {/* )} */}
         <RefershBottom onRefresh={onRefresh} goToScan={goToScan} />
       </View>
       <View style={styles.container}>
-        {!props.isLogin && <GoToLogin />}
-        {props.isLogin && (
-          <FlatList
-            style={styles.listStyle}
-            onRefresh={onRefresh}
-            refreshing={refreshing}
-            data={orderList}
-            renderItem={({item}) => {
-              return <OrderCard order={item} type={'waitGrab'} />;
-            }}
-            ListEmptyComponent={<EmptyOrder />}
-            ListFooterComponentStyle={styles.emptyContainer}
-          />
-        )}
+        {/* {!props.isLogin && <GoToLogin />}
+        {props.isLogin && ( */}
+        <FlatList
+          style={styles.listStyle}
+          onRefresh={onRefresh}
+          refreshing={refreshing}
+          data={orderList}
+          renderItem={({item}) => {
+            return <OrderCard order={item} type={'waitGrab'} />;
+          }}
+          ListEmptyComponent={<EmptyOrder />}
+          ListFooterComponentStyle={styles.emptyContainer}
+        />
+        {/* )} */}
         <RefershBottom onRefresh={onRefresh} goToScan={goToScan} />
       </View>
     </Tabs>
@@ -166,21 +163,6 @@ const EmptyOrder = () => {
         source={require('./assets/no_order.png')}
       />
       <Text>暂无订单</Text>
-    </View>
-  );
-};
-
-const GoToLogin = () => {
-  return (
-    <View style={styles.loginContain}>
-      <TouchableOpacity
-        style={styles.loginButton}
-        activeOpacity={0.7}
-        onPress={() => {
-          ToLogin();
-        }}>
-        <Text style={styles.loginButtonTitle}>登录</Text>
-      </TouchableOpacity>
     </View>
   );
 };
@@ -266,7 +248,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     width: '100%',
-    bottom: 42,
+    bottom: 60,
     padding: 10,
   },
   scanButton: {
@@ -287,7 +269,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   refreshButton: {
-    backgroundColor: 'blue',
+    backgroundColor: '#1677FE',
     marginLeft: 10,
     display: 'flex',
     flex: 1,

@@ -1,6 +1,8 @@
 import {navigate} from './RootNavigation';
-const ToTakePic = () => {
-  navigate('CameraPage', {});
+const ToTakePic = (callBack: Function) => {
+  navigate('CameraPage', {
+    callBack: callBack,
+  });
 };
 
 export default ToTakePic;
