@@ -19,12 +19,11 @@ const IdUtils = {
     }
     return new Promise((resolve, reject) => {
       Geolocation.getCurrentPosition(
-        ({coords}) => {
-          console.log(coords);
-          resolve(coords);
+        res => {
+          console.log('success', res);
         },
-        err => {
-          reject(err);
+        error => {
+          console.log('error', error);
         },
       );
     });

@@ -37,6 +37,8 @@ const TabContent = (props: TabContentProps) => {
       if (res.success) {
         const {result} = res;
         setOrderList(result);
+      } else {
+        Toast.info(res.message);
       }
     }
 
@@ -50,6 +52,8 @@ const TabContent = (props: TabContentProps) => {
       if (res.success) {
         const {result = []} = res;
         setOrderList(result.records);
+      } else {
+        Toast.info(res.message);
       }
     }
     if (index === 2) {
@@ -62,6 +66,8 @@ const TabContent = (props: TabContentProps) => {
       if (res.success) {
         const {result = []} = res;
         setOrderList(result.records);
+      } else {
+        Toast.info(res.message);
       }
     }
   };
