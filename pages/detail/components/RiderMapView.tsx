@@ -144,7 +144,6 @@ class RiderMapView extends React.Component<RiderMapViewProps, IState> {
     console.log('this', this.props);
     const {orderDetail} = this.props;
     const {receiveMessage, sendMessage} = orderDetail;
-    console.log('dad', this.state.riderLocations);
     return (
       <MapView
         mapType={MapType.Navi}

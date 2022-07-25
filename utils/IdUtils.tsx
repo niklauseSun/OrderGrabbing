@@ -1,5 +1,5 @@
 import {PermissionsAndroid, Platform} from 'react-native';
-import {Geolocation, init} from 'react-native-amap-geolocation';
+import {Geolocation} from 'react-native-amap-geolocation';
 const IdUtils = {
   isPhoneNum(num: string | number) {
     let phone = num + '';
