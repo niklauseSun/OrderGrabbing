@@ -5957,9 +5957,10 @@ react-native-amap-geolocation@^1.1.2:
   resolved "https://registry.npmmirror.com/react-native-amap-geolocation/-/react-native-amap-geolocation-1.1.4.tgz#78c1144857a98d92bd10f5f45795c97a0fae7cc4"
   integrity sha512-B1aDmJb1AIw3PI/rAtcNEcCFuP3b5ZeIDre+B8OEkbbtfcRGgldx25EzwxmmjKucqZpaPBxlVNcS2m12Utjd3Q==
 
-"react-native-amap3d@git+ssh://git@github.com:niklauseSun/react-native-amap3d.git":
-  version "0.0.0"
-  resolved "git+ssh://git@github.com:niklauseSun/react-native-amap3d.git#018040a2d260fd8eebed39235712b447c7bb8a8c"
+react-native-amap3d@^3.1.1:
+  version "3.1.2"
+  resolved "https://registry.npmmirror.com/react-native-amap3d/-/react-native-amap3d-3.1.2.tgz#b21864a60be748245d436af6400adacee85f51a3"
+  integrity sha512-aQnFo8PwrrGeTojlpmv0bpSQqC+t81dZjXGd156IeYJxdktQgM5X9y15FU/lGaWnf2jsUtadWJ6UgBNYF6ztiw==
   dependencies:
     supercluster "^7.1.4"
 

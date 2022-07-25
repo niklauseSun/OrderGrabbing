@@ -25,6 +25,7 @@ import {navigationRef} from './utils/RootNavigation';
 
 import {AMapSdk} from 'react-native-amap3d';
 import {Platform} from 'react-native';
+import {init} from 'react-native-amap-geolocation/src';
 
 // 地图
 AMapSdk.init(
@@ -35,10 +36,10 @@ AMapSdk.init(
 );
 
 // 定位
-// init({
-//   ios: '9bd6c82e77583020a73ef1af59d0c759',
-//   android: '57b7dcf824bf28a372f2bb5031a8628b',
-// });
+init({
+  ios: '9bd6c82e77583020a73ef1af59d0c759',
+  android: '57b7dcf824bf28a372f2bb5031a8628b',
+});
 
 const Stack = createNativeStackNavigator();
 

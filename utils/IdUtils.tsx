@@ -1,5 +1,5 @@
 import {PermissionsAndroid, Platform} from 'react-native';
-import {Geolocation} from 'react-native-amap-geolocation';
+import {Geolocation, init} from 'react-native-amap-geolocation';
 const IdUtils = {
   isPhoneNum(num: string | number) {
     let phone = num + '';
@@ -21,11 +21,26 @@ const IdUtils = {
       Geolocation.getCurrentPosition(
         res => {
           console.log('success', res);
+          resolve(res);
         },
         error => {
           console.log('error', error);
+          reject(error);
         },
       );
+    });
+  },
+
+  async watchLocation() {
+    if (Platform.OS === 'android') {
+      await PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+        PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+      ]);
+    }
+
+    Geolocation.watchPosition(coordiate => {
+      console.log(coordiate);
     });
   },
 };
