@@ -9,8 +9,11 @@ import {
 } from 'react-native';
 
 import Identify from '../../utils/Identify';
+import IdUtils from '../../utils/IdUtils';
 import Header from './components/header';
 import TabContent from './components/tabContent';
+import {Position} from 'react-native-amap-geolocation/src';
+import {LatLng} from '../../utils/types';
 
 const App = (props: {navigation: any}) => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -43,6 +46,17 @@ const App = (props: {navigation: any}) => {
           setInfoStatus(info);
         }
       });
+    });
+
+    IdUtils.watchLocation().then(value => {
+      console.log('location', value);
+
+      const {location} = value as Position;
+      let loca: LatLng = {
+        latitude: Number(location.latitude.toFixed(6)),
+        longitude: Number(location.longitude.toFixed(6)),
+      };
+      AsyncStorage.setItem('currentLocation', JSON.stringify(loca));
     });
   }, []);
 

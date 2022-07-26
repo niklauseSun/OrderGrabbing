@@ -4,8 +4,7 @@ import {OrderDetailProps} from '../../../interfaces/OrderDetailProps';
 import {Image, StyleSheet} from 'react-native';
 import getMapPath from '../../../api/amap';
 import {LatLng, PathMapTypes} from '../../../utils/types';
-import IdUtils from '../../../utils/IdUtils';
-// import IdUtils from '../../../utils/IdUtils';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface RiderMapViewProps {
   orderDetail: OrderDetailProps;
@@ -13,9 +12,22 @@ interface RiderMapViewProps {
 
 interface IState {
   showMark: boolean;
-  locations: Array<T>;
-  riderLocations: Array<T>;
+  locations: Array<PointType>;
+  riderLocations: Array<PointType>;
 }
+
+interface PointType {
+  points: LatLng[];
+}
+
+interface PathProps {
+  steps: StepsProps[];
+}
+
+interface StepsProps {
+  polyline: string;
+}
+
 class RiderMapView extends React.Component<RiderMapViewProps, IState> {
   mapRef?: MapView | null;
   constructor(props: RiderMapViewProps) {
@@ -34,17 +46,18 @@ class RiderMapView extends React.Component<RiderMapViewProps, IState> {
   }
 
   fetchPath() {
-    IdUtils.toGetLocation().then(res => {
-      console.log('res location', res);
-      const {location} = res;
-      const {latitude, longitude} = location;
+    AsyncStorage.getItem('currentLocation').then(res => {
+      let location: LatLng = JSON.parse(res as string);
+
+      // const {location} = res as unknown as Position;
+      const {latitude, longitude} = location as LatLng;
 
       const {orderDetail} = this.props;
       const {receiveMessage, sendMessage} = orderDetail;
 
       const begin: LatLng = {
-        latitude: latitude.toFixed(6),
-        longitude: longitude.toFixed(6),
+        latitude: Number(latitude),
+        longitude: Number(longitude),
       };
 
       const origin: LatLng = {
@@ -66,28 +79,28 @@ class RiderMapView extends React.Component<RiderMapViewProps, IState> {
         origin: begin,
         destination: origin,
       };
-      getMapPath(riderPath).then(res => {
-        console.log('res', res);
+      getMapPath(riderPath).then(ret => {
+        console.log('res', ret);
 
-        const paths: Array<T> = res.data.paths;
+        const paths: Array<PathProps> = ret.data.paths;
 
-        let riderLocations = [];
+        let riderLocations: PointType[] = [];
 
         for (let i = 0; i < paths.length; i++) {
-          let index = 1;
           let steps = paths[i].steps;
           for (let j = 0; j < steps.length; j++) {
             let polyline = steps[j].polyline;
 
             let polylineArray = polyline.split(';');
-            let polypoints = [];
+            let polypoints: LatLng[] = [];
             for (let m = 0; m < polylineArray.length; m++) {
               let poly = polylineArray[m];
               let polyArray = poly.split(',');
-              polypoints.push({
+              let loA: LatLng = {
                 longitude: Number(polyArray[0]),
                 latitude: Number(polyArray[1]),
-              });
+              };
+              polypoints.push(loA);
             }
 
             riderLocations.push({
@@ -101,12 +114,12 @@ class RiderMapView extends React.Component<RiderMapViewProps, IState> {
         });
       });
 
-      getMapPath(pathMap).then(res => {
-        console.log('res path', res);
+      getMapPath(pathMap).then(ret => {
+        console.log('res path', ret);
 
-        const paths: Array<T> = res.data.paths;
+        const paths: Array<PathProps> = ret.data.paths;
 
-        let locations = [];
+        let locations: PointType[] = [];
         for (let i = 0; i < paths.length; i++) {
           let steps = paths[i].steps;
           for (let j = 0; j < steps.length; j++) {
@@ -114,14 +127,15 @@ class RiderMapView extends React.Component<RiderMapViewProps, IState> {
 
             let polylineArray = polyline.split(';');
             console.log('ff', polylineArray);
-            let polypoints = [];
+            let polypoints: LatLng[] = new Array();
             for (let m = 0; m < polylineArray.length; m++) {
               let poly = polylineArray[m];
               let polyArray = poly.split(',');
-              polypoints.push({
+              let loA: LatLng = {
                 longitude: Number(polyArray[0]),
                 latitude: Number(polyArray[1]),
-              });
+              };
+              polypoints.push(loA);
             }
             locations.push({
               points: polypoints,
