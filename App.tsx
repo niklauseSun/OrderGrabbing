@@ -59,6 +59,7 @@ const App = () => {
             component={LoginPage}
             options={{title: '登录', headerBackTitle: ''}}
           />
+
           <Stack.Screen
             name="Detail"
             component={Detail}

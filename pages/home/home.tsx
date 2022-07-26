@@ -6,6 +6,7 @@ import {
   useColorScheme,
   StyleSheet,
   DeviceEventEmitter,
+  View,
 } from 'react-native';
 
 import Identify from '../../utils/Identify';
@@ -21,11 +22,12 @@ const App = (props: {navigation: any}) => {
   const [isLogin, setLogStatus] = useState(false);
   const [status, setStatus] = useState('');
   const [infoStatus, setInfoStatus] = useState('');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Identify(false).then(res => {
       console.log('Identify', res);
-      if (res) {
+      if (res.isLogin) {
         // 如果成功了
         setLogStatus(true);
         const {status: stat, infoStatus: info} = res;
@@ -33,6 +35,10 @@ const App = (props: {navigation: any}) => {
         setInfoStatus(info);
         AsyncStorage.setItem('status', stat);
         AsyncStorage.setItem('infoStatus', info);
+
+        setLoading(false);
+      } else {
+        props.navigation.replace('Login');
       }
     });
     DeviceEventEmitter.addListener('refreshStatus', () => {
@@ -58,7 +64,15 @@ const App = (props: {navigation: any}) => {
       };
       AsyncStorage.setItem('currentLocation', JSON.stringify(loca));
     });
-  }, []);
+  }, [props.navigation]);
+
+  if (loading) {
+    return (
+      <SafeAreaView>
+        <View />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.homeBg}>

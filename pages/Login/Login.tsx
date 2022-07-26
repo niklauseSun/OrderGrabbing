@@ -26,7 +26,7 @@ const Login = ({navigation}) => {
   };
 
   const navigateReset = () => {
-    navigation.navigate('Home');
+    navigation.replace('Home');
 
     DeviceEventEmitter.emit('refresh');
   };

@@ -13,7 +13,7 @@ interface ConfirmProtocolProps {
   changeSelect: Function;
 }
 const ConfirmProtocol = (props: ConfirmProtocolProps) => {
-  const [modalVisible, setModelVisible] = useState(false);
+  const [modalVisible, setModelVisible] = useState(true);
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -46,7 +46,6 @@ const ConfirmProtocol = (props: ConfirmProtocolProps) => {
         <Text style={styles.pressStyle}>《隐私政策》</Text>
       </TouchableOpacity>
       <Modal
-        animationType="slide"
         presentationStyle="overFullScreen"
         statusBarTranslucent
         visible={modalVisible}

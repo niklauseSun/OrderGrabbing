@@ -16,6 +16,11 @@ export const onlineInfo = {
 const Identify = async (showModal = true) => {
   const res = await rider.getRiderInfo();
   console.log('res', res);
+  if (res.code === 100) {
+    return {
+      isLogin: false,
+    };
+  }
   const {result} = res;
   const {infoStatus, status} = result;
   // rider.getRiderInfo().then(res => {
@@ -40,6 +45,7 @@ const Identify = async (showModal = true) => {
         infoStatus,
         status,
         success: false,
+        isLogin: true,
       };
     case IdentifyStatus.unIdentify:
       showModal &&
@@ -51,6 +57,7 @@ const Identify = async (showModal = true) => {
         infoStatus,
         status,
         success: false,
+        isLogin: true,
       };
     case IdentifyStatus.identifySuccess:
       // 继续接下来的事情
@@ -80,12 +87,14 @@ const Identify = async (showModal = true) => {
           infoStatus,
           status,
           success: false,
+          isLogin: true,
         };
       }
       return {
         infoStatus,
         status,
         success: true,
+        isLogin: true,
       };
     case IdentifyStatus.identifyFail:
       showModal &&
@@ -101,12 +110,14 @@ const Identify = async (showModal = true) => {
         infoStatus,
         status,
         success: false,
+        isLogin: true,
       };
     default:
       return {
         infoStatus,
         status,
         success: false,
+        isLogin: false,
       };
   }
 };
