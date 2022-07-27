@@ -3,6 +3,7 @@ import React from 'react';
 import {
   DeviceEventEmitter,
   Image,
+  SafeAreaView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -100,7 +101,7 @@ const SwitchStatsu = props => {
   // on || off
 
   return (
-    <View style={styles.popContainer}>
+    <SafeAreaView style={styles.popContainer}>
       <Popover
         placement="bottom"
         overlay={
@@ -136,21 +137,26 @@ const SwitchStatsu = props => {
           </Popover.Item>
         }>
         <View style={styles.titleView}>
-          <Text style={styles.switchTitle}>
-            {status === '10100010' ? '休息中' : '接单中'}
-          </Text>
+          {status === '10100010' && (
+            <Text style={styles.switchTitle}>休息中</Text>
+          )}
+          {status === '10100005' && (
+            <Text style={styles.switchTitle}>接单中</Text>
+          )}
           <Image
             style={styles.iconDown}
             source={require('./assets/icon_arrow_down.png')}
           />
         </View>
       </Popover>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    backgroundColor: '#1677FE',
+  },
   headerContent: {
     height: 50,
     display: 'flex',

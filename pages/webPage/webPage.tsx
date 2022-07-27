@@ -2,7 +2,14 @@ import React, {useRef, useState} from 'react';
 import WebView, {WebViewNavigation} from 'react-native-webview';
 import {Image, StyleSheet, TouchableOpacity} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Identify from '../../utils/Identify';
+import ToDetail from '../../utils/ToDetail';
+
+const MessageType = {
+  logout: 'logout',
+  detail: 'orderDetail',
+  closeWebview: 'closeWebview',
+};
+
 const WebPage = props => {
   console.log('props', props);
   const {route, navigation} = props;
@@ -16,7 +23,14 @@ const WebPage = props => {
   ) => {
     console.log('nativeEvent', nativeNavigation);
     const {title, canGoBack: canGo} = nativeNavigation;
-    navigation.setOptions({title: title});
+    navigation.setOptions({
+      title: title,
+      headerBackTitleStyle: {
+        backgroundColor: 'red',
+        color: 'red',
+      },
+      headerBackTitle: 'fanhui',
+    });
     setCanGoBack(canGo);
   };
 
@@ -37,7 +51,7 @@ const WebPage = props => {
           }}>
           <Image
             style={styles.backIcon}
-            source={require('./assets/header_back.png')}
+            source={require('./assets/header_back_white.png')}
           />
         </TouchableOpacity>
       ),
@@ -52,20 +66,28 @@ const WebPage = props => {
 
   const onMessageHandle = (e: any) => {
     const str = e.nativeEvent.data;
-    const data = JSON.parse(str);
+    const obj = JSON.parse(str);
 
-    if (data.type === 'closeWebView') {
-      props.navigation.goBack();
-    } else if (data.type === 'logout') {
-      AsyncStorage.setItem('localToken', '').then(() => {
-        Identify(false);
-      });
+    switch (obj.type) {
+      case MessageType.closeWebview:
+        props.navigation.goBack();
+        break;
+      case MessageType.logout:
+        AsyncStorage.setItem('localToken', '').then(() => {
+          props.navigation.replace('Login');
+        });
+        break;
+      case MessageType.detail:
+        const {data} = obj;
+        ToDetail(data.id);
+        break;
     }
   };
 
   return (
     <WebView
       ref={webViewRef}
+      style={styles.bgContainer}
       source={{uri: url, headers: {'Cache-Control': 'no-cache'}}}
       onLoadEnd={res => {
         console.log('res', res.nativeEvent);
@@ -87,6 +109,9 @@ const styles = StyleSheet.create({
   backIcon: {
     width: 24,
     height: 24,
+  },
+  bgContainer: {
+    backgroundColor: '#1677FE',
   },
 });
 

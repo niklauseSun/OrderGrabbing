@@ -1,4 +1,5 @@
 import {Modal} from '@ant-design/react-native';
+import {DeviceEventEmitter} from 'react-native';
 import {rider} from '../api';
 
 export const IdentifyStatus = {
@@ -78,6 +79,8 @@ const Identify = async (showModal = true) => {
                     })
                     .then(obj => {
                       console.log('res', obj);
+
+                      DeviceEventEmitter.emit('refreshStatus');
                     });
                 },
               },

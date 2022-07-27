@@ -27,6 +27,8 @@ import {AMapSdk} from 'react-native-amap3d';
 import {Platform} from 'react-native';
 import {init} from 'react-native-amap-geolocation/src';
 
+import 'react-native-reanimated';
+
 // 地图
 AMapSdk.init(
   Platform.select({
@@ -94,7 +96,13 @@ const App = () => {
           <Stack.Screen
             name="WebPage"
             component={WebPage}
-            options={{title: '', headerBackTitle: ''}}
+            options={{
+              title: '',
+              headerStyle: {
+                backgroundColor: '#1677FE',
+              },
+              headerTintColor: '#fff',
+            }}
           />
         </Stack.Navigator>
       </NavigationContainer>

@@ -1,3 +1,5 @@
+import {useIsFocused} from '@react-navigation/core';
+
 import * as React from 'react';
 
 import {StyleSheet, Text} from 'react-native';
@@ -14,6 +16,8 @@ export default function App(props: any) {
   const [frameProcessor, barcodes] = useScanBarcodes([BarcodeFormat.QR_CODE], {
     checkInverted: true,
   });
+
+  const isFocused = useIsFocused();
 
   // Alternatively you can use the underlying function:
   //
@@ -41,15 +45,19 @@ export default function App(props: any) {
     });
     props.navigation.goBack();
   }, [barcodes, props.navigation]);
+  if (!device) {
+    return <Text>加载中</Text>;
+  }
 
   return (
     device != null &&
-    hasPermission && (
+    hasPermission &&
+    isFocused && (
       <>
         <Camera
           style={StyleSheet.absoluteFill}
           device={device}
-          isActive={true}
+          isActive={isFocused}
           frameProcessor={frameProcessor}
           frameProcessorFps={5}
         />
