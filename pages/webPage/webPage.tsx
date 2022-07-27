@@ -66,7 +66,7 @@ const WebPage = props => {
   return (
     <WebView
       ref={webViewRef}
-      source={{uri: url}}
+      source={{uri: url, headers: {'Cache-Control': 'no-cache'}}}
       onLoadEnd={res => {
         console.log('res', res.nativeEvent);
       }}
