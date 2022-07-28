@@ -76,7 +76,10 @@ const App = (props: {navigation: any}) => {
 
   return (
     <SafeAreaView style={styles.homeBg}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor="#1677FE"
+      />
       <Header
         status={status}
         navigation={props.navigation}
