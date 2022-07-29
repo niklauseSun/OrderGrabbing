@@ -1,6 +1,6 @@
 import {PermissionsAndroid, Platform} from 'react-native';
 import {Geolocation, Position} from 'react-native-amap-geolocation';
-import { WatchLocation } from './types';
+import {WatchLocation} from './types';
 const IdUtils = {
   isPhoneNum(num: string | number) {
     let phone = num + '';
@@ -44,7 +44,7 @@ const IdUtils = {
       Geolocation.watchPosition((coordiate: Position) => {
         resolve(coordiate);
       });
-    })
+    });
   },
 };
 

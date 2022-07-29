@@ -2,7 +2,8 @@ import React from 'react';
 import {TouchableOpacity, Text, View, StyleSheet, Image} from 'react-native';
 import ToTakePic from '../../../utils/ToTakePic';
 
-const TakePic = () => {
+const TakePic = props => {
+  console.log('pic', props.orderDetail);
   return (
     <View style={styles.container}>
       <View style={styles.head}>
@@ -24,7 +25,7 @@ const TakePic = () => {
             activeOpacity={0.7}
             onPress={() => {
               console.log('takePick');
-              ToTakePic();
+              // ToTakePic();
             }}>
             <Image
               style={styles.takePic}

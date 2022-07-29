@@ -7,6 +7,7 @@ import {
   StyleSheet,
   DeviceEventEmitter,
   View,
+  Platform,
 } from 'react-native';
 
 import Identify from '../../utils/Identify';
@@ -15,6 +16,7 @@ import Header from './components/header';
 import TabContent from './components/tabContent';
 import {Position} from 'react-native-amap-geolocation/src';
 import {LatLng} from '../../utils/types';
+import {rider} from '../../api';
 
 const App = (props: {navigation: any}) => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -23,6 +25,26 @@ const App = (props: {navigation: any}) => {
   const [status, setStatus] = useState('');
   const [infoStatus, setInfoStatus] = useState('');
   const [loading, setLoading] = useState(true);
+
+  const getLocation = () => {
+    IdUtils.toGetLocation().then(res => {
+      console.log('getLocation', res);
+      const {location} = res as Position;
+      let loca: LatLng = {
+        latitude: Number(location.latitude.toFixed(6)),
+        longitude: Number(location.longitude.toFixed(6)),
+      };
+      rider
+        .updateRiderLocation({
+          latitude: location.latitude + '',
+          longitude: location.longitude + '',
+        })
+        .then(ret => {
+          console.log('update location', ret);
+        });
+      AsyncStorage.setItem('currentLocation', JSON.stringify(loca));
+    });
+  };
 
   useEffect(() => {
     Identify(false).then(res => {
@@ -54,16 +76,28 @@ const App = (props: {navigation: any}) => {
       });
     });
 
-    IdUtils.watchLocation().then(value => {
-      console.log('location', value);
+    if (Platform.OS === 'android') {
+      getLocation();
+      setInterval(() => {
+        getLocation();
+      }, 30 * 1000);
+    } else {
+      IdUtils.watchLocation().then(value => {
+        console.log('location', value);
 
-      const {location} = value as Position;
-      let loca: LatLng = {
-        latitude: Number(location.latitude.toFixed(6)),
-        longitude: Number(location.longitude.toFixed(6)),
-      };
-      AsyncStorage.setItem('currentLocation', JSON.stringify(loca));
-    });
+        const {location} = value as Position;
+        let loca: LatLng = {
+          latitude: Number(location.latitude.toFixed(6)),
+          longitude: Number(location.longitude.toFixed(6)),
+        };
+
+        rider.updateRiderLocation({
+          latitude: location.latitude + '',
+          longitude: location.longitude + '',
+        });
+        AsyncStorage.setItem('currentLocation', JSON.stringify(loca));
+      });
+    }
   }, [props.navigation]);
 
   if (loading) {

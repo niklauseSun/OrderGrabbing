@@ -1,7 +1,7 @@
 import {MapView, MapType, Marker, Polyline} from 'react-native-amap3d';
 import React from 'react';
 import {OrderDetailProps} from '../../../interfaces/OrderDetailProps';
-import {Image, StyleSheet} from 'react-native';
+import {Image, Platform, StyleSheet} from 'react-native';
 import getMapPath from '../../../api/amap';
 import {LatLng, PathMapTypes} from '../../../utils/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -47,10 +47,15 @@ class RiderMapView extends React.Component<RiderMapViewProps, IState> {
 
   fetchPath() {
     AsyncStorage.getItem('currentLocation').then(res => {
+      console.log('currentLocation', res);
       let location: LatLng = JSON.parse(res as string);
 
       // const {location} = res as unknown as Position;
       const {latitude, longitude} = location as LatLng;
+
+      if (!latitude) {
+        return;
+      }
 
       const {orderDetail} = this.props;
       const {receiveMessage, sendMessage} = orderDetail;
@@ -151,11 +156,6 @@ class RiderMapView extends React.Component<RiderMapViewProps, IState> {
   }
 
   render() {
-    const line2 = [
-      {latitude: 39.906901, longitude: 116.097972},
-      {latitude: 39.906901, longitude: 116.597972},
-    ];
-    console.log('this', this.props);
     const {orderDetail} = this.props;
     const {receiveMessage, sendMessage} = orderDetail;
     return (
@@ -164,15 +164,24 @@ class RiderMapView extends React.Component<RiderMapViewProps, IState> {
         myLocationEnabled={true}
         labelsEnabled={true}
         ref={ref => (this.mapRef = ref)}
+        initialCameraPosition={{
+          target: {
+            latitude: Number(sendMessage.latitude),
+            longitude: Number(sendMessage.longitude),
+          },
+        }}
         onLoad={() => {
-          this.mapRef &&
-            this.mapRef.moveCamera({
-              target: {
-                latitude: Number(sendMessage.latitude),
-                longitude: Number(sendMessage.longitude),
-              },
-              zoom: 16,
-            });
+          if (Platform.OS !== 'android') {
+            this.mapRef &&
+              this.mapRef.moveCamera({
+                target: {
+                  latitude: Number(sendMessage.latitude),
+                  longitude: Number(sendMessage.longitude),
+                },
+                zoom: 16,
+              });
+          }
+
           this.setState({
             showMark: true,
           });
@@ -201,12 +210,11 @@ class RiderMapView extends React.Component<RiderMapViewProps, IState> {
             />
           );
         })}
-        <Polyline width={500} points={line2} dotted />
         {this.state.showMark && (
           <Marker
             position={{
-              latitude: receiveMessage.latitude,
-              longitude: receiveMessage.longitude,
+              latitude: Number(receiveMessage.latitude),
+              longitude: Number(receiveMessage.longitude),
             }}>
             <Image
               style={styles.image}
@@ -217,8 +225,8 @@ class RiderMapView extends React.Component<RiderMapViewProps, IState> {
         {this.state.showMark && (
           <Marker
             position={{
-              latitude: sendMessage.latitude,
-              longitude: sendMessage.longitude,
+              latitude: Number(sendMessage.latitude),
+              longitude: Number(sendMessage.longitude),
             }}>
             <Image
               style={styles.image}

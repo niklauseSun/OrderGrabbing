@@ -73,7 +73,7 @@ const InnerDetail = (props: InnerDetailProps) => {
           orderTime={orderDetail.orderDate}
         />
         <OrderPay totalAmount={orderDetail.totalAmount} />
-        <TakePic />
+        <TakePic orderDetail={orderDetail} />
       </ScrollView>
     </View>
   );

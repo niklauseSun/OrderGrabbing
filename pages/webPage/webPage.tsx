@@ -65,6 +65,7 @@ const WebPage = props => {
   `;
 
   const onMessageHandle = (e: any) => {
+    console.log('onMessage', e.nativeEvent.data);
     const str = e.nativeEvent.data;
     const obj = JSON.parse(str);
 

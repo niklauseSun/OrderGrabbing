@@ -32,15 +32,15 @@ import 'react-native-reanimated';
 // 地图
 AMapSdk.init(
   Platform.select({
-    android: 'c52c7169e6df23490e3114330098aaac',
+    android: '9b19a59f94881372e6a6f57c2eba8abc',
     ios: '57b7dcf824bf28a372f2bb5031a8628b',
   }),
 );
 
 // 定位
 init({
-  ios: '9bd6c82e77583020a73ef1af59d0c759',
-  android: '57b7dcf824bf28a372f2bb5031a8628b',
+  ios: '57b7dcf824bf28a372f2bb5031a8628b',
+  android: '9b19a59f94881372e6a6f57c2eba8abc',
 });
 
 const Stack = createNativeStackNavigator();
