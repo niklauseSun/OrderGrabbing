@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     padding: 12,
     borderRadius: 7,
+    marginBottom: 10,
   },
   head: {
     borderBottomWidth: 1,

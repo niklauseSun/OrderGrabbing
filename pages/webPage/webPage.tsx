@@ -6,7 +6,7 @@ import ToDetail from '../../utils/ToDetail';
 
 const MessageType = {
   logout: 'logout',
-  detail: 'orderDetail',
+  detail: 'detail',
   closeWebview: 'closeWebview',
 };
 

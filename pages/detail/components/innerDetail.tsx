@@ -73,7 +73,11 @@ const InnerDetail = (props: InnerDetailProps) => {
           orderTime={orderDetail.orderDate}
         />
         <OrderPay totalAmount={orderDetail.totalAmount} />
-        <TakePic orderDetail={orderDetail} />
+
+        {(orderDetail.collectOrderPicture ||
+          orderDetail.receiveOrderPicture) && (
+          <TakePic orderDetail={orderDetail} />
+        )}
       </ScrollView>
     </View>
   );
