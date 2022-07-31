@@ -33,13 +33,13 @@ import 'react-native-reanimated';
 AMapSdk.init(
   Platform.select({
     android: '9b19a59f94881372e6a6f57c2eba8abc',
-    ios: '57b7dcf824bf28a372f2bb5031a8628b',
+    ios: '486dc6cedc8fd2c6fda9b8f6ca84e117',
   }),
 );
 
 // 定位
 init({
-  ios: '57b7dcf824bf28a372f2bb5031a8628b',
+  ios: '486dc6cedc8fd2c6fda9b8f6ca84e117',
   android: '9b19a59f94881372e6a6f57c2eba8abc',
 });
 

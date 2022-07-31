@@ -76,27 +76,19 @@ const App = (props: {navigation: any}) => {
       });
     });
 
-    if (Platform.OS === 'android') {
-      getLocation();
-      setInterval(() => {
-        getLocation();
-      }, 30 * 1000);
-    } else {
-      IdUtils.watchLocation().then(value => {
-        console.log('location', value);
+    // if (Platform.OS === 'android') {
+    //   console.log('bbb');
+    //   getLocation();
+    //   setInterval(() => {
+    //     getLocation();
+    //   }, 30 * 1000);
+    // }
 
-        const {location} = value as Position;
-        let loca: LatLng = {
-          latitude: Number(location.latitude.toFixed(6)),
-          longitude: Number(location.longitude.toFixed(6)),
-        };
+    console.log('Platform', Platform.OS);
 
-        rider.updateRiderLocation({
-          latitude: location.latitude + '',
-          longitude: location.longitude + '',
-        });
-        AsyncStorage.setItem('currentLocation', JSON.stringify(loca));
-      });
+    if (Platform.OS === 'ios') {
+      console.log('fff location');
+      IdUtils.watchLocation();
     }
   }, [props.navigation]);
 

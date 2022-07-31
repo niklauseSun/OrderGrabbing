@@ -5,7 +5,7 @@ import {TouchableOpacity, Text, View, StyleSheet, Image} from 'react-native';
 import {OrderCardProps} from '../../interfaces/locationsProps';
 import CancelOrder from '../../utils/CancelOrder';
 import CancelTransferOrder from '../../utils/CancelTranferOrder';
-import ToDetail from '../../utils/ToDetail';
+import IdUtils from '../../utils/IdUtils';
 import ToTakePic from '../../utils/ToTakePic';
 import UpdateOrder from '../../utils/UpdateOrder';
 import GrabOrder from '../GrabOrder';
@@ -160,7 +160,21 @@ const CardActions = (props: CardActionsInterface) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              ToDetail(props.order.id as string);
+              if (
+                props.order.status === '10000000' ||
+                props.order.status === '10000005' ||
+                props.order.status === '10000010'
+              ) {
+                IdUtils.toAmap({
+                  latitude: props.order.sendMessage.latitude,
+                  longitude: props.order.sendMessage.longitude,
+                });
+              } else {
+                IdUtils.toAmap({
+                  latitude: props.order.receiveMessage.latitude,
+                  longitude: props.order.receiveMessage.longitude,
+                });
+              }
             }}
             activeOpacity={0.7}
             style={styles.actionButton}>
@@ -200,7 +214,25 @@ const CardActions = (props: CardActionsInterface) => {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
-              ToDetail(props.order.id as string);
+              // 待调度 10000000
+              // 待到店 10000005
+              // 待取货 10000010
+
+              if (
+                props.order.status === '10000000' ||
+                props.order.status === '10000005' ||
+                props.order.status === '10000010'
+              ) {
+                IdUtils.toAmap({
+                  latitude: props.order.sendMessage.latitude,
+                  longitude: props.order.sendMessage.longitude,
+                });
+              } else {
+                IdUtils.toAmap({
+                  latitude: props.order.receiveMessage.latitude,
+                  longitude: props.order.receiveMessage.longitude,
+                });
+              }
             }}
             activeOpacity={0.7}
             style={styles.actionButton}>
