@@ -29,7 +29,10 @@ const CameraPage = (props: any) => {
           <TouchableOpacity
             style={styles.captureButton}
             onPress={() => {
-              Toast.loading('保存中');
+              Toast.loading({
+                content: '保存中',
+                duration: 1,
+              });
               const file = {
                 uri: path,
                 type: 'application/octet-stream',
@@ -47,7 +50,10 @@ const CameraPage = (props: any) => {
                   }
                   props.navigation.goBack();
                 } else {
-                  Toast.info(ret.message);
+                  Toast.info({
+                    content: ret.message,
+                    duration: 1,
+                  });
                 }
               });
             }}>

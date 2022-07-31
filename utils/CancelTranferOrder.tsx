@@ -16,7 +16,10 @@ const CancelTransferOrder = async orderId => {
             })
             .then(res => {
               if (res.success) {
-                Toast.info('取消转单成功');
+                Toast.info({
+                  content: '取消转单成功',
+                  duration: 1,
+                });
               }
             });
         },

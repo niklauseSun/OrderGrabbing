@@ -18,7 +18,10 @@ const UpdateOrder = {
               })
               .then(res => {
                 if (res.success) {
-                  Toast.info('确认到店成功');
+                  Toast.info({
+                    content: '确认到店成功',
+                    duration: 1,
+                  });
                 }
               });
           },
@@ -41,9 +44,15 @@ const UpdateOrder = {
             })
             .then(res => {
               if (res.success) {
-                Toast.info('确认取货成功');
+                Toast.info({
+                  content: '确认取货成功',
+                  duration: 1,
+                });
               } else {
-                Toast.info(res.message);
+                Toast.info({
+                  content: res.message,
+                  duration: 1,
+                });
               }
             });
         },
@@ -66,7 +75,10 @@ const UpdateOrder = {
               })
               .then(res => {
                 if (res.success) {
-                  Toast.info('确认送达成功');
+                  Toast.info({
+                    content: '确认送达成功',
+                    duration: 1,
+                  });
                 }
               });
           },
@@ -84,7 +96,10 @@ const UpdateOrder = {
         })
         .then(res => {
           if (res.success) {
-            Toast.info('已申请转单！');
+            Toast.info({
+              content: '已申请转单！',
+              duration: 1,
+            });
           }
         });
   },

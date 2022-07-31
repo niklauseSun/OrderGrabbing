@@ -38,7 +38,10 @@ const TabContent = (props: TabContentProps) => {
         const {result} = res;
         setOrderList(result);
       } else {
-        Toast.info(res.message);
+        Toast.info({
+          content: res.message,
+          duration: 1,
+        });
       }
     }
 
@@ -53,7 +56,7 @@ const TabContent = (props: TabContentProps) => {
         const {result = []} = res;
         setOrderList(result.records);
       } else {
-        Toast.info(res.message);
+        info(res.messagToast.e);
       }
     }
     if (index === 2) {
@@ -67,13 +70,19 @@ const TabContent = (props: TabContentProps) => {
         const {result = []} = res;
         setOrderList(result.records);
       } else {
-        Toast.info(res.message);
+        Toast.info({
+          content: res.message,
+          duration: 1,
+        });
       }
     }
   };
 
   const onRefresh = () => {
-    Toast.loading('请求中');
+    Toast.loading({
+      content: '请求中',
+      duration: 1,
+    });
     setOrderList([]);
     queryList(tabIndex);
     setTimeout(() => {

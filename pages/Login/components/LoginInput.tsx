@@ -100,10 +100,16 @@ const LoginInput = (props: LoginInputProps) => {
                       console.log('res', res);
                       setDelay(60);
                       const {message} = res;
-                      Toast.info(message);
+                      Toast.info({
+                        content: message,
+                        duration: 1,
+                      });
                     });
                 } else {
-                  Toast.info('请输入正确手机号');
+                  Toast.info({
+                    content: '请输入正确手机号',
+                    duration: 1,
+                  });
                 }
               }}>
               <Text style={styles.getCodeText}>获取验证码</Text>
@@ -157,7 +163,10 @@ const LoginInput = (props: LoginInputProps) => {
             return;
           }
           if (!props.isProtocolSelect) {
-            Toast.info('您还未勾选协议，请勾选后进行下一步');
+            Toast.info({
+              content: '您还未勾选协议，请勾选后进行下一步',
+              duration: 1,
+            });
             return;
           }
 
@@ -179,7 +188,10 @@ const LoginInput = (props: LoginInputProps) => {
                     props.navigateReset();
                   });
                 } else {
-                  Toast.info(message);
+                  Toast.info({
+                    content: message,
+                    duration: 1,
+                  });
                 }
               });
           } else {

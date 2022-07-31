@@ -5,6 +5,7 @@ import {TouchableOpacity, Text, View, StyleSheet, Image} from 'react-native';
 import {OrderCardProps} from '../../interfaces/locationsProps';
 import CancelOrder from '../../utils/CancelOrder';
 import CancelTransferOrder from '../../utils/CancelTranferOrder';
+import ToDetail from '../../utils/ToDetail';
 import ToTakePic from '../../utils/ToTakePic';
 import UpdateOrder from '../../utils/UpdateOrder';
 import GrabOrder from '../GrabOrder';
@@ -77,7 +78,10 @@ const CardActions = (props: CardActionsInterface) => {
       if (res) {
         Linking.canOpenURL(tel);
       } else {
-        Toast.info('无法拨打电话！');
+        Toast.info({
+          content: '无法拨打电话！',
+          duration: 1,
+        });
       }
     });
   };
@@ -154,7 +158,12 @@ const CardActions = (props: CardActionsInterface) => {
             />
             <Text style={styles.actionTitle}>联系电话</Text>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.7} style={styles.actionButton}>
+          <TouchableOpacity
+            onPress={() => {
+              ToDetail(props.order.id as string);
+            }}
+            activeOpacity={0.7}
+            style={styles.actionButton}>
             <Image
               style={styles.actionIcon}
               source={require('../assets/icon_location.png')}
@@ -189,7 +198,12 @@ const CardActions = (props: CardActionsInterface) => {
             />
             <Text style={styles.actionTitle}>联系电话</Text>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.7} style={styles.actionButton}>
+          <TouchableOpacity
+            onPress={() => {
+              ToDetail(props.order.id as string);
+            }}
+            activeOpacity={0.7}
+            style={styles.actionButton}>
             <Image
               style={styles.actionIcon}
               source={require('../assets/icon_location.png')}

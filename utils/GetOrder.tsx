@@ -22,9 +22,15 @@ const GetOrder = async (props: riderOrderInsertReqDTO) => {
       console.log('grabOrder', res);
       const {success, message} = res;
       if (success) {
-        Toast.info('抢单成功');
+        Toast.info({
+          content: '抢单成功',
+          duration: 1,
+        });
       } else {
-        Toast.info(message);
+        Toast.info({
+          content: message,
+          duration: 1,
+        });
       }
     });
 };
