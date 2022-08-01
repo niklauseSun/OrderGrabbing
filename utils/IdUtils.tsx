@@ -3,7 +3,7 @@ import _ from 'lodash';
 import {Linking, PermissionsAndroid, Platform} from 'react-native';
 import {Geolocation, Position} from 'react-native-amap-geolocation';
 import {rider} from '../api';
-import {LatLng, WatchLocation} from './types';
+import {LatLng} from './types';
 const IdUtils = {
   isPhoneNum(num: string | number) {
     let phone = num + '';

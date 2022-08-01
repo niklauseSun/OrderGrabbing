@@ -1,6 +1,8 @@
 import {Modal} from '@ant-design/react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {DeviceEventEmitter} from 'react-native';
 import {rider} from '../api';
+import ToWebPage from './ToWebPage';
 
 export const IdentifyStatus = {
   identifing: '10150005',
@@ -23,17 +25,11 @@ const Identify = async (showModal = true) => {
     };
   }
   const {result} = res;
-  const {infoStatus, status} = result;
-  // rider.getRiderInfo().then(res => {
-  //   console.log('fff', res);
-  //   const {result} = res;
-  //   // 去认证 跳转
+  const {infoStatus, status, mobilePhone} = result;
 
-  //   if (result.infoStatus === '10150000') {
-  //     Identify(IdentifyStatus.unIdentify);
-  //   }
-  // });
-  // const identifyStatus = 'identifyFail'; // 'identifySuccess' || 'identifyFail' || identifing
+  if (mobilePhone) {
+    AsyncStorage.setItem('mobilePhone', mobilePhone);
+  }
   switch (infoStatus) {
     case IdentifyStatus.identifing:
       showModal &&
@@ -52,7 +48,14 @@ const Identify = async (showModal = true) => {
       showModal &&
         Modal.alert('未认证', '未认证，请上传信息进行认证。', [
           {text: '取消', onPress: () => console.log('cancel')},
-          {text: '确认', onPress: () => console.log('ok')},
+          {
+            text: '确认',
+            onPress: () => {
+              ToWebPage(
+                'https://rider-test-app.zhuopaikeji.com/pages/realName/index',
+              );
+            },
+          },
         ]);
       return {
         infoStatus,
@@ -106,7 +109,14 @@ const Identify = async (showModal = true) => {
           '身份证号码错误，请点击“去认证”进行重新认证',
           [
             {text: '取消', onPress: () => console.log('cancel')},
-            {text: '去认证', onPress: () => console.log('ok')},
+            {
+              text: '去认证',
+              onPress: () => {
+                ToWebPage(
+                  'https://rider-test-app.zhuopaikeji.com/pages/realName/index',
+                );
+              },
+            },
           ],
         );
       return {

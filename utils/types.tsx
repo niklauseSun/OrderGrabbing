@@ -9,5 +9,5 @@ export interface LatLng {
 }
 
 export interface WatchLocation {
-  location: LatLng
+  location: LatLng;
 }

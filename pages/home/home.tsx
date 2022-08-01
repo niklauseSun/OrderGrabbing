@@ -3,7 +3,6 @@ import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   StatusBar,
-  useColorScheme,
   StyleSheet,
   DeviceEventEmitter,
   View,
@@ -19,8 +18,6 @@ import {LatLng} from '../../utils/types';
 import {rider} from '../../api';
 
 const App = (props: {navigation: any}) => {
-  const isDarkMode = useColorScheme() === 'dark';
-
   const [isLogin, setLogStatus] = useState(false);
   const [status, setStatus] = useState('');
   const [infoStatus, setInfoStatus] = useState('');
@@ -76,18 +73,14 @@ const App = (props: {navigation: any}) => {
       });
     });
 
-    // if (Platform.OS === 'android') {
-    //   console.log('bbb');
-    //   getLocation();
-    //   setInterval(() => {
-    //     getLocation();
-    //   }, 30 * 1000);
-    // }
-
-    console.log('Platform', Platform.OS);
+    if (Platform.OS === 'android') {
+      getLocation();
+      setInterval(() => {
+        getLocation();
+      }, 30 * 1000);
+    }
 
     if (Platform.OS === 'ios') {
-      console.log('fff location');
       IdUtils.watchLocation();
     }
   }, [props.navigation]);
@@ -103,7 +96,7 @@ const App = (props: {navigation: any}) => {
   return (
     <View style={styles.homeBg}>
       <SafeAreaView style={styles.topSafeArea} />
-      <StatusBar backgroundColor="#1677FE" />
+      <StatusBar backgroundColor="#1677FE" barStyle={'light-content'} />
 
       <Header
         status={status}

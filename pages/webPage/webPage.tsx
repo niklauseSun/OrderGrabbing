@@ -1,6 +1,11 @@
 import React, {useRef, useState} from 'react';
 import WebView, {WebViewNavigation} from 'react-native-webview';
-import {Image, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  DeviceEventEmitter,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ToDetail from '../../utils/ToDetail';
 
@@ -8,13 +13,14 @@ const MessageType = {
   logout: 'logout',
   detail: 'detail',
   closeWebview: 'closeWebview',
+  refreshRiderInfo: 'refreshRiderInfo',
 };
 
 const WebPage = props => {
   console.log('props', props);
   const {route, navigation} = props;
   const {params} = route;
-  const {url, token} = params;
+  const {url, token, mobilePhone} = params;
   const webViewRef = useRef<WebView>(null);
   const [canGoBack, setCanGoBack] = useState(false);
 
@@ -61,6 +67,7 @@ const WebPage = props => {
   const injectedJS = `
     (function() {
       window.localStorage.setItem('token', '${token}');
+      window.localStorage.setItem('userPhone', '${mobilePhone || ''}')
     })();
   `;
 
@@ -81,6 +88,9 @@ const WebPage = props => {
       case MessageType.detail:
         const {data} = obj;
         ToDetail(data.id);
+        break;
+      case MessageType.refreshRiderInfo:
+        DeviceEventEmitter.emit('refreshStatus');
         break;
     }
   };

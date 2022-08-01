@@ -65,10 +65,12 @@ const IdentifyStatus = (props: any) => {
           'https://rider-test-app.zhuopaikeji.com/pages/realName/index',
         );
       }}>
-      <View style={styles.idLine} />
+      {(props.infoStatus === '10150000' ||
+        props.infoStatus === '10150005' ||
+        props.infoStatus === '10150015') && <View style={styles.idLine} />}
       {props.infoStatus === '10150000' && (
         <>
-          <Text style={styles.idTitle}>审核中</Text>
+          <Text style={styles.idTitle}>未认证</Text>
           <Image
             style={styles.idIcon}
             source={require('./assets/id_status_ing.png')}
@@ -184,7 +186,7 @@ const styles = StyleSheet.create({
   },
   idTitle: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 14,
     marginRight: 5,
   },
   idIcon: {
