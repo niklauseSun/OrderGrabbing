@@ -356,7 +356,7 @@ const ConfirmButton = (props: any) => {
         onPress={() => {
           confirmSendOrderWithPic();
         }}>
-        <Text style={styles.buttomButtonTitle}>拍照送达</Text>
+        <Text style={styles.buttomButtonTitle}>拍照完成</Text>
       </TouchableOpacity>
     );
   }
@@ -367,7 +367,7 @@ const ConfirmButton = (props: any) => {
       onPress={() => {
         confirmSendOrder();
       }}>
-      <Text style={styles.buttomButtonTitle}>确认送达</Text>
+      <Text style={styles.buttomButtonTitle}>确认完成</Text>
     </TouchableOpacity>
   );
 };

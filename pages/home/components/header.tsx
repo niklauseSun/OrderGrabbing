@@ -61,9 +61,11 @@ const IdentifyStatus = (props: any) => {
       activeOpacity={1}
       style={styles.idView}
       onPress={() => {
-        ToWebPage(
-          'https://rider-test-app.zhuopaikeji.com/pages/realName/index',
-        );
+        if (props.infoStatus === '10150000') {
+          ToWebPage(
+            'https://rider-test-app.zhuopaikeji.com/pages/realName/index',
+          );
+        }
       }}>
       {(props.infoStatus === '10150000' ||
         props.infoStatus === '10150005' ||
@@ -79,7 +81,7 @@ const IdentifyStatus = (props: any) => {
       )}
       {props.infoStatus === '10150005' && (
         <>
-          <Text style={styles.idTitle}>审核中</Text>
+          <Text style={styles.idTitle}>认证中</Text>
           <Image
             style={styles.idIcon}
             source={require('./assets/id_status_ing.png')}

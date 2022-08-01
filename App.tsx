@@ -19,7 +19,7 @@ import Detail from './pages/detail/detail';
 import CameraPage from './pages/camera/CameraPage';
 import ScanCamera from './pages/scanCamera/scanCamera';
 import WebPage from './pages/webPage/webPage';
-import {Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import Provider from '@ant-design/react-native/lib/provider';
 import {navigationRef} from './utils/RootNavigation';
 
@@ -73,13 +73,13 @@ const App = () => {
             options={{
               title: '订单详情',
               headerBackTitle: '',
-              headerRight: () => {
-                return (
-                  <TouchableOpacity activeOpacity={0.7}>
-                    <Text>客服</Text>
-                  </TouchableOpacity>
-                );
-              },
+              // headerRight: () => {
+              //   return (
+              //     <TouchableOpacity activeOpacity={0.7}>
+              //       <Text>客服</Text>
+              //     </TouchableOpacity>
+              //   );
+              // },
             }}
           />
           <Stack.Screen

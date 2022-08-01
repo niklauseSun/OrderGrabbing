@@ -276,8 +276,8 @@ const styles = StyleSheet.create({
     borderBottomColor: '#E1E2E3',
   },
   inputTitle: {
-    width: 50,
-    fontSize: 15,
+    width: 60,
+    fontSize: 14,
   },
   input: {
     display: 'flex',

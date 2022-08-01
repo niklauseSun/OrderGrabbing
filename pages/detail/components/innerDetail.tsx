@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     width: 23,
     height: 23,
     backgroundColor: '#D8D8D8',
-    borderRadius: 2,
+    borderRadius: 4,
   },
   orderNumText: {
     fontSize: 16,

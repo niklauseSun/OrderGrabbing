@@ -25,8 +25,10 @@ const LocationInfo = (props: LocationProps) => {
       <View style={styles.targetView}>
         <View style={styles.targetHead}>
           <View style={styles.targetDistanceView}>
-            <Text>{props.riderToSendAddressDistance}</Text>
-            <Text>km</Text>
+            <Text style={styles.distanceText}>
+              {props.riderToSendAddressDistance}
+            </Text>
+            <Text style={styles.distanceText}>km</Text>
           </View>
           <View style={styles.targetLine} />
         </View>
@@ -47,12 +49,14 @@ const LocationInfo = (props: LocationProps) => {
       <View style={styles.fromView}>
         <View style={styles.targetHead}>
           <View style={styles.targetDistanceView}>
-            <Text>{props.sendToReceiveAddressDistance}</Text>
-            <Text>km</Text>
+            <Text style={styles.distanceText}>
+              {props.sendToReceiveAddressDistance}
+            </Text>
+            <Text style={styles.distanceText}>km</Text>
           </View>
         </View>
         <View style={styles.targetLocation}>
-          <Text style={styles.targetLocationSubTitle}>
+          <Text style={styles.targetLocationTitle}>
             {props.receiveMessage.address}
           </Text>
           {props.status !== '10000000' && (
@@ -91,6 +95,8 @@ const styles = StyleSheet.create({
   },
   targetDistanceView: {
     paddingTop: 5,
+    display: 'flex',
+    alignItems: 'center',
   },
   targetLine: {
     width: 1,
@@ -102,23 +108,29 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flex: 1,
     paddingRight: 10,
+    marginTop: 14,
   },
   targetLocationTitle: {
-    fontSize: 18,
+    fontSize: 17,
     lineHeight: 24,
     color: '#333',
     marginBottom: 2,
   },
   targetLocationSubTitle: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#333',
     lineHeight: 19,
+    fontWeight: 'bold',
   },
   phone: {
-    fontSize: 14,
-    color: '#000',
+    fontSize: 13,
+    color: '#333',
     marginTop: 8,
     marginBottom: 5,
+    fontWeight: 'bold',
+  },
+  distanceText: {
+    fontSize: 12,
   },
 });
 

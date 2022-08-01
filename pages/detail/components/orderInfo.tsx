@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   title: {
-    fontSize: 20,
+    fontSize: 15,
   },
   subInfos: {
     display: 'flex',
@@ -80,10 +80,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   orderTitle: {
-    fontSize: 16,
+    fontSize: 13,
   },
   orderNum: {
-    fontSize: 14,
+    fontSize: 13,
   },
   copyButton: {
     paddingHorizontal: 6,
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     marginLeft: 4,
   },
   copyTitle: {
-    fontSize: 14,
+    fontSize: 13,
   },
 });
 export default OrderInfo;

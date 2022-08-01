@@ -82,6 +82,7 @@ const WebPage = props => {
         break;
       case MessageType.logout:
         AsyncStorage.setItem('localToken', '').then(() => {
+          props.navigation.popToTop();
           props.navigation.replace('Login');
         });
         break;

@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   title: {
-    fontSize: 20,
+    fontSize: 15,
   },
   goodInfos: {
     borderBottomWidth: 1,
@@ -73,30 +73,30 @@ const styles = StyleSheet.create({
   },
   goodsName: {
     width: 100,
-    fontSize: 16,
+    fontSize: 13,
   },
   goodsNum: {
     flex: 1,
-    fontSize: 16,
+    fontSize: 13,
     textAlign: 'right',
   },
   goodsPrice: {
     width: 100,
-    fontSize: 16,
+    fontSize: 13,
     textAlign: 'right',
   },
   total: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    height: 40,
+    marginTop: 10,
   },
   typeTitle: {
-    fontSize: 16,
+    fontSize: 13,
     marginRight: 100,
   },
   numTitle: {
-    fontSize: 16,
+    fontSize: 13,
   },
   tagView: {
     width: '100%',
@@ -104,9 +104,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 6,
     borderRadius: 5,
+    marginTop: 10,
   },
   tagTitle: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#333333',
   },
 });
