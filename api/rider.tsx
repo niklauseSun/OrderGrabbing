@@ -17,7 +17,7 @@ const rider = {
     return request('/api/rider/change-rider-status?status=' + params.status);
   },
   updateRiderLocation: async (params: any) => {
-    return request('/api/rider/upload-location', params);
+    return request('/api/rider/upload-location', params, true);
   },
 };
 

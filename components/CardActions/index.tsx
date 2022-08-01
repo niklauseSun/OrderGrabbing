@@ -1,5 +1,6 @@
 import {Modal, Toast} from '@ant-design/react-native';
 import React, {useState} from 'react';
+import {DeviceEventEmitter} from 'react-native';
 import {Linking} from 'react-native';
 import {TouchableOpacity, Text, View, StyleSheet, Image} from 'react-native';
 import {OrderCardProps} from '../../interfaces/locationsProps';
@@ -14,6 +15,7 @@ import TransferOrderModal from './TransferOrderModal';
 interface CardActionsInterface {
   order: OrderCardProps;
   confirmType: string;
+  pageType: string; // list || detail
 }
 
 const CardActions = (props: CardActionsInterface) => {
@@ -22,6 +24,14 @@ const CardActions = (props: CardActionsInterface) => {
   const confirmType = props.confirmType || 'photo';
   const [showPhoneView, setPhoneView] = useState(false);
   const [showTransfer, setTransfer] = useState(false);
+
+  const refreshList = () => {
+    if (props.pageType === 'detail') {
+      DeviceEventEmitter.emit('refreshDetail');
+    } else {
+      DeviceEventEmitter.emit('refresh');
+    }
+  };
   // type
   // wait: 待抢单 waitStore: 待到店
   // waitPackage 待取货
@@ -35,36 +45,50 @@ const CardActions = (props: CardActionsInterface) => {
   // 已送达 10000020
   // 已取消 10000025
   const cancelOrder = () => {
-    CancelOrder(props.order.id as string);
+    CancelOrder(props.order.id as string, () => {
+      refreshList();
+    });
   };
 
   const confirmToStore = () => {
-    UpdateOrder.GetStore(props.order.id as string);
+    UpdateOrder.GetStore(props.order.id as string, () => {
+      refreshList();
+    });
   };
 
   const confirmGetOrderFromStore = () => {
-    UpdateOrder.confirmGetFromStore(props.order.id as string);
+    UpdateOrder.confirmGetFromStore(props.order.id as string, undefined, () => {
+      refreshList();
+    });
   };
 
   const confirmGetOrderWithPic = () => {
     ToTakePic((res: string) => {
-      UpdateOrder.confirmGetFromStore(props.order.id as string, res);
+      UpdateOrder.confirmGetFromStore(props.order.id as string, res, () => {
+        refreshList();
+      });
     });
   };
 
   const confirmSendOrder = () => {
-    UpdateOrder.deliverySuccess(props.order.id as string);
+    UpdateOrder.deliverySuccess(props.order.id as string, undefined, () => {
+      refreshList();
+    });
   };
 
   const confirmSendOrderWithPic = () => {
     ToTakePic((res: string) => {
-      UpdateOrder.deliverySuccess(props.order.id as string, res);
+      UpdateOrder.deliverySuccess(props.order.id as string, res, () => {
+        refreshList();
+      });
     });
   };
 
   const confirmTransferOrder = (reason: string) => {
     console.log('transferReason', reason);
-    UpdateOrder.trasferOrder(props.order.id as string, reason);
+    UpdateOrder.trasferOrder(props.order.id as string, reason, () => {
+      refreshList();
+    });
   };
 
   const showPhoneModal = () => {
@@ -87,7 +111,9 @@ const CardActions = (props: CardActionsInterface) => {
 
   return (
     <View style={styles.bottomView}>
-      {status === '10000000' && <GrabOrder order={props.order} />}
+      {status === '10000000' && (
+        <GrabOrder pageType={props.pageType} order={props.order} />
+      )}
       {status === '10000005' && props.order.echoButton !== 3 && (
         <View style={styles.buttonViews}>
           <TouchableOpacity

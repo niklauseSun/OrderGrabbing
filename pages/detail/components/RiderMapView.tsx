@@ -39,6 +39,7 @@ class RiderMapView extends React.Component<RiderMapViewProps, IState> {
     };
   }
   componentDidMount() {
+    console.log('detail', this.props.orderDetail);
     this.fetchPath();
     // IdUtils.watchLocation(res => {
     //   console.log('res', res);
@@ -65,7 +66,7 @@ class RiderMapView extends React.Component<RiderMapViewProps, IState> {
         longitude: Number(longitude),
       };
 
-      const origin: LatLng = {
+      const wayPoints: LatLng = {
         latitude: sendMessage.latitude,
         longitude: sendMessage.longitude,
       };
@@ -76,53 +77,54 @@ class RiderMapView extends React.Component<RiderMapViewProps, IState> {
       };
 
       const pathMap: PathMapTypes = {
-        origin: origin,
+        origin: begin,
+        wayPoints: wayPoints,
         destination: destination,
       };
 
-      const riderPath: PathMapTypes = {
-        origin: begin,
-        destination: origin,
-      };
-      getMapPath(riderPath).then(ret => {
-        console.log('res', ret);
+      // const riderPath: PathMapTypes = {
+      //   origin: begin,
+      //   destination: origin,
+      // };
+      // getMapPath(riderPath).then(ret => {
+      //   console.log('res', ret);
 
-        const paths: Array<PathProps> = ret.data.paths;
+      //   const paths: Array<PathProps> = ret.data.paths;
 
-        let riderLocations: PointType[] = [];
+      //   let riderLocations: PointType[] = [];
 
-        for (let i = 0; i < paths.length; i++) {
-          let steps = paths[i].steps;
-          for (let j = 0; j < steps.length; j++) {
-            let polyline = steps[j].polyline;
+      //   for (let i = 0; i < paths.length; i++) {
+      //     let steps = paths[i].steps;
+      //     for (let j = 0; j < steps.length; j++) {
+      //       let polyline = steps[j].polyline;
 
-            let polylineArray = polyline.split(';');
-            let polypoints: LatLng[] = [];
-            for (let m = 0; m < polylineArray.length; m++) {
-              let poly = polylineArray[m];
-              let polyArray = poly.split(',');
-              let loA: LatLng = {
-                longitude: Number(polyArray[0]),
-                latitude: Number(polyArray[1]),
-              };
-              polypoints.push(loA);
-            }
+      //       let polylineArray = polyline.split(';');
+      //       let polypoints: LatLng[] = [];
+      //       for (let m = 0; m < polylineArray.length; m++) {
+      //         let poly = polylineArray[m];
+      //         let polyArray = poly.split(',');
+      //         let loA: LatLng = {
+      //           longitude: Number(polyArray[0]),
+      //           latitude: Number(polyArray[1]),
+      //         };
+      //         polypoints.push(loA);
+      //       }
 
-            riderLocations.push({
-              points: polypoints,
-            });
-          }
-        }
+      //       riderLocations.push({
+      //         points: polypoints,
+      //       });
+      //     }
+      //   }
 
-        this.setState({
-          riderLocations: riderLocations,
-        });
-      });
+      //   this.setState({
+      //     riderLocations: riderLocations,
+      //   });
+      // });
 
       getMapPath(pathMap).then(ret => {
         console.log('res path', ret);
 
-        const paths: Array<PathProps> = ret.data.paths;
+        const paths: Array<PathProps> = ret.route.paths;
 
         let locations: PointType[] = [];
         for (let i = 0; i < paths.length; i++) {
@@ -178,7 +180,7 @@ class RiderMapView extends React.Component<RiderMapViewProps, IState> {
                   latitude: Number(sendMessage.latitude),
                   longitude: Number(sendMessage.longitude),
                 },
-                zoom: 16,
+                zoom: 12,
               });
           }
 
@@ -189,6 +191,30 @@ class RiderMapView extends React.Component<RiderMapViewProps, IState> {
         trafficEnabled={true}
         zoomGesturesEnabled={true}
         scrollGesturesEnabled={true}>
+        {this.state.showMark && (
+          <Marker
+            position={{
+              latitude: Number(sendMessage.latitude),
+              longitude: Number(sendMessage.longitude),
+            }}>
+            <Image
+              style={styles.image}
+              source={require('./assets/store_icon.png')}
+            />
+          </Marker>
+        )}
+        {this.state.showMark && (
+          <Marker
+            position={{
+              latitude: Number(receiveMessage.latitude),
+              longitude: Number(receiveMessage.longitude),
+            }}>
+            <Image
+              style={styles.image}
+              source={require('./assets/delivery_icon.png')}
+            />
+          </Marker>
+        )}
         {this.state.locations.map((item, index) => {
           console.log('fff');
           return (
@@ -210,30 +236,6 @@ class RiderMapView extends React.Component<RiderMapViewProps, IState> {
             />
           );
         })}
-        {this.state.showMark && (
-          <Marker
-            position={{
-              latitude: Number(receiveMessage.latitude),
-              longitude: Number(receiveMessage.longitude),
-            }}>
-            <Image
-              style={styles.image}
-              source={require('./assets/delivery_icon.png')}
-            />
-          </Marker>
-        )}
-        {this.state.showMark && (
-          <Marker
-            position={{
-              latitude: Number(sendMessage.latitude),
-              longitude: Number(sendMessage.longitude),
-            }}>
-            <Image
-              style={styles.image}
-              source={require('./assets/store_icon.png')}
-            />
-          </Marker>
-        )}
       </MapView>
     );
   }

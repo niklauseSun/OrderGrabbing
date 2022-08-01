@@ -1,20 +1,26 @@
+import {Toast} from '@ant-design/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import ToLogin from '../utils/ToLogin';
 
-const query = async (url: string) => {
+const query = async (url: string, hideToast?: boolean) => {
   try {
     const response = await network(url, 'GET');
     const json = await response.json();
+    if (!json.success && !hideToast) {
+      Toast.info(json.message);
+    }
     return json;
   } catch (error) {
     console.log(error);
   }
 };
 
-const request = async (url: string, data: any = null) => {
+const request = async (url: string, data: any = null, hideToast?: boolean) => {
   try {
     const response = await network(url, 'POST', data);
     const json = await response.json();
+    if (!json.success && !hideToast) {
+      Toast.info(json.message);
+    }
     return json;
   } catch (error) {
     console.log(error);

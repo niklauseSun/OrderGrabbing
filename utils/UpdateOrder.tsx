@@ -3,7 +3,7 @@ import {order} from '../api';
 import Identify from './Identify';
 
 const UpdateOrder = {
-  GetStore: async (orderId: string) => {
+  GetStore: async (orderId: string, callBack?: Function) => {
     const {success} = await Identify();
     success &&
       Modal.alert('确认到店', '确定已到达取货门店', [
@@ -21,13 +21,20 @@ const UpdateOrder = {
                   Toast.info({
                     content: '确认到店成功',
                   });
+                  if (callBack) {
+                    callBack(res);
+                  }
                 }
               });
           },
         },
       ]);
   },
-  confirmGetFromStore: async (orderId: string, resultUrl?) => {
+  confirmGetFromStore: async (
+    orderId: string,
+    resultUrl?,
+    callBack?: Function,
+  ) => {
     // const {success} = await Identify();
     // success &&
     Modal.alert('确认取货', '确定已从门店取货', [
@@ -51,12 +58,19 @@ const UpdateOrder = {
                   content: res.message,
                 });
               }
+              if (callBack) {
+                callBack(res);
+              }
             });
         },
       },
     ]);
   },
-  deliverySuccess: async (orderId: string, resultUrl?: string) => {
+  deliverySuccess: async (
+    orderId: string,
+    resultUrl?: string,
+    callBack?: Function,
+  ) => {
     const {success} = await Identify();
     success &&
       Modal.alert('确认送达', '确定已经送达', [
@@ -76,12 +90,16 @@ const UpdateOrder = {
                     content: '确认送达成功',
                   });
                 }
+
+                if (callBack) {
+                  callBack(res);
+                }
               });
           },
         },
       ]);
   },
-  trasferOrder: async (orderId: string, reason: string) => {
+  trasferOrder: async (orderId: string, reason: string, callBack: Function) => {
     const {success} = await Identify();
     success &&
       order
@@ -95,6 +113,9 @@ const UpdateOrder = {
             Toast.info({
               content: '已申请转单！',
             });
+          }
+          if (callBack) {
+            callBack(res);
           }
         });
   },

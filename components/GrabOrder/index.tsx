@@ -7,6 +7,7 @@ import {
   View,
   Image,
   Pressable,
+  DeviceEventEmitter,
 } from 'react-native';
 import {OrderProps} from '../../interfaces/locationsProps';
 
@@ -91,6 +92,13 @@ const GrabOrder = (props: OrderProps) => {
                     console.log('order', order);
                     GetOrder({
                       deliveryOrderId: order.id,
+                      callBack: () => {
+                        if (props.pageType === 'detail') {
+                          DeviceEventEmitter.emit('refreshDetail');
+                        } else {
+                          DeviceEventEmitter.emit('refresh');
+                        }
+                      },
                     });
                   }}
                 />

@@ -20,7 +20,7 @@ interface InnerDetailProps {
 }
 const InnerDetail = (props: InnerDetailProps) => {
   const {orderDetail} = props;
-  const [bottom, setBottom] = useState(false);
+  const [bottom, setBottom] = useState(true);
   return (
     <View
       style={[

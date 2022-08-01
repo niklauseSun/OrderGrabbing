@@ -5,6 +5,7 @@ import Identify from './Identify';
 interface riderOrderInsertReqDTO {
   deliveryOrderId?: string;
   transferRiderOrderId?: string;
+  callBack?: Function;
 }
 
 const GetOrder = async (props: riderOrderInsertReqDTO) => {
@@ -20,6 +21,9 @@ const GetOrder = async (props: riderOrderInsertReqDTO) => {
     })
     .then(res => {
       console.log('grabOrder', res);
+      if (props.callBack) {
+        props.callBack(res);
+      }
       const {success, message} = res;
       if (success) {
         Toast.info({

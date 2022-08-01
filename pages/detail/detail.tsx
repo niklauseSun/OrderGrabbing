@@ -1,5 +1,6 @@
 import {Toast} from '@ant-design/react-native';
 import React, {useEffect, useState} from 'react';
+import {DeviceEventEmitter} from 'react-native';
 import {
   Image,
   SafeAreaView,
@@ -38,6 +39,20 @@ const Detail = ({route}) => {
         setOrderDetails(res.result);
       }
     });
+
+    DeviceEventEmitter.addListener('refreshDetail', () => {
+      Toast.loading({
+        content: '加载中...',
+        duration: 1,
+      });
+
+      order.getOrderDetail(id).then(res => {
+        console.log('orderDetail', res);
+        if (res.success) {
+          setOrderDetails(res.result);
+        }
+      });
+    });
   }, [route]);
 
   return (
@@ -62,7 +77,9 @@ const Detail = ({route}) => {
           <Text style={styles.tipTitle}>送货点</Text>
         </View>
       </View>
-      {orderDetail && <BottomAction orderDetail={orderDetail} />}
+      {orderDetail && (
+        <BottomAction orderDetail={orderDetail} pageType={'detail'} />
+      )}
     </SafeAreaView>
   );
 };

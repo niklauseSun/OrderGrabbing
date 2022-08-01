@@ -12,8 +12,8 @@ export const IdentifyStatus = {
 };
 
 export const onlineInfo = {
-  onLine: '10100005',
-  offline: '10100010',
+  onLine: '10100010',
+  offline: '10100005',
 };
 
 const Identify = async (showModal = true) => {
@@ -66,7 +66,7 @@ const Identify = async (showModal = true) => {
     case IdentifyStatus.identifySuccess:
       // 继续接下来的事情
 
-      if (status === '10100010') {
+      if (status === '10100005') {
         showModal &&
           Modal.alert(
             '休息中',
@@ -78,7 +78,7 @@ const Identify = async (showModal = true) => {
                 onPress: () => {
                   rider
                     .switchUserStatus({
-                      status: '10100005',
+                      status: '10100010',
                     })
                     .then(obj => {
                       console.log('res', obj);

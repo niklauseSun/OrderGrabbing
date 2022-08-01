@@ -102,9 +102,9 @@ const TabContent = (props: TabContentProps) => {
     queryList(0);
     DeviceEventEmitter.addListener('refresh', message => {
       console.log('refresh', message);
-      queryList(0);
+      queryList(tabIndex);
     });
-  }, []);
+  }, [tabIndex]);
 
   return (
     // <View style={styles.content}>

@@ -29,4 +29,5 @@ export interface OrderCardProps {
 
 export interface OrderProps {
   order: OrderCardProps;
+  pageType: string;
 }

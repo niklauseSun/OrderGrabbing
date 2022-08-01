@@ -136,16 +136,16 @@ const SwitchStatsu = props => {
                 }
               }}>
               <Text style={styles.popButtonTitle}>
-                {status === '10100010' ? '接单中' : '休息中'}
+                {status === '10100005' ? '接单中' : '休息中'}
               </Text>
             </TouchableOpacity>
           </Popover.Item>
         }>
         <View style={styles.titleView}>
-          {status === '10100010' && (
+          {status === '10100005' && (
             <Text style={styles.switchTitle}>休息中</Text>
           )}
-          {status === '10100005' && (
+          {status === '10100010' && (
             <Text style={styles.switchTitle}>接单中</Text>
           )}
           <Image

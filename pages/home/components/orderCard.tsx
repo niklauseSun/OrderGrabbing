@@ -76,7 +76,11 @@ const OrderCard = (props: OrderProps) => {
             <Text style={styles.orangeTagTitle}>备注：{}</Text>
           </View>
         )}
-        <CardActions order={props.order} confirmType={'photo'} />
+        <CardActions
+          order={props.order}
+          confirmType={'photo'}
+          pageType={'list'}
+        />
       </Pressable>
     </View>
   );
