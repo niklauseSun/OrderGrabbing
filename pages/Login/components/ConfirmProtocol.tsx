@@ -7,6 +7,7 @@ import {
   Image,
   Modal,
 } from 'react-native';
+import RNExitApp from 'react-native-exit-app';
 
 interface ConfirmProtocolProps {
   isSelect?: boolean;
@@ -87,6 +88,7 @@ const ConfirmProtocol = (props: ConfirmProtocolProps) => {
                 onPress={() => {
                   setModelVisible(!modalVisible);
                   // TODO 如何关闭APP
+                  RNExitApp.exitApp();
                 }}>
                 <Text style={styles.bottomButtonTitle}>不同意并退出APP</Text>
               </TouchableOpacity>

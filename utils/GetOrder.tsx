@@ -24,12 +24,10 @@ const GetOrder = async (props: riderOrderInsertReqDTO) => {
       if (success) {
         Toast.info({
           content: '抢单成功',
-          duration: 1,
         });
       } else {
         Toast.info({
           content: message,
-          duration: 1,
         });
       }
     });

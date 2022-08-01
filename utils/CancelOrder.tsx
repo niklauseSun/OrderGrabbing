@@ -19,7 +19,6 @@ const CancelOrder = async (orderId: string) => {
               if (res.success) {
                 Toast.info({
                   content: '订单已取消',
-                  duration: 1,
                 });
               }
             });

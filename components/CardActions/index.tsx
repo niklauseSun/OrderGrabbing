@@ -80,7 +80,6 @@ const CardActions = (props: CardActionsInterface) => {
       } else {
         Toast.info({
           content: '无法拨打电话！',
-          duration: 1,
         });
       }
     });

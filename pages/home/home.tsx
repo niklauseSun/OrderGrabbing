@@ -101,54 +101,18 @@ const App = (props: {navigation: any}) => {
   }
 
   return (
-    <SafeAreaView style={styles.homeBg}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor="#1677FE"
-      />
+    <View style={styles.homeBg}>
+      <SafeAreaView style={styles.topSafeArea} />
+      <StatusBar backgroundColor="#1677FE" />
+
       <Header
         status={status}
         navigation={props.navigation}
         infoStatus={infoStatus}
       />
       <TabContent isLogin={isLogin} navigation={props.navigation} />
-      {/*
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <TouchableOpacity
-          onPress={() => {
-            console.log('去登录');
-            ToLogin({navigation: navigation});
-            // navigation.navigate('Login');
-          }}>
-          <Text>去登录</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('Detail');
-          }}>
-          <Text>去详情</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => {}}>
-          <Text>去验证</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            GetOrder({
-              visible: true,
-            });
-          }}>
-          <Text>抢单</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            CancelOrder();
-          }}>
-          <Text>去取消</Text>
-        </TouchableOpacity>
-      </ScrollView> */}
-    </SafeAreaView>
+      <SafeAreaView style={styles.bottomSafeArea} />
+    </View>
   );
 };
 
@@ -156,6 +120,14 @@ const styles = StyleSheet.create({
   homeBg: {
     backgroundColor: '#1677FE',
     flex: 1,
+  },
+  topSafeArea: {
+    backgroundColor: '#1677FE',
+    flex: 0,
+  },
+  bottomSafeArea: {
+    backgroundColor: 'white',
+    flex: 0,
   },
 });
 

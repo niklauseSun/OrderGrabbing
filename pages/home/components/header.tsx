@@ -23,7 +23,7 @@ const Header = (props: HeaderProps) => {
   const {infoStatus, status} = props;
   console.log('header props', props);
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.headerContent}>
         <TouchableOpacity
           activeOpacity={0.7}
@@ -43,13 +43,14 @@ const Header = (props: HeaderProps) => {
         )}
         {infoStatus === '10150010' && <SwitchStatsu status={status} />}
         <TouchableOpacity activeOpacity={0.7}>
-          <Image
+          {/* <Image
             style={styles.iconMessage}
             source={require('./assets/icon_message.png')}
-          />
+          /> */}
+          <View style={styles.iconMessage} />
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -31,7 +31,6 @@ const CameraPage = (props: any) => {
             onPress={() => {
               Toast.loading({
                 content: '保存中',
-                duration: 1,
               });
               const file = {
                 uri: path,
@@ -52,7 +51,6 @@ const CameraPage = (props: any) => {
                 } else {
                   Toast.info({
                     content: ret.message,
-                    duration: 1,
                   });
                 }
               });

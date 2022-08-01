@@ -28,6 +28,11 @@ import {Platform} from 'react-native';
 import {init} from 'react-native-amap-geolocation/src';
 
 import 'react-native-reanimated';
+import {Toast} from '@ant-design/react-native';
+
+Toast.config({
+  duration: 0.4,
+});
 
 // 地图
 AMapSdk.init(

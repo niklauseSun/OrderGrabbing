@@ -7,9 +7,10 @@ import {
   Text,
   DeviceEventEmitter,
   TouchableOpacity,
+  LayoutAnimation,
+  SafeAreaView,
 } from 'react-native';
 
-import Tabs from '@ant-design/react-native/lib/tabs';
 import OrderCard from './orderCard';
 import order from '../../../api/order';
 import {Toast} from '@ant-design/react-native';
@@ -31,6 +32,9 @@ const TabContent = (props: TabContentProps) => {
   const [refreshing, setRefresh] = useState(false);
 
   const queryList = async (index: number) => {
+    Toast.loading({
+      content: '请求中',
+    });
     if (index === 0) {
       const res = await order.queryWaitGrab({pageSize: 10});
       console.log(res);
@@ -40,7 +44,6 @@ const TabContent = (props: TabContentProps) => {
       } else {
         Toast.info({
           content: res.message,
-          duration: 1,
         });
       }
     }
@@ -56,7 +59,9 @@ const TabContent = (props: TabContentProps) => {
         const {result = []} = res;
         setOrderList(result.records);
       } else {
-        info(res.messagToast.e);
+        Toast.info({
+          content: res.message,
+        });
       }
     }
     if (index === 2) {
@@ -72,7 +77,6 @@ const TabContent = (props: TabContentProps) => {
       } else {
         Toast.info({
           content: res.message,
-          duration: 1,
         });
       }
     }
@@ -81,7 +85,6 @@ const TabContent = (props: TabContentProps) => {
   const onRefresh = () => {
     Toast.loading({
       content: '请求中',
-      duration: 1,
     });
     setOrderList([]);
     queryList(tabIndex);
@@ -105,26 +108,52 @@ const TabContent = (props: TabContentProps) => {
 
   return (
     // <View style={styles.content}>
-    <Tabs
-      tabs={tabs}
-      onTabClick={e => {
-        console.log('tabClick', e);
-        const {index} = e;
-        setOrderList([]);
-        queryList(index);
-        setIndex(index);
-      }}
-      swipeable={false}
-      tabBarPosition="top"
-      tabBarBackgroundColor="#1677FE"
-      tabBarInactiveTextColor="#fff"
-      tabBarUnderlineStyle={styles.underLineStyle}
-      tabBarActiveTextColor="#fff">
+    // <Tabs
+    //   tabs={tabs}
+    //   onTabClick={e => {
+    //     console.log('tabClick', e);
+    //     const {index} = e;
+    //     setOrderList([]);
+    //     queryList(index);
+    //     setIndex(index);
+    //   }}
+    //   swipeable={false}
+    //   tabBarPosition="top"
+    //   tabBarBackgroundColor="#1677FE"
+    //   tabBarInactiveTextColor="#fff"
+    //   tabBarUnderlineStyle={styles.underLineStyle}
+    //   tabBarActiveTextColor="#fff">
+    <SafeAreaView style={styles.safeContent}>
+      <View style={styles.tabContainer}>
+        {tabs.map(({title, index}) => {
+          return (
+            <TouchableOpacity
+              activeOpacity={0.7}
+              key={index}
+              style={styles.tabButton}
+              onPress={() => {
+                setIndex(index);
+                LayoutAnimation.easeInEaseOut();
+                queryList(index);
+              }}>
+              <Text style={styles.tabButtonText}>{title}</Text>
+              <View
+                style={[
+                  index === tabIndex
+                    ? styles.bottomLine
+                    : styles.bottomLineUnActive,
+                ]}
+              />
+            </TouchableOpacity>
+          );
+        })}
+      </View>
       <View style={styles.container}>
         {/* {!props.isLogin && <GoToLogin />} */}
         <FlatList
           onRefresh={onRefresh}
           refreshing={refreshing}
+          style={styles.listStyle}
           data={orderList}
           ListEmptyComponent={<EmptyOrder />}
           renderItem={({item}) => {
@@ -133,9 +162,7 @@ const TabContent = (props: TabContentProps) => {
         />
         <RefershBottom onRefresh={onRefresh} goToScan={goToScan} />
       </View>
-      <View style={styles.container}>
-        {/* {!props.isLogin && <GoToLogin />} */}
-        {/* {props.isLogin && ( */}
+      {/* <View style={styles.container}>
         <FlatList
           data={orderList}
           style={styles.listStyle}
@@ -146,12 +173,9 @@ const TabContent = (props: TabContentProps) => {
             return <OrderCard order={item} type={'waitPackage'} />;
           }}
         />
-        {/* )} */}
         <RefershBottom onRefresh={onRefresh} goToScan={goToScan} />
-      </View>
-      <View style={styles.container}>
-        {/* {!props.isLogin && <GoToLogin />}
-        {props.isLogin && ( */}
+      </View> */}
+      {/* <View style={styles.container}>
         <FlatList
           style={styles.listStyle}
           onRefresh={onRefresh}
@@ -163,10 +187,9 @@ const TabContent = (props: TabContentProps) => {
           ListEmptyComponent={<EmptyOrder />}
           ListFooterComponentStyle={styles.emptyContainer}
         />
-        {/* )} */}
         <RefershBottom onRefresh={onRefresh} goToScan={goToScan} />
-      </View>
-    </Tabs>
+      </View> */}
+    </SafeAreaView>
   );
 };
 
@@ -210,6 +233,13 @@ const RefershBottom = (props: any) => {
 };
 
 const styles = StyleSheet.create({
+  safeContent: {
+    display: 'flex',
+    flex: 1,
+    width: '100%',
+    backgroundColor: '#fff',
+    zIndex: 100,
+  },
   content: {
     display: 'flex',
     flex: 1,
@@ -256,18 +286,15 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   refreshContainer: {
-    flexDirection: 'row',
-    position: 'absolute',
-    backgroundColor: '#fff',
-    flex: 1,
     display: 'flex',
+    flexDirection: 'row',
+    backgroundColor: '#fff',
     alignItems: 'center',
     width: '100%',
-    bottom: 60,
     padding: 10,
   },
   scanButton: {
-    width: 50,
+    width: 70,
     height: 50,
     display: 'flex',
     alignItems: 'center',
@@ -291,15 +318,44 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    height: '100%',
     borderRadius: 10,
+    height: 50,
   },
   listStyle: {
-    marginBottom: 110,
+    flex: 1,
   },
   refreshButtonText: {
     color: '#fff',
     fontSize: 16,
+  },
+  tabContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    height: 48,
+    backgroundColor: '#1677FE',
+  },
+  tabButton: {
+    display: 'flex',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  bottomLine: {
+    height: 2,
+    width: 20,
+    backgroundColor: '#fff',
+    marginTop: 8,
+    borderRadius: 1,
+  },
+
+  bottomLineUnActive: {
+    height: 2,
+    width: 20,
+    marginTop: 8,
+  },
+  tabButtonText: {
+    color: '#fff',
+    fontSize: 13,
   },
 });
 

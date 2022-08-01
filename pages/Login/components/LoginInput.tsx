@@ -102,13 +102,11 @@ const LoginInput = (props: LoginInputProps) => {
                       const {message} = res;
                       Toast.info({
                         content: message,
-                        duration: 1,
                       });
                     });
                 } else {
                   Toast.info({
                     content: '请输入正确手机号',
-                    duration: 1,
                   });
                 }
               }}>
@@ -165,7 +163,6 @@ const LoginInput = (props: LoginInputProps) => {
           if (!props.isProtocolSelect) {
             Toast.info({
               content: '您还未勾选协议，请勾选后进行下一步',
-              duration: 1,
             });
             return;
           }
@@ -190,7 +187,6 @@ const LoginInput = (props: LoginInputProps) => {
                 } else {
                   Toast.info({
                     content: message,
-                    duration: 1,
                   });
                 }
               });

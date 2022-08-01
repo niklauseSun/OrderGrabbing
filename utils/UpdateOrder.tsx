@@ -20,7 +20,6 @@ const UpdateOrder = {
                 if (res.success) {
                   Toast.info({
                     content: '确认到店成功',
-                    duration: 1,
                   });
                 }
               });
@@ -46,12 +45,10 @@ const UpdateOrder = {
               if (res.success) {
                 Toast.info({
                   content: '确认取货成功',
-                  duration: 1,
                 });
               } else {
                 Toast.info({
                   content: res.message,
-                  duration: 1,
                 });
               }
             });
@@ -77,7 +74,6 @@ const UpdateOrder = {
                 if (res.success) {
                   Toast.info({
                     content: '确认送达成功',
-                    duration: 1,
                   });
                 }
               });
@@ -98,7 +94,6 @@ const UpdateOrder = {
           if (res.success) {
             Toast.info({
               content: '已申请转单！',
-              duration: 1,
             });
           }
         });
