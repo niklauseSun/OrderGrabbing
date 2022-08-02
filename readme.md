@@ -35,3 +35,11 @@ FAQ
 #### SDK "iphoneos" cannot be located
 
 https://stackoverflow.com/questions/68565356/xcrun-error-sdk-iphoneos-cannot-be-located
+
+
+#### 自动打包
+
+在ios下面
+```
+fastlane beta
+```
