@@ -48,7 +48,6 @@ class RiderMapView extends React.Component<RiderMapViewProps, IState> {
 
   fetchPath() {
     AsyncStorage.getItem('currentLocation').then(res => {
-      console.log('currentLocation', res);
       let location: LatLng = JSON.parse(res as string);
 
       // const {location} = res as unknown as Position;
@@ -122,8 +121,6 @@ class RiderMapView extends React.Component<RiderMapViewProps, IState> {
       // });
 
       getMapPath(pathMap).then(ret => {
-        console.log('res path', ret);
-
         const paths: Array<PathProps> = ret.route.paths;
 
         let locations: PointType[] = [];
@@ -133,7 +130,6 @@ class RiderMapView extends React.Component<RiderMapViewProps, IState> {
             let polyline = steps[j].polyline;
 
             let polylineArray = polyline.split(';');
-            console.log('ff', polylineArray);
             let polypoints: LatLng[] = new Array();
             for (let m = 0; m < polylineArray.length; m++) {
               let poly = polylineArray[m];
@@ -216,7 +212,6 @@ class RiderMapView extends React.Component<RiderMapViewProps, IState> {
           </Marker>
         )}
         {this.state.locations.map((item, index) => {
-          console.log('fff');
           return (
             <Polyline
               key={index + '222'}

@@ -16,6 +16,7 @@ interface CardActionsInterface {
   order: OrderCardProps;
   confirmType: string;
   pageType: string; // list || detail
+  tabIndex: number;
 }
 
 const CardActions = (props: CardActionsInterface) => {
@@ -26,10 +27,11 @@ const CardActions = (props: CardActionsInterface) => {
   const [showTransfer, setTransfer] = useState(false);
 
   const refreshList = () => {
+    console.log('refresh list');
     if (props.pageType === 'detail') {
       DeviceEventEmitter.emit('refreshDetail');
     } else {
-      DeviceEventEmitter.emit('refresh');
+      DeviceEventEmitter.emit('refresh', props.tabIndex);
     }
   };
   // type

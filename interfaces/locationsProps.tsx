@@ -20,6 +20,7 @@ export interface OrderCardProps {
   sendToReceiveAddressDistance?: string;
   echoButton?: number;
   goodsCategoryName?: string;
+  goodsCategory?: string;
   commission?: number;
   remark?: string;
   orderNo?: string;

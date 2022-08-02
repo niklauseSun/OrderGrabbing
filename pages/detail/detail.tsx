@@ -41,10 +41,10 @@ const Detail = ({route}) => {
     });
 
     DeviceEventEmitter.addListener('refreshDetail', () => {
-      Toast.loading({
-        content: '加载中...',
-        duration: 1,
-      });
+      // Toast.loading({
+      //   content: '加载中...',
+      //   duration: 1,
+      // });
 
       order.getOrderDetail(id).then(res => {
         console.log('orderDetail', res);

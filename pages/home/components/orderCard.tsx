@@ -36,6 +36,7 @@ interface OrderCardProps {
 interface OrderProps {
   order: OrderCardProps;
   type: string | 'waitGrab' | 'waitPackage' | 'delivery';
+  tabIndex: number;
 }
 
 const OrderCard = (props: OrderProps) => {
@@ -80,6 +81,7 @@ const OrderCard = (props: OrderProps) => {
           order={props.order}
           confirmType={'photo'}
           pageType={'list'}
+          tabIndex={props.tabIndex}
         />
       </Pressable>
     </View>

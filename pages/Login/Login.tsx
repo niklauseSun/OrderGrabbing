@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   DeviceEventEmitter,
   SafeAreaView,
@@ -12,14 +12,24 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 import ConfirmProtocol from './components/ConfirmProtocol';
 import LgoinInput from './components/LoginInput';
 
-const Login = ({navigation}) => {
+const Login = ({navigation, route}) => {
   const isDarkMode = useColorScheme() === 'dark';
+
+  console.log('navigation', route);
+  const [isProtocolSelect, setProtocolSelect] = useState(false);
+  const [loginType, setLoginType] = useState('start');
+
+  useEffect(() => {
+    const {source} = route.params || {};
+    if (source === 'webview') {
+      setProtocolSelect(true);
+      setLoginType(source);
+    }
+  }, [navigation, route.params]);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
-
-  const [isProtocolSelect, setProtocolSelect] = useState(false);
 
   const changeSelect = (state: boolean) => {
     setProtocolSelect(state);
@@ -39,20 +49,10 @@ const Login = ({navigation}) => {
           isProtocolSelect={isProtocolSelect}
           navigateReset={navigateReset}
         />
-
-        {/* <TouchableOpacity activeOpacity={0.7} style={styles.wxButton}>
-          <Text style={styles.buttonText}>微信用户一键登录</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          activeOpacity={0.7}
-          style={styles.phoneButton}
-          onPress={() => {}}>
-          <Text style={styles.buttonText}>手机登录</Text>
-        </TouchableOpacity> */}
-
         <ConfirmProtocol
           changeSelect={changeSelect}
           isSelect={isProtocolSelect}
+          type={loginType}
         />
       </View>
     </SafeAreaView>

@@ -3,12 +3,14 @@ import {query, request} from './ajax';
 interface GrapProps {
   pageSize?: number;
   id?: string;
+  hideToast?: boolean;
 }
 
 interface deliveryProps {
   pageSize?: number;
   pageIndex?: number;
   tab: number;
+  hideToast?: boolean;
 }
 
 const order = {

@@ -24,11 +24,18 @@ const GoodsInfo = (props: GoodsInfoProps) => {
           return (
             <View style={styles.goodsLineView} key={index + ''}>
               <Text style={styles.goodsName}>{item.goodsName}</Text>
-              <Text style={styles.goodsNum}>x{item.goodsAmount}</Text>
+              <Text style={styles.goodsNum}>x{item.goodsQty || 0}</Text>
               <Text style={styles.goodsPrice}>￥{item.goodsPrice}</Text>
             </View>
           );
         })}
+        <View style={styles.goodsLineView}>
+          <Text style={styles.goodsName}>实付</Text>
+          <Text style={styles.goodsNum} />
+          <Text style={styles.goodsPrice}>
+            ￥{orderGoodsInfos.actualPaidAmount}
+          </Text>
+        </View>
       </View>
       <View style={styles.total}>
         <Text style={styles.typeTitle}>品类：{goodsCategory}</Text>

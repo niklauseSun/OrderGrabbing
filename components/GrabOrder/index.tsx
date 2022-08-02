@@ -14,7 +14,9 @@ import {OrderProps} from '../../interfaces/locationsProps';
 import LocationInfo from '../LocationInfo';
 import Button from '../Button';
 import GetOrder from '../../utils/GetOrder';
+import _ from 'lodash';
 const GrabOrder = (props: OrderProps) => {
+  console.log('grabOrder', props.order);
   const {order} = props;
   const [visible, setVisible] = useState(false);
   return (
@@ -67,10 +69,12 @@ const GrabOrder = (props: OrderProps) => {
               />
               <View style={styles.tagView}>
                 <View style={styles.tag}>
-                  <Text style={styles.tagTitle}>{order.goodsCategoryName}</Text>
+                  <Text style={styles.tagTitle}>
+                    {order.goodsCategory || order.goodsCategoryName}
+                  </Text>
                 </View>
               </View>
-              {order.remark !== '' && (
+              {!_.isEmpty(order.remark) && (
                 <View style={styles.orangeTag}>
                   <Text style={styles.orangeTagTitle}>
                     备注：{order.remark}

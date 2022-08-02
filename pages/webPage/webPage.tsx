@@ -14,6 +14,7 @@ const MessageType = {
   detail: 'detail',
   closeWebview: 'closeWebview',
   refreshRiderInfo: 'refreshRiderInfo',
+  identify: 'identify',
 };
 
 const WebPage = props => {
@@ -83,7 +84,9 @@ const WebPage = props => {
       case MessageType.logout:
         AsyncStorage.setItem('localToken', '').then(() => {
           props.navigation.popToTop();
-          props.navigation.replace('Login');
+          props.navigation.replace('Login', {
+            source: 'webview',
+          });
         });
         break;
       case MessageType.detail:
@@ -91,6 +94,10 @@ const WebPage = props => {
         ToDetail(data.id);
         break;
       case MessageType.refreshRiderInfo:
+        DeviceEventEmitter.emit('refreshStatus');
+        break;
+      case MessageType.identify:
+        props.navigation.goBack();
         DeviceEventEmitter.emit('refreshStatus');
         break;
     }

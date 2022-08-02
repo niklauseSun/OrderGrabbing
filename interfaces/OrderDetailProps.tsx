@@ -5,6 +5,7 @@ export interface OrderGoodsDetailDto {
   goodsCode: string;
   goodsName: string;
   goodsPrice: number;
+  goodsQty: number;
 }
 
 export interface OrderPriceDetailDetDTO {

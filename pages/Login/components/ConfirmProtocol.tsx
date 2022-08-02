@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,9 +12,17 @@ import RNExitApp from 'react-native-exit-app';
 interface ConfirmProtocolProps {
   isSelect?: boolean;
   changeSelect: Function;
+  type: string;
 }
 const ConfirmProtocol = (props: ConfirmProtocolProps) => {
+  console.log('type', props.type);
   const [modalVisible, setModelVisible] = useState(true);
+
+  useEffect(() => {
+    if (props.type === 'webview') {
+      setModelVisible(false);
+    }
+  }, [props.type]);
   return (
     <View style={styles.container}>
       <TouchableOpacity

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -31,12 +32,21 @@ const TabContent = (props: TabContentProps) => {
   const [tabIndex, setIndex] = useState(0);
   const [refreshing, setRefresh] = useState(false);
 
-  const queryList = async (index: number) => {
-    Toast.loading({
-      content: '请求中',
-    });
+  const queryList = async (index: number, hideToast = false) => {
+    if (!hideToast) {
+      Toast.loading({
+        content: '请求中',
+      });
+    }
+
+    console.log('tabIndex', index);
+
+    setOrderList([]);
+
     if (index === 0) {
-      const res = await order.queryWaitGrab({pageSize: 10});
+      const res = await order.queryWaitGrab({
+        pageSize: 10,
+      });
       console.log(res);
       if (res.success) {
         const {result} = res;
@@ -56,8 +66,9 @@ const TabContent = (props: TabContentProps) => {
       });
       console.log(res);
       if (res.success) {
-        const {result = []} = res;
+        const {result} = res;
         setOrderList(result.records);
+        console.log('orderList', orderList);
       } else {
         Toast.info({
           content: res.message,
@@ -72,7 +83,7 @@ const TabContent = (props: TabContentProps) => {
       });
       console.log(res);
       if (res.success) {
-        const {result = []} = res;
+        const {result} = res;
         setOrderList(result.records);
       } else {
         Toast.info({
@@ -99,12 +110,13 @@ const TabContent = (props: TabContentProps) => {
   };
 
   useEffect(() => {
-    queryList(0);
-    DeviceEventEmitter.addListener('refresh', message => {
-      console.log('refresh', message);
-      queryList(tabIndex);
-    });
+    queryList(tabIndex, false);
   }, [tabIndex]);
+
+  DeviceEventEmitter.addListener('refresh', function (index) {
+    console.log('refresh', index);
+    queryList(index, true);
+  });
 
   return (
     // <View style={styles.content}>
@@ -134,7 +146,8 @@ const TabContent = (props: TabContentProps) => {
               onPress={() => {
                 setIndex(index);
                 LayoutAnimation.easeInEaseOut();
-                queryList(index);
+                // console.log('index', index);
+                // queryList(index);
               }}>
               <Text style={styles.tabButtonText}>{title}</Text>
               <View
@@ -156,8 +169,15 @@ const TabContent = (props: TabContentProps) => {
           style={styles.listStyle}
           data={orderList}
           ListEmptyComponent={<EmptyOrder />}
-          renderItem={({item}) => {
-            return <OrderCard order={item} type={'waitGrab'} />;
+          renderItem={({item, index}) => {
+            return (
+              <OrderCard
+                key={index}
+                tabIndex={tabIndex}
+                order={item}
+                type={'waitGrab'}
+              />
+            );
           }}
         />
         <RefershBottom onRefresh={onRefresh} goToScan={goToScan} />
