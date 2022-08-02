@@ -22,10 +22,10 @@ platform :ios do
   end
 
   lane :beta do
-    # ENV_PREFIX="adhoc_"
-    # EXPORT_METHOD = "ad-hoc"
-    # package(configuration: "Release")
-    sync_code_signing(type: "adhoc")
+    get_provisioning_profile(
+      adhoc: true,
+      filename: "myFile.mobileprovision"
+    )
     build_app(export_method: "ad-hoc", configuration: "Release")
     pgyer(api_key: "a4008aa5e8a4a0e210f2a4d749e9b789", user_key: "87bba40ee29c229b4c3bbc32d505e15a")
   end
