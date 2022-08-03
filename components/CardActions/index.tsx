@@ -6,6 +6,7 @@ import {TouchableOpacity, Text, View, StyleSheet, Image} from 'react-native';
 import {OrderCardProps} from '../../interfaces/locationsProps';
 import CancelOrder from '../../utils/CancelOrder';
 import CancelTransferOrder from '../../utils/CancelTranferOrder';
+import GetOrder from '../../utils/GetOrder';
 import IdUtils from '../../utils/IdUtils';
 import ToTakePic from '../../utils/ToTakePic';
 import UpdateOrder from '../../utils/UpdateOrder';
@@ -16,7 +17,7 @@ interface CardActionsInterface {
   order: OrderCardProps;
   confirmType: string;
   pageType: string; // list || detail
-  tabIndex: number;
+  tabIndex?: number;
 }
 
 const CardActions = (props: CardActionsInterface) => {
@@ -110,6 +111,14 @@ const CardActions = (props: CardActionsInterface) => {
       }
     });
   };
+
+  if (props.order.echoButton === 2) {
+    return (
+      <View style={styles.bottomView}>
+        <GrabOrder pageType={props.pageType} order={props.order} />
+      </View>
+    );
+  }
 
   return (
     <View style={styles.bottomView}>
@@ -406,6 +415,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     display: 'flex',
     alignItems: 'center',
+    borderRadius: 10,
   },
   buttonViews: {
     display: 'flex',

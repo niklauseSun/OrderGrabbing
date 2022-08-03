@@ -26,7 +26,9 @@ const GrabOrder = (props: OrderProps) => {
         onPress={() => {
           setVisible(true);
         }}>
-        <Text style={styles.buttomButtonTitle}>立刻抢单</Text>
+        <Text style={styles.buttomButtonTitle}>
+          {props.order.echoButton === 2 ? '接受转单' : '立刻抢单'}
+        </Text>
       </TouchableOpacity>
       <Modal
         visible={visible}
@@ -141,7 +143,7 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     width: 340,
-    height: 290,
+    height: 300,
     backgroundColor: '#fff',
     display: 'flex',
     flexDirection: 'column',

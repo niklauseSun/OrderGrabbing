@@ -38,6 +38,10 @@ const order = {
     let url = '/api/delivery-order/query-delivery-order-app-detail?id=' + id;
     return query(url);
   },
+  getTransferOrder: async (params: any) => {
+    let url = '/api/rider/order/receive-rider-order';
+    return request(url, params);
+  },
 };
 
 export default order;

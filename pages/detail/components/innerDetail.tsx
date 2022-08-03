@@ -43,13 +43,31 @@ const InnerDetail = (props: InnerDetailProps) => {
       </View>
       <ScrollView>
         <View style={styles.orderStatus}>
-          <View style={styles.orderNumView}>
+          {/* <View style={styles.orderNumView}>
             <Image
               source={{uri: orderDetail.sourceLogo}}
               style={styles.orderNumIcon}
             />
-            <Text style={styles.orderNumText}>{orderDetail.riderOrderId}</Text>
-          </View>
+            <Text style={styles.orderNumText}>{orderDetail.seq}</Text>
+          </View> */}
+          {orderDetail.status === '10000005' && orderDetail.echoButton !== 2 && (
+            <View style={styles.orderNumView}>
+              <Image
+                source={{uri: orderDetail.sourceLogo}}
+                style={styles.orderNumIcon}
+              />
+              <Text style={styles.orderNumText}>{orderDetail.seq}</Text>
+            </View>
+          )}
+
+          {orderDetail.status !== '10000005' && (
+            <View style={styles.orderNumViewWhite}>
+              <Image
+                source={{uri: orderDetail.sourceLogo}}
+                style={styles.orderNumIcon}
+              />
+            </View>
+          )}
           {getOderText(orderDetail.status as string)}
         </View>
         <LocationInfo
@@ -60,6 +78,7 @@ const InnerDetail = (props: InnerDetailProps) => {
             orderDetail.sendToReceiveAddressDistance
           }
           status={orderDetail.status}
+          echoButton={orderDetail.echoButton}
         />
 
         <GoodsInfo
@@ -150,6 +169,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     height: 38,
     backgroundColor: '#F6F6F6',
+    borderTopRightRadius: 19,
+    borderBottomRightRadius: 19,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  orderNumViewWhite: {
+    paddingHorizontal: 12,
+    height: 38,
+    backgroundColor: '#fff',
     borderTopRightRadius: 19,
     borderBottomRightRadius: 19,
     display: 'flex',

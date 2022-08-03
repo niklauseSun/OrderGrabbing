@@ -84,6 +84,12 @@ const OrderCard = (props: OrderProps) => {
           tabIndex={props.tabIndex}
         />
       </Pressable>
+      {props.order.echoButton === 2 && (
+        <Image
+          style={styles.transferIcon}
+          source={require('./assets/icon_transfer.png')}
+        />
+      )}
     </View>
   );
 };
@@ -151,6 +157,13 @@ const styles = StyleSheet.create({
   orangeTagTitle: {
     fontSize: 14,
     color: '#333333',
+  },
+  transferIcon: {
+    height: 81,
+    width: 64,
+    position: 'absolute',
+    right: 0,
+    top: 50,
   },
 });
 

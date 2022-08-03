@@ -9,8 +9,8 @@ export interface LocationInfoProps {
 }
 
 export interface OrderCardProps {
-  collectOrderPicture: boolean;
-  receiveOrderPicture: boolean;
+  collectOrderPicture?: boolean;
+  receiveOrderPicture?: boolean;
   sourceLogo?: string;
   remainArriveTime?: string | number; // 预计多少分钟
   payAmount?: number; // 价格

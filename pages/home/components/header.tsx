@@ -29,7 +29,7 @@ const Header = (props: HeaderProps) => {
           activeOpacity={0.7}
           onPress={() => {
             ToWebPage(
-              'https://rider-test-app.zhuopaikeji.com/pages/mainPage/mine/mine',
+              'https://rider-test-app.zhuopaikeji.com/pages/mainPage/mine/mine#/pages/mainPage/mine/mine',
             );
           }}>
           <Image
@@ -63,7 +63,7 @@ const IdentifyStatus = (props: any) => {
       onPress={() => {
         if (props.infoStatus === '10150000') {
           ToWebPage(
-            'https://rider-test-app.zhuopaikeji.com/pages/realName/index',
+            'https://rider-test-app.zhuopaikeji.com/pages/realName/index#/pages/realName/index',
           );
         }
       }}>

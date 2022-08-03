@@ -24,7 +24,10 @@ platform :ios do
   lane :beta do
     get_provisioning_profile(
       adhoc: true,
-      filename: "myFile.mobileprovision"
+      filename: "myFile.mobileprovision",
+      username: "lovesunyujian@126.com",
+      app_identifier: "com.rider.application",
+      team_id: "4XN6N3ZU8Q"
     )
     build_app(export_method: "ad-hoc", configuration: "Release")
     pgyer(api_key: "a4008aa5e8a4a0e210f2a4d749e9b789", user_key: "87bba40ee29c229b4c3bbc32d505e15a")

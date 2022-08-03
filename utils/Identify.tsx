@@ -52,7 +52,7 @@ const Identify = async (showModal = true) => {
             text: '确认',
             onPress: () => {
               ToWebPage(
-                'https://rider-test-app.zhuopaikeji.com/pages/realName/index',
+                'https://rider-test-app.zhuopaikeji.com/pages/realName/index#/pages/realName/index',
               );
             },
           },
@@ -113,7 +113,7 @@ const Identify = async (showModal = true) => {
               text: '去认证',
               onPress: () => {
                 ToWebPage(
-                  'https://rider-test-app.zhuopaikeji.com/pages/realName/index',
+                  'https://rider-test-app.zhuopaikeji.com/pages/realName/index#/pages/realName/index',
                 );
               },
             },

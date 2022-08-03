@@ -63,8 +63,8 @@ const App = () => {
           <Stack.Screen
             key={'Login'}
             name="Login"
+            options={{title: '登录', headerShown: false}} // 隐藏头
             component={LoginPage}
-            options={{title: '登录', headerBackTitle: ''}}
           />
 
           <Stack.Screen

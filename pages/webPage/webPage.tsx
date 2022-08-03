@@ -3,6 +3,7 @@ import WebView, {WebViewNavigation} from 'react-native-webview';
 import {
   DeviceEventEmitter,
   Image,
+  Platform,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
@@ -25,9 +26,7 @@ const WebPage = props => {
   const webViewRef = useRef<WebView>(null);
   const [canGoBack, setCanGoBack] = useState(false);
 
-  const handleWebViewNavigationStateChange = (
-    nativeNavigation: WebViewNavigation,
-  ) => {
+  const handleWebViewNavigationStateChange = nativeNavigation => {
     console.log('nativeEvent', nativeNavigation);
     const {title, canGoBack: canGo} = nativeNavigation;
     navigation.setOptions({
@@ -51,7 +50,9 @@ const WebPage = props => {
 
             if (canGoBack) {
               webViewRef.current && webViewRef.current.goBack();
-              webViewRef.current && webViewRef.current.reload();
+              if (Platform.OS === 'ios') {
+                webViewRef.current && webViewRef.current.reload();
+              }
             } else {
               navigation.goBack();
             }
@@ -114,6 +115,9 @@ const WebPage = props => {
       injectedJavaScript={injectedJS}
       onMessage={onMessageHandle}
       onNavigationStateChange={handleWebViewNavigationStateChange}
+      onLoad={e => {
+        console.log('oonLoad', e);
+      }}
     />
   );
 };
