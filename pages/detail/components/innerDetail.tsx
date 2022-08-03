@@ -42,44 +42,46 @@ const InnerDetail = (props: InnerDetailProps) => {
         </TouchableOpacity>
       </View>
       <ScrollView>
-        <View style={styles.orderStatus}>
-          {/* <View style={styles.orderNumView}>
+        <View style={styles.header}>
+          <View style={styles.orderStatus}>
+            {/* <View style={styles.orderNumView}>
             <Image
               source={{uri: orderDetail.sourceLogo}}
               style={styles.orderNumIcon}
             />
             <Text style={styles.orderNumText}>{orderDetail.seq}</Text>
           </View> */}
-          {orderDetail.status === '10000005' && orderDetail.echoButton !== 2 && (
-            <View style={styles.orderNumView}>
-              <Image
-                source={{uri: orderDetail.sourceLogo}}
-                style={styles.orderNumIcon}
-              />
-              <Text style={styles.orderNumText}>{orderDetail.seq}</Text>
-            </View>
-          )}
+            {orderDetail.status === '10000005' && orderDetail.echoButton !== 2 && (
+              <View style={styles.orderNumView}>
+                <Image
+                  source={{uri: orderDetail.sourceLogo}}
+                  style={styles.orderNumIcon}
+                />
+                <Text style={styles.orderNumText}>{orderDetail.seq}</Text>
+              </View>
+            )}
 
-          {orderDetail.status !== '10000005' && (
-            <View style={styles.orderNumViewWhite}>
-              <Image
-                source={{uri: orderDetail.sourceLogo}}
-                style={styles.orderNumIcon}
-              />
-            </View>
-          )}
-          {getOderText(orderDetail.status as string)}
+            {orderDetail.status !== '10000005' && (
+              <View style={styles.orderNumViewWhite}>
+                <Image
+                  source={{uri: orderDetail.sourceLogo}}
+                  style={styles.orderNumIcon}
+                />
+              </View>
+            )}
+            {getOderText(orderDetail.status as string)}
+          </View>
+          <LocationInfo
+            receiveMessage={orderDetail.receiveMessage}
+            sendMessage={orderDetail.sendMessage}
+            riderToSendAddressDistance={orderDetail.riderToSendAddressDistance}
+            sendToReceiveAddressDistance={
+              orderDetail.sendToReceiveAddressDistance
+            }
+            status={orderDetail.status}
+            echoButton={orderDetail.echoButton}
+          />
         </View>
-        <LocationInfo
-          receiveMessage={orderDetail.receiveMessage}
-          sendMessage={orderDetail.sendMessage}
-          riderToSendAddressDistance={orderDetail.riderToSendAddressDistance}
-          sendToReceiveAddressDistance={
-            orderDetail.sendToReceiveAddressDistance
-          }
-          status={orderDetail.status}
-          echoButton={orderDetail.echoButton}
-        />
 
         <GoodsInfo
           orderGoodsInfos={orderDetail.deliveryOrderGoodsDataDTO}
@@ -106,7 +108,7 @@ const getOderText = (status: string) => {
   return (
     <View style={styles.orderStatusTag}>
       {status === '10000000' && (
-        <Text style={styles.orderStatusTagText}>待抢单</Text>
+        <Text style={styles.orderStatusTagText}>待调度</Text>
       )}
       {status === '10000005' && (
         <Text style={styles.orderStatusTagText}>待到店</Text>
@@ -142,7 +144,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
   },
   topTapButton: {
     width: 120,
@@ -157,8 +158,12 @@ const styles = StyleSheet.create({
     borderRadius: 2.5,
     backgroundColor: '#E4E4E4',
   },
+  header: {
+    marginHorizontal: 15,
+    paddingBottom: 10,
+    backgroundColor: '#fff',
+  },
   orderStatus: {
-    width: '100%',
     height: 70,
     backgroundColor: '#fff',
     display: 'flex',

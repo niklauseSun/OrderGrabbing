@@ -26,6 +26,7 @@ export interface OrderCardProps {
   orderNo?: string;
   id?: string;
   status?: string;
+  riderOrderId?: string;
 }
 
 export interface OrderProps {

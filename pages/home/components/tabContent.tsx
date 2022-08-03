@@ -24,7 +24,7 @@ interface TabContentProps {
 const TabContent = (props: TabContentProps) => {
   const tabs = [
     {title: '待抢单', index: 0},
-    {title: '待配货', index: 1},
+    {title: '待取货', index: 1},
     {title: '配送中', index: 2},
   ];
 
@@ -113,10 +113,15 @@ const TabContent = (props: TabContentProps) => {
     queryList(tabIndex, false);
   }, [tabIndex]);
 
-  DeviceEventEmitter.addListener('refresh', function (index) {
-    console.log('refresh', index);
-    queryList(index, true);
-  });
+  useEffect(() => {
+    DeviceEventEmitter.addListener('refresh', function (index) {
+      console.log('refresh', index);
+      queryList(index, true);
+    });
+    return () => {
+      DeviceEventEmitter.removeAllListeners();
+    };
+  }, []);
 
   return (
     // <View style={styles.content}>

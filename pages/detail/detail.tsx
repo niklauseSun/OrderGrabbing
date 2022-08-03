@@ -53,6 +53,9 @@ const Detail = ({route}) => {
         }
       });
     });
+    return () => {
+      DeviceEventEmitter.removeAllListeners();
+    };
   }, [route]);
 
   return (

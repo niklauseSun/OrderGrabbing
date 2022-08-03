@@ -19,7 +19,6 @@ import Detail from './pages/detail/detail';
 import CameraPage from './pages/camera/CameraPage';
 import ScanCamera from './pages/scanCamera/scanCamera';
 import WebPage from './pages/webPage/webPage';
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import Provider from '@ant-design/react-native/lib/provider';
 import {navigationRef} from './utils/RootNavigation';
 
@@ -28,6 +27,7 @@ import {Platform} from 'react-native';
 import {init} from 'react-native-amap-geolocation/src';
 
 import 'react-native-reanimated';
+import {NativeModules} from 'react-native';
 import {Toast} from '@ant-design/react-native';
 
 Toast.config({
@@ -51,6 +51,9 @@ init({
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+  if (Platform.OS === 'ios') {
+    NativeModules.SplashScreen.hide();
+  }
   return (
     <Provider>
       <NavigationContainer ref={navigationRef}>

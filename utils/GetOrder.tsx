@@ -37,4 +37,35 @@ const GetOrder = async (props: riderOrderInsertReqDTO) => {
     });
 };
 
+const receiveTransferOrder = async (props: riderOrderInsertReqDTO) => {
+  const {success: su} = await Identify();
+  if (!su) {
+    return;
+  }
+
+  order
+    .getTransferOrder({
+      deliveryOrderId: props.deliveryOrderId,
+      transferRiderOrderId: props.transferRiderOrderId,
+    })
+    .then(res => {
+      console.log('grabOrder', res);
+      if (props.callBack) {
+        props.callBack(res);
+      }
+      const {success, message} = res;
+      if (success) {
+        Toast.info({
+          content: '抢单成功',
+        });
+      } else {
+        Toast.info({
+          content: message,
+        });
+      }
+    });
+};
+
 export default GetOrder;
+
+export {receiveTransferOrder};

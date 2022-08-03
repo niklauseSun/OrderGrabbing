@@ -83,6 +83,9 @@ const App = (props: {navigation: any}) => {
     if (Platform.OS === 'ios') {
       IdUtils.watchLocation();
     }
+    return () => {
+      DeviceEventEmitter.removeAllListeners();
+    };
   }, [props.navigation]);
 
   if (loading) {

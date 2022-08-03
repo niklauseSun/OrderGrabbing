@@ -1,9 +1,8 @@
 import React, {useRef, useState} from 'react';
-import WebView, {WebViewNavigation} from 'react-native-webview';
+import WebView from 'react-native-webview';
 import {
   DeviceEventEmitter,
   Image,
-  Platform,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
@@ -50,9 +49,9 @@ const WebPage = props => {
 
             if (canGoBack) {
               webViewRef.current && webViewRef.current.goBack();
-              if (Platform.OS === 'ios') {
+              setTimeout(() => {
                 webViewRef.current && webViewRef.current.reload();
-              }
+              });
             } else {
               navigation.goBack();
             }

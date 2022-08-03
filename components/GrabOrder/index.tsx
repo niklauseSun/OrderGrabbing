@@ -13,7 +13,7 @@ import {OrderProps} from '../../interfaces/locationsProps';
 
 import LocationInfo from '../LocationInfo';
 import Button from '../Button';
-import GetOrder from '../../utils/GetOrder';
+import GetOrder, {receiveTransferOrder} from '../../utils/GetOrder';
 import _ from 'lodash';
 const GrabOrder = (props: OrderProps) => {
   console.log('grabOrder', props.order);
@@ -96,16 +96,31 @@ const GrabOrder = (props: OrderProps) => {
                   onPress={() => {
                     setVisible(false);
                     console.log('order', order);
-                    GetOrder({
-                      deliveryOrderId: order.id,
-                      callBack: () => {
-                        if (props.pageType === 'detail') {
-                          DeviceEventEmitter.emit('refreshDetail');
-                        } else {
-                          DeviceEventEmitter.emit('refresh');
-                        }
-                      },
-                    });
+
+                    if (props.order.echoButton === 2) {
+                      receiveTransferOrder({
+                        deliveryOrderId: order.id,
+                        transferRiderOrderId: order.riderOrderId,
+                        callBack: () => {
+                          if (props.pageType === 'detail') {
+                            DeviceEventEmitter.emit('refreshDetail');
+                          } else {
+                            DeviceEventEmitter.emit('refresh');
+                          }
+                        },
+                      });
+                    } else {
+                      GetOrder({
+                        deliveryOrderId: order.id,
+                        callBack: () => {
+                          if (props.pageType === 'detail') {
+                            DeviceEventEmitter.emit('refreshDetail');
+                          } else {
+                            DeviceEventEmitter.emit('refresh');
+                          }
+                        },
+                      });
+                    }
                   }}
                 />
               </View>
