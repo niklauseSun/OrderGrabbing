@@ -66,7 +66,7 @@ const LocationInfo = (props: LocationProps) => {
           )}
         </View>
       </View>
-      {props.echoButton === 2 && (
+      {(props.echoButton === 2 || props.echoButton === 3) && (
         <Image
           style={styles.transferIcon}
           source={require('../assets/icon_transfer_tag.png')}

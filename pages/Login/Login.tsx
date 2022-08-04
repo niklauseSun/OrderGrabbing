@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {
   DeviceEventEmitter,
+  NativeModules,
+  Platform,
   SafeAreaView,
   StatusBar,
   StyleSheet,
@@ -13,6 +15,9 @@ import ConfirmProtocol from './components/ConfirmProtocol';
 import LgoinInput from './components/LoginInput';
 
 const Login = ({navigation, route}) => {
+  if (Platform.OS === 'ios') {
+    NativeModules.SplashScreen.hide();
+  }
   const isDarkMode = useColorScheme() === 'dark';
 
   console.log('navigation', route);
@@ -25,6 +30,12 @@ const Login = ({navigation, route}) => {
       setProtocolSelect(true);
       setLoginType(source);
     }
+
+    // Identify().then(res => {
+    //   if (res.isLogin) {
+    //     navigation.replace('Home');
+    //   }
+    // });
   }, [navigation, route.params]);
 
   const backgroundStyle = {

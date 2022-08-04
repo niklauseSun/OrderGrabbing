@@ -115,7 +115,7 @@ const TabContent = (props: TabContentProps) => {
 
   useEffect(() => {
     DeviceEventEmitter.addListener('refresh', function (index) {
-      console.log('refresh', index);
+      console.log('refresh 111', index);
       queryList(index, true);
     });
     return () => {
@@ -151,8 +151,6 @@ const TabContent = (props: TabContentProps) => {
               onPress={() => {
                 setIndex(index);
                 LayoutAnimation.easeInEaseOut();
-                // console.log('index', index);
-                // queryList(index);
               }}>
               <Text style={styles.tabButtonText}>{title}</Text>
               <View

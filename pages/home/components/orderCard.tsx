@@ -84,7 +84,7 @@ const OrderCard = (props: OrderProps) => {
           tabIndex={props.tabIndex}
         />
       </Pressable>
-      {props.order.echoButton === 2 && (
+      {(props.order.echoButton === 2 || props.order.echoButton === 3) && (
         <Image
           style={styles.transferIcon}
           source={require('./assets/icon_transfer.png')}

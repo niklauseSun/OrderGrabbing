@@ -21,7 +21,6 @@ const App = (props: {navigation: any}) => {
   const [isLogin, setLogStatus] = useState(false);
   const [status, setStatus] = useState('');
   const [infoStatus, setInfoStatus] = useState('');
-  const [loading, setLoading] = useState(true);
 
   const getLocation = () => {
     IdUtils.toGetLocation().then(res => {
@@ -54,10 +53,11 @@ const App = (props: {navigation: any}) => {
         setInfoStatus(info);
         AsyncStorage.setItem('status', stat);
         AsyncStorage.setItem('infoStatus', info);
-
-        setLoading(false);
       } else {
-        props.navigation.replace('Login');
+        props.navigation.reset({
+          index: 0,
+          routes: [{name: 'Login'}],
+        });
       }
     });
     DeviceEventEmitter.addListener('refreshStatus', () => {
@@ -87,14 +87,6 @@ const App = (props: {navigation: any}) => {
       DeviceEventEmitter.removeAllListeners();
     };
   }, [props.navigation]);
-
-  if (loading) {
-    return (
-      <SafeAreaView>
-        <View />
-      </SafeAreaView>
-    );
-  }
 
   return (
     <View style={styles.homeBg}>

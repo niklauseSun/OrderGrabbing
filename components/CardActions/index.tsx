@@ -115,7 +115,11 @@ const CardActions = (props: CardActionsInterface) => {
   if (props.order.echoButton === 2) {
     return (
       <View style={styles.bottomView}>
-        <GrabOrder pageType={props.pageType} order={props.order} />
+        <GrabOrder
+          pageType={props.pageType}
+          order={props.order}
+          tabIndex={props.tabIndex}
+        />
       </View>
     );
   }
@@ -123,7 +127,11 @@ const CardActions = (props: CardActionsInterface) => {
   return (
     <View style={styles.bottomView}>
       {status === '10000000' && (
-        <GrabOrder pageType={props.pageType} order={props.order} />
+        <GrabOrder
+          pageType={props.pageType}
+          order={props.order}
+          tabIndex={props.tabIndex}
+        />
       )}
       {status === '10000005' && props.order.echoButton !== 3 && (
         <View style={styles.buttonViews}>

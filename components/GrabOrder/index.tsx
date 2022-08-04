@@ -105,7 +105,7 @@ const GrabOrder = (props: OrderProps) => {
                           if (props.pageType === 'detail') {
                             DeviceEventEmitter.emit('refreshDetail');
                           } else {
-                            DeviceEventEmitter.emit('refresh');
+                            DeviceEventEmitter.emit('refresh', props.tabIndex);
                           }
                         },
                       });
@@ -116,7 +116,7 @@ const GrabOrder = (props: OrderProps) => {
                           if (props.pageType === 'detail') {
                             DeviceEventEmitter.emit('refreshDetail');
                           } else {
-                            DeviceEventEmitter.emit('refresh');
+                            DeviceEventEmitter.emit('refresh', props.tabIndex);
                           }
                         },
                       });

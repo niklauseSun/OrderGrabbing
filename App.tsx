@@ -27,7 +27,6 @@ import {Platform} from 'react-native';
 import {init} from 'react-native-amap-geolocation/src';
 
 import 'react-native-reanimated';
-import {NativeModules} from 'react-native';
 import {Toast} from '@ant-design/react-native';
 
 Toast.config({
@@ -51,38 +50,27 @@ init({
 const Stack = createNativeStackNavigator();
 
 const App = () => {
-  if (Platform.OS === 'ios') {
-    NativeModules.SplashScreen.hide();
-  }
   return (
     <Provider>
       <NavigationContainer ref={navigationRef}>
         <Stack.Navigator>
-          <Stack.Screen
-            name="Home"
-            options={{title: '首页', headerShown: false}} // 隐藏头
-            component={HomePage}
-          />
           <Stack.Screen
             key={'Login'}
             name="Login"
             options={{title: '登录', headerShown: false}} // 隐藏头
             component={LoginPage}
           />
-
+          <Stack.Screen
+            name="Home"
+            options={{title: '首页', headerShown: false}} // 隐藏头
+            component={HomePage}
+          />
           <Stack.Screen
             name="Detail"
             component={Detail}
             options={{
               title: '订单详情',
               headerBackTitle: '',
-              // headerRight: () => {
-              //   return (
-              //     <TouchableOpacity activeOpacity={0.7}>
-              //       <Text>客服</Text>
-              //     </TouchableOpacity>
-              //   );
-              // },
             }}
           />
           <Stack.Screen
