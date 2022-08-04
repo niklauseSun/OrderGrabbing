@@ -8,7 +8,7 @@ const rider = {
     return request('/api/rider/captcha-login', params);
   },
   loginWithPassword: async (params: any) => {
-    return request('/api/rider/password-login', params);
+    return request('/api/rider/password-login', params, false);
   },
   getRiderInfo: async () => {
     return query('/api/rider/query-rider-info');

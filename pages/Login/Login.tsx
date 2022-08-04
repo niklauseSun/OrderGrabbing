@@ -1,3 +1,4 @@
+import {Provider} from '@ant-design/react-native';
 import React, {useEffect, useState} from 'react';
 import {
   DeviceEventEmitter,
@@ -16,14 +17,12 @@ import ConfirmProtocol from './components/ConfirmProtocol';
 import LgoinInput from './components/LoginInput';
 
 const Login = ({navigation, route}) => {
-  if (Platform.OS === 'ios') {
-    NativeModules.SplashScreen.hide();
-  }
   const isDarkMode = useColorScheme() === 'dark';
 
   console.log('navigation', route);
   const [isProtocolSelect, setProtocolSelect] = useState(false);
   const [loginType, setLoginType] = useState('start');
+  const [loading, setLoadStatus] = useState(false);
 
   useEffect(() => {
     const {source} = route.params || {};
@@ -33,8 +32,13 @@ const Login = ({navigation, route}) => {
     }
 
     Identify().then(res => {
+      setLoadStatus(true);
       if (res.isLogin) {
-        navigation.replace('Home');
+        navigation.navigate('Home');
+      } else {
+        if (Platform.OS === 'ios') {
+          NativeModules.SplashScreen.hide();
+        }
       }
     });
   }, [navigation, route.params]);
@@ -48,26 +52,29 @@ const Login = ({navigation, route}) => {
   };
 
   const navigateReset = () => {
-    navigation.replace('Home');
+    navigation.navigate('Home');
 
     DeviceEventEmitter.emit('refresh');
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <View style={styles.innerContainer}>
-        <LgoinInput
-          isProtocolSelect={isProtocolSelect}
-          navigateReset={navigateReset}
-        />
-        <ConfirmProtocol
-          changeSelect={changeSelect}
-          isSelect={isProtocolSelect}
-          type={loginType}
-        />
-      </View>
-    </SafeAreaView>
+    <Provider>
+      <SafeAreaView style={backgroundStyle}>
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        <View style={styles.innerContainer}>
+          <LgoinInput
+            isProtocolSelect={isProtocolSelect}
+            navigateReset={navigateReset}
+          />
+          <ConfirmProtocol
+            changeSelect={changeSelect}
+            isSelect={isProtocolSelect}
+            type={loginType}
+            loading={loading}
+          />
+        </View>
+      </SafeAreaView>
+    </Provider>
   );
 };
 

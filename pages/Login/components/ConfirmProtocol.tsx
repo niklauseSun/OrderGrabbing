@@ -14,6 +14,7 @@ interface ConfirmProtocolProps {
   isSelect?: boolean;
   changeSelect: Function;
   type: string;
+  loading: boolean;
 }
 const ConfirmProtocol = (props: ConfirmProtocolProps) => {
   console.log('type', props.type);
@@ -23,14 +24,12 @@ const ConfirmProtocol = (props: ConfirmProtocolProps) => {
   const [title, setTitle] = useState('《用户协议》');
 
   useEffect(() => {
-    if (props.type === 'webview') {
+    if (props.loading && props.type !== 'webview') {
+      setModelVisible(true);
+    } else if (props.type === 'webview') {
       setModelVisible(false);
-    } else {
-      setTimeout(() => {
-        setModelVisible(true);
-      }, 500);
     }
-  }, [props.type]);
+  }, [props.loading, props.type]);
   return (
     <View style={styles.container}>
       <TouchableOpacity
