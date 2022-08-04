@@ -28,7 +28,7 @@ const ConfirmProtocol = (props: ConfirmProtocolProps) => {
     } else {
       setTimeout(() => {
         setModelVisible(true);
-      });
+      }, 500);
     }
   }, [props.type]);
   return (

@@ -10,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import Identify from '../../utils/Identify';
 
 import ConfirmProtocol from './components/ConfirmProtocol';
 import LgoinInput from './components/LoginInput';
@@ -31,11 +32,11 @@ const Login = ({navigation, route}) => {
       setLoginType(source);
     }
 
-    // Identify().then(res => {
-    //   if (res.isLogin) {
-    //     navigation.replace('Home');
-    //   }
-    // });
+    Identify().then(res => {
+      if (res.isLogin) {
+        navigation.replace('Home');
+      }
+    });
   }, [navigation, route.params]);
 
   const backgroundStyle = {

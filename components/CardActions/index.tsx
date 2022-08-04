@@ -228,18 +228,20 @@ const CardActions = (props: CardActionsInterface) => {
             />
             <Text style={styles.actionTitle}>导航</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={styles.actionButton}
-            onPress={() => {
-              setTransfer(true);
-            }}>
-            <Image
-              style={styles.actionIcon}
-              source={require('../assets/icon_transfer.png')}
-            />
-            <Text style={styles.actionTitle}>立即转单</Text>
-          </TouchableOpacity>
+          {!(props.order.echoButton === 2 || props.order.echoButton === 3) && (
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={styles.actionButton}
+              onPress={() => {
+                setTransfer(true);
+              }}>
+              <Image
+                style={styles.actionIcon}
+                source={require('../assets/icon_transfer.png')}
+              />
+              <Text style={styles.actionTitle}>立即转单</Text>
+            </TouchableOpacity>
+          )}
         </View>
       )}
       {(status === '10000010' || status === '10000015') && (
