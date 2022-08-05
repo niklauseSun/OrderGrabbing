@@ -33,12 +33,11 @@ const Login = ({navigation, route}) => {
 
     Identify().then(res => {
       setLoadStatus(true);
+      if (Platform.OS === 'ios') {
+        NativeModules.SplashScreen.hide();
+      }
       if (res.isLogin) {
-        navigation.navigate('Home');
-      } else {
-        if (Platform.OS === 'ios') {
-          NativeModules.SplashScreen.hide();
-        }
+        navigation.replace('Home');
       }
     });
   }, [navigation, route.params]);
@@ -52,9 +51,9 @@ const Login = ({navigation, route}) => {
   };
 
   const navigateReset = () => {
-    navigation.navigate('Home');
+    navigation.replace('Home');
 
-    DeviceEventEmitter.emit('refresh');
+    // DeviceEventEmitter.emit('refresh');
   };
 
   return (

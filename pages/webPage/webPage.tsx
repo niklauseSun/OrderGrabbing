@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ToDetail from '../../utils/ToDetail';
+import {Modal} from '@ant-design/react-native';
 
 const MessageType = {
   logout: 'logout',
@@ -72,7 +73,7 @@ const WebPage = props => {
     })();
   `;
 
-  const onMessageHandle = (e: any) => {
+  const onMessageHandle = async (e: any) => {
     console.log('onMessage', e.nativeEvent.data);
     const str = e.nativeEvent.data;
     const obj = JSON.parse(str);
@@ -82,12 +83,17 @@ const WebPage = props => {
         props.navigation.goBack();
         break;
       case MessageType.logout:
-        AsyncStorage.setItem('localToken', '').then(() => {
-          props.navigation.popToTop();
-          props.navigation.replace('Login', {
-            source: 'webview',
-          });
-        });
+        Modal.alert('推出登录', '确定要退出登录吗？', [
+          {text: '取消', onPress: () => console.log('cancel')},
+          {
+            text: '确认',
+            onPress: async () => {
+              await AsyncStorage.setItem('localToken', '');
+              props.navigation.replace('Login');
+            },
+          },
+        ]);
+
         break;
       case MessageType.detail:
         const {data} = obj;

@@ -11,7 +11,7 @@ const rider = {
     return request('/api/rider/password-login', params, false);
   },
   getRiderInfo: async () => {
-    return query('/api/rider/query-rider-info');
+    return query('/api/rider/query-rider-info', true);
   },
   switchUserStatus: async (params: any) => {
     return request('/api/rider/change-rider-status?status=' + params.status);
