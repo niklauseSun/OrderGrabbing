@@ -153,6 +153,13 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
   },
+  transferIcon: {
+    height: 81,
+    width: 64,
+    position: 'absolute',
+    right: 0,
+    top: 10,
+  },
 });
 
 export default LocationInfo;

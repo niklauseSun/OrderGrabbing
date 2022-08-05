@@ -30,7 +30,7 @@ import 'react-native-reanimated';
 import {Toast} from '@ant-design/react-native';
 
 Toast.config({
-  duration: 0.4,
+  duration: 0.6,
 });
 
 // 地图

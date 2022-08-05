@@ -1,7 +1,7 @@
 import {Modal, Toast} from '@ant-design/react-native';
 import {order} from '../api';
 import Identify from './Identify';
-const CancelTransferOrder = async orderId => {
+const CancelTransferOrder = async (orderId: string, callBack: Function) => {
   const {success} = await Identify();
   success &&
     Modal.alert('取消转单', '确定要取消转单操作吗？', [
@@ -15,6 +15,9 @@ const CancelTransferOrder = async orderId => {
               operateStatus: 5,
             })
             .then(res => {
+              if (callBack) {
+                callBack(res);
+              }
               if (res.success) {
                 Toast.info({
                   content: '取消转单成功',

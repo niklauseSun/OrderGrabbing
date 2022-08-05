@@ -1,4 +1,4 @@
-import {Modal} from '@ant-design/react-native';
+import {Modal, Toast} from '@ant-design/react-native';
 import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
@@ -125,7 +125,15 @@ const TransferOrderModal = (props: TransferOrderProps) => {
             } else {
               ret = selectIndex.join('，');
             }
-            props.confrimTransferOrder(ret);
+
+            if (!ret) {
+              Toast.info({
+                content: '请选择或输入转单原因',
+                duration: 1,
+              });
+            } else {
+              props.confrimTransferOrder(ret);
+            }
           }}
         />
       </View>

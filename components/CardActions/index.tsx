@@ -91,6 +91,7 @@ const CardActions = (props: CardActionsInterface) => {
     console.log('transferReason', reason);
     UpdateOrder.trasferOrder(props.order.id as string, reason, () => {
       refreshList();
+      setTransfer(false);
     });
   };
 
@@ -103,7 +104,7 @@ const CardActions = (props: CardActionsInterface) => {
     let tel = 'tel:' + phone; // 目标电话
     Linking.canOpenURL(tel).then(res => {
       if (res) {
-        Linking.canOpenURL(tel);
+        Linking.openURL(tel);
       } else {
         Toast.info({
           content: '无法拨打电话！',
@@ -159,7 +160,9 @@ const CardActions = (props: CardActionsInterface) => {
             activeOpacity={0.7}
             style={styles.bottomButton}
             onPress={() => {
-              CancelTransferOrder(props.order.id as string);
+              CancelTransferOrder(props.order.id as string, () => {
+                refreshList();
+              });
             }}>
             <Text style={styles.buttomButtonTitle}>取消转单</Text>
           </TouchableOpacity>
@@ -309,15 +312,17 @@ const CardActions = (props: CardActionsInterface) => {
               <Text style={styles.nameText}>
                 {props.order.sendMessage.name}
               </Text>
-              <Text style={styles.phoneText}>
-                {props.order.sendMessage.phone}
-              </Text>
+
               <TouchableOpacity
                 activeOpacity={0.7}
-                style={styles.actionButton}
+                style={styles.phoneButton}
                 onPress={() => {
+                  console.log('phone', props.order.sendMessage.phone);
                   call(props.order.sendMessage.phone);
                 }}>
+                <Text style={styles.phoneText}>
+                  {props.order.sendMessage.phone}
+                </Text>
                 <Image
                   style={styles.actionIcon}
                   source={require('../assets/icon_phone.png')}
@@ -331,15 +336,16 @@ const CardActions = (props: CardActionsInterface) => {
               <Text style={styles.nameText}>
                 {props.order.receiveMessage.name}
               </Text>
-              <Text style={styles.phoneText}>
-                {props.order.receiveMessage.phone}
-              </Text>
+
               <TouchableOpacity
                 activeOpacity={0.7}
-                style={styles.actionButton}
+                style={styles.phoneButton}
                 onPress={() => {
                   call(props.order.receiveMessage.phone);
                 }}>
+                <Text style={styles.phoneText}>
+                  {props.order.receiveMessage.phone}
+                </Text>
                 <Image
                   style={styles.actionIcon}
                   source={require('../assets/icon_phone.png')}
@@ -490,6 +496,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  phoneButton: {
+    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
   detailInfos: {
     height: 500,
     width: '100%',
@@ -535,9 +547,10 @@ const styles = StyleSheet.create({
   phoneText: {
     fontSize: 14,
     color: '#333333',
+    flex: 1,
   },
   nameText: {
-    width: 60,
+    width: 100,
   },
 });
 
