@@ -12,7 +12,7 @@ import {Modal} from '@ant-design/react-native';
 
 const MessageType = {
   logout: 'logout',
-  detail: 'detail',
+  detail: 'orderDetail',
   closeWebview: 'closeWebview',
   refreshRiderInfo: 'refreshRiderInfo',
   identify: 'identify',
@@ -50,9 +50,6 @@ const WebPage = props => {
 
             if (canGoBack) {
               webViewRef.current && webViewRef.current.goBack();
-              setTimeout(() => {
-                webViewRef.current && webViewRef.current.reload();
-              });
             } else {
               navigation.goBack();
             }
@@ -124,15 +121,9 @@ const WebPage = props => {
       ref={webViewRef}
       style={styles.bgContainer}
       source={{uri: url, headers: {'Cache-Control': 'no-cache'}}}
-      onLoadEnd={res => {
-        console.log('res', res.nativeEvent);
-      }}
       injectedJavaScript={injectedJS}
       onMessage={onMessageHandle}
       onNavigationStateChange={handleWebViewNavigationStateChange}
-      onLoad={e => {
-        console.log('oonLoad', e);
-      }}
     />
   );
 };

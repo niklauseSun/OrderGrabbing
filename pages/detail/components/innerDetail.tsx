@@ -51,24 +51,29 @@ const InnerDetail = (props: InnerDetailProps) => {
             />
             <Text style={styles.orderNumText}>{orderDetail.seq}</Text>
           </View> */}
-            {orderDetail.status === '10000005' && orderDetail.echoButton !== 2 && (
-              <View style={styles.orderNumView}>
-                <Image
-                  source={{uri: orderDetail.sourceLogo}}
-                  style={styles.orderNumIcon}
-                />
-                <Text style={styles.orderNumText}>{orderDetail.seq}</Text>
-              </View>
-            )}
+            {(orderDetail.status === '10000005' ||
+              orderDetail.status === '10000010' ||
+              orderDetail.status === '10000015') &&
+              orderDetail.echoButton !== 2 && (
+                <View style={styles.orderNumView}>
+                  <Image
+                    source={{uri: orderDetail.sourceLogo}}
+                    style={styles.orderNumIcon}
+                  />
+                  <Text style={styles.orderNumText}>{orderDetail.seq}</Text>
+                </View>
+              )}
 
-            {orderDetail.status !== '10000005' && (
-              <View style={styles.orderNumViewWhite}>
-                <Image
-                  source={{uri: orderDetail.sourceLogo}}
-                  style={styles.orderNumIcon}
-                />
-              </View>
-            )}
+            {orderDetail.status !== '10000005' &&
+              orderDetail.status !== '10000010' &&
+              orderDetail.status !== '10000015' && (
+                <View style={styles.orderNumViewWhite}>
+                  <Image
+                    source={{uri: orderDetail.sourceLogo}}
+                    style={styles.orderNumIcon}
+                  />
+                </View>
+              )}
             {getOderText(orderDetail.status as string)}
           </View>
           <View style={styles.topLine} />
