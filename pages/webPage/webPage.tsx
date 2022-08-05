@@ -89,7 +89,17 @@ const WebPage = props => {
             text: '确认',
             onPress: async () => {
               await AsyncStorage.setItem('localToken', '');
-              props.navigation.replace('Login');
+              props.navigation.reset({
+                index: 0,
+                routes: [
+                  {
+                    name: 'Login',
+                    params: {
+                      source: 'webview',
+                    },
+                  },
+                ],
+              });
             },
           },
         ]);
@@ -97,7 +107,7 @@ const WebPage = props => {
         break;
       case MessageType.detail:
         const {data} = obj;
-        ToDetail(data.id);
+        ToDetail({id: data.id});
         break;
       case MessageType.refreshRiderInfo:
         DeviceEventEmitter.emit('refreshStatus');

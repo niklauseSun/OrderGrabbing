@@ -1,7 +1,6 @@
 import {Provider} from '@ant-design/react-native';
 import React, {useEffect, useState} from 'react';
 import {
-  DeviceEventEmitter,
   NativeModules,
   Platform,
   SafeAreaView,
@@ -22,7 +21,6 @@ const Login = ({navigation, route}) => {
   console.log('navigation', route);
   const [isProtocolSelect, setProtocolSelect] = useState(false);
   const [loginType, setLoginType] = useState('start');
-  const [loading, setLoadStatus] = useState(false);
 
   useEffect(() => {
     const {source} = route.params || {};
@@ -31,15 +29,15 @@ const Login = ({navigation, route}) => {
       setLoginType(source);
     }
 
-    Identify().then(res => {
-      setLoadStatus(true);
-      if (Platform.OS === 'ios') {
-        NativeModules.SplashScreen.hide();
-      }
-      if (res.isLogin) {
-        navigation.replace('Home');
-      }
-    });
+    //   Identify().then(res => {
+    //     setLoadStatus(true);
+    //     if (Platform.OS === 'ios') {
+    //       NativeModules.SplashScreen.hide();
+    //     }
+    //     if (res.isLogin) {
+    //       navigation.replace('Home');
+    //     }
+    //   });
   }, [navigation, route.params]);
 
   const backgroundStyle = {
@@ -69,7 +67,6 @@ const Login = ({navigation, route}) => {
             changeSelect={changeSelect}
             isSelect={isProtocolSelect}
             type={loginType}
-            loading={loading}
           />
         </View>
       </SafeAreaView>

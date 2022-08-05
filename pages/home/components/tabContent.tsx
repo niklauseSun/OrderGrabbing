@@ -18,7 +18,7 @@ import {Toast} from '@ant-design/react-native';
 
 interface TabContentProps {
   isLogin?: boolean;
-  navigation: ReactNavigation;
+  navigation: any;
 }
 
 const TabContent = (props: TabContentProps) => {
@@ -106,7 +106,7 @@ const TabContent = (props: TabContentProps) => {
   };
 
   const goToScan = () => {
-    props.navigation.navigate('ScanCamera');
+    props.navigation.push('ScanCamera');
   };
 
   useEffect(() => {
@@ -114,12 +114,15 @@ const TabContent = (props: TabContentProps) => {
   }, [tabIndex]);
 
   useEffect(() => {
-    DeviceEventEmitter.addListener('refresh', function (index) {
-      console.log('refresh 111', index);
-      queryList(index, true);
-    });
+    const refreshList = DeviceEventEmitter.addListener(
+      'refresh',
+      function (index) {
+        console.log('refresh 111', index);
+        queryList(index, true);
+      },
+    );
     return () => {
-      DeviceEventEmitter.removeAllListeners();
+      refreshList.remove();
     };
   }, []);
 

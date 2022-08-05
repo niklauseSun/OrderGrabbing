@@ -18,6 +18,7 @@ import RiderMapView from './components/RiderMapView';
 
 const Detail = ({route}) => {
   const isDarkMode = useColorScheme() === 'dark';
+  const [tabIndex, setTabIndex] = useState(0);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -27,7 +28,8 @@ const Detail = ({route}) => {
 
   useEffect(() => {
     const {params} = route;
-    const {id} = params;
+    const {id, tabIndex: index} = params;
+    setTabIndex(index);
     Toast.loading({
       content: '加载中...',
       duration: 1,
@@ -40,21 +42,24 @@ const Detail = ({route}) => {
       }
     });
 
-    DeviceEventEmitter.addListener('refreshDetail', () => {
-      // Toast.loading({
-      //   content: '加载中...',
-      //   duration: 1,
-      // });
+    const refreshDetail = DeviceEventEmitter.addListener(
+      'refreshDetail',
+      () => {
+        // Toast.loading({
+        //   content: '加载中...',
+        //   duration: 1,
+        // });
 
-      order.getOrderDetail(id).then(res => {
-        console.log('orderDetail', res);
-        if (res.success) {
-          setOrderDetails(res.result);
-        }
-      });
-    });
+        order.getOrderDetail(id).then(res => {
+          console.log('orderDetail', res);
+          if (res.success) {
+            setOrderDetails(res.result);
+          }
+        });
+      },
+    );
     return () => {
-      DeviceEventEmitter.removeAllListeners();
+      refreshDetail.remove();
     };
   }, [route]);
 
@@ -81,7 +86,11 @@ const Detail = ({route}) => {
         </View>
       </View>
       {orderDetail && (
-        <BottomAction orderDetail={orderDetail} pageType={'detail'} />
+        <BottomAction
+          tabIndex={tabIndex}
+          orderDetail={orderDetail}
+          pageType={'detail'}
+        />
       )}
     </SafeAreaView>
   );

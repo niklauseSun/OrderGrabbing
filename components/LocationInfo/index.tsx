@@ -26,11 +26,16 @@ const LocationInfo = (props: LocationProps) => {
         <View style={styles.targetHead}>
           <View style={styles.targetDistanceView}>
             <Text style={styles.distanceText}>
-              {props.riderToSendAddressDistance}
+              {props.riderToSendAddressDistance &&
+                Number(props.riderToSendAddressDistance).toFixed(2)}
             </Text>
             <Text style={styles.distanceText}>km</Text>
           </View>
           <View style={styles.targetLine} />
+          <Image
+            style={styles.iconSize}
+            source={require('../assets/icon_arrow_down.png')}
+          />
         </View>
         <View style={styles.targetLocation}>
           <Text style={styles.targetLocationTitle} numberOfLines={1}>
@@ -50,7 +55,9 @@ const LocationInfo = (props: LocationProps) => {
         <View style={styles.targetHead}>
           <View style={styles.targetDistanceView}>
             <Text style={styles.distanceText}>
-              {props.sendToReceiveAddressDistance}
+              {props.sendToReceiveAddressDistance
+                ? Number(props.sendToReceiveAddressDistance).toFixed(2)
+                : Number(0).toFixed(2)}
             </Text>
             <Text style={styles.distanceText}>km</Text>
           </View>
@@ -142,12 +149,9 @@ const styles = StyleSheet.create({
   distanceText: {
     fontSize: 12,
   },
-  transferIcon: {
-    height: 81,
-    width: 64,
-    position: 'absolute',
-    right: 0,
-    top: 20,
+  iconSize: {
+    width: 6,
+    height: 6,
   },
 });
 

@@ -44,7 +44,10 @@ const OrderCard = (props: OrderProps) => {
     <View style={styles.card}>
       <Pressable
         onPress={() => {
-          ToDetail(props.order.id);
+          ToDetail({
+            id: props.order.id,
+            tabIndex: props.tabIndex,
+          });
         }}>
         <View style={styles.cardHead}>
           <Image
@@ -118,7 +121,8 @@ const styles = StyleSheet.create({
   cardHeadInfoText: {
     display: 'flex',
     flex: 1,
-    fontSize: 16,
+    fontSize: 14,
+    fontWeight: 'bold',
     color: '#333333',
   },
   cardHeadPriceText: {

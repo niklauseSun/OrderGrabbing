@@ -6,6 +6,7 @@ import {OrderDetailProps} from '../../../interfaces/OrderDetailProps';
 interface BottomActionProps {
   orderDetail: OrderDetailProps;
   pageType: string;
+  tabIndex?: number;
 }
 
 const BottomAction = (props: BottomActionProps) => {
@@ -22,6 +23,7 @@ const BottomAction = (props: BottomActionProps) => {
       <CardActions
         order={orderDetail}
         confirmType={''}
+        tabIndex={props.tabIndex}
         pageType={props.pageType}
       />
     </SafeAreaView>

@@ -7,6 +7,7 @@ import {
   DeviceEventEmitter,
   View,
   Platform,
+  NativeModules,
 } from 'react-native';
 
 import Identify from '../../utils/Identify';
@@ -43,6 +44,9 @@ const App = (props: {navigation: any}) => {
   };
 
   useEffect(() => {
+    if (Platform.OS === 'ios') {
+      NativeModules.SplashScreen.hide();
+    }
     Identify(false).then(res => {
       console.log('Identify', res);
       if (res.isLogin) {
@@ -60,18 +64,21 @@ const App = (props: {navigation: any}) => {
         });
       }
     });
-    DeviceEventEmitter.addListener('refreshStatus', () => {
-      console.log('refreshStatus');
-      Identify(false).then(res => {
-        console.log('Identify', res);
-        if (res) {
-          // 如果成功了
-          const {status: stat, infoStatus: info} = res;
-          setStatus(stat);
-          setInfoStatus(info);
-        }
-      });
-    });
+    const refreshStatus = DeviceEventEmitter.addListener(
+      'refreshStatus',
+      () => {
+        console.log('refreshStatus');
+        Identify(false).then(res => {
+          console.log('Identify', res);
+          if (res) {
+            // 如果成功了
+            const {status: stat, infoStatus: info} = res;
+            setStatus(stat);
+            setInfoStatus(info);
+          }
+        });
+      },
+    );
 
     if (Platform.OS === 'android') {
       getLocation();
@@ -84,7 +91,7 @@ const App = (props: {navigation: any}) => {
       IdUtils.watchLocation();
     }
     return () => {
-      DeviceEventEmitter.removeAllListeners();
+      refreshStatus.remove();
     };
   }, [props.navigation]);
 

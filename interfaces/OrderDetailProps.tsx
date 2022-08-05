@@ -38,6 +38,7 @@ export interface OrderDetailProps {
   receiveOrderPicture?: boolean;
   remark?: string;
   riderOrderId?: string;
+  remainArriveTime: number;
   riderToSendAddressDistance?: string;
   sendMessage: LocationInfoProps;
   sendToReceiveAddressDistance?: string;

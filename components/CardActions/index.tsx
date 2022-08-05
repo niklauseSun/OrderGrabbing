@@ -6,7 +6,6 @@ import {TouchableOpacity, Text, View, StyleSheet, Image} from 'react-native';
 import {OrderCardProps} from '../../interfaces/locationsProps';
 import CancelOrder from '../../utils/CancelOrder';
 import CancelTransferOrder from '../../utils/CancelTranferOrder';
-import GetOrder from '../../utils/GetOrder';
 import IdUtils from '../../utils/IdUtils';
 import ToTakePic from '../../utils/ToTakePic';
 import UpdateOrder from '../../utils/UpdateOrder';
@@ -31,6 +30,7 @@ const CardActions = (props: CardActionsInterface) => {
     console.log('refresh list');
     if (props.pageType === 'detail') {
       DeviceEventEmitter.emit('refreshDetail');
+      DeviceEventEmitter.emit('refresh', props.tabIndex);
     } else {
       DeviceEventEmitter.emit('refresh', props.tabIndex);
     }

@@ -39,7 +39,7 @@ const GoodsInfo = (props: GoodsInfoProps) => {
       </View>
       <View style={styles.total}>
         <Text style={styles.typeTitle}>品类：{goodsCategory}</Text>
-        <Text style={styles.numTitle}>重量：{totalWeight}</Text>
+        <Text style={styles.numTitle}>重量：{totalWeight}kg</Text>
       </View>
       <>
         {!_.isEmpty(remark) ? (

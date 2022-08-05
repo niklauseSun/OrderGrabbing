@@ -71,6 +71,19 @@ const InnerDetail = (props: InnerDetailProps) => {
             )}
             {getOderText(orderDetail.status as string)}
           </View>
+          <View style={styles.topLine} />
+          <View style={styles.cardHead}>
+            <Image
+              style={styles.cardHeadIcon}
+              source={require('./assets/icon_time.png')}
+            />
+            <Text style={styles.cardHeadInfoText}>
+              预计{orderDetail.remainArriveTime}分钟送到
+            </Text>
+            <Text style={styles.cardHeadPriceText}>
+              ￥{orderDetail.payAmount}
+            </Text>
+          </View>
           <LocationInfo
             receiveMessage={orderDetail.receiveMessage}
             sendMessage={orderDetail.sendMessage}
@@ -170,6 +183,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  topLine: {
+    height: 1,
+    backgroundColor: '#eee',
+    marginHorizontal: 10,
+  },
   orderNumView: {
     paddingHorizontal: 12,
     height: 38,
@@ -209,6 +227,31 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     marginRight: 15,
     fontSize: 20,
+  },
+  cardHead: {
+    height: 40,
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  cardHeadIcon: {
+    width: 21,
+    height: 21,
+    borderRadius: 5,
+    marginLeft: 15,
+    marginRight: 9,
+  },
+  cardHeadInfoText: {
+    display: 'flex',
+    flex: 1,
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#333333',
+  },
+  cardHeadPriceText: {
+    marginRight: 15,
+    fontSize: 20,
+    color: '#FC5F10',
   },
 });
 export default InnerDetail;

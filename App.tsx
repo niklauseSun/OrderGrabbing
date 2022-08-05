@@ -55,15 +55,15 @@ const App = () => {
       <NavigationContainer ref={navigationRef}>
         <Stack.Navigator>
           <Stack.Screen
+            name="Home"
+            options={{title: '首页', headerShown: false}} // 隐藏头
+            component={HomePage}
+          />
+          <Stack.Screen
             key={'Login'}
             name="Login"
             options={{title: '登录', headerShown: false}} // 隐藏头
             component={LoginPage}
-          />
-          <Stack.Screen
-            name="Home"
-            options={{title: '首页', headerShown: false}} // 隐藏头
-            component={HomePage}
           />
           <Stack.Screen
             name="Detail"

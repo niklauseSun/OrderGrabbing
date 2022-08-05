@@ -104,6 +104,7 @@ const GrabOrder = (props: OrderProps) => {
                         callBack: () => {
                           if (props.pageType === 'detail') {
                             DeviceEventEmitter.emit('refreshDetail');
+                            DeviceEventEmitter.emit('refresh', props.tabIndex);
                           } else {
                             DeviceEventEmitter.emit('refresh', props.tabIndex);
                           }
@@ -115,6 +116,7 @@ const GrabOrder = (props: OrderProps) => {
                         callBack: () => {
                           if (props.pageType === 'detail') {
                             DeviceEventEmitter.emit('refreshDetail');
+                            DeviceEventEmitter.emit('refresh', props.tabIndex);
                           } else {
                             DeviceEventEmitter.emit('refresh', props.tabIndex);
                           }
