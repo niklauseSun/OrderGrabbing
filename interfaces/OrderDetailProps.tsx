@@ -24,6 +24,9 @@ export interface DeliveryOrderPriceDataDTO {
 
 export interface OrderDetailProps {
   collectOrderPicture?: boolean;
+  futureArriveStoreTime?: any;
+  takeGoodsLastTime?: any;
+  futureArriveTime?: any;
   commission?: number;
   deliveryOrderGoodsDataDTO: DeliveryOrderDto;
   deliveryOrderPriceDataDTO?: DeliveryOrderPriceDataDTO;
