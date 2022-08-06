@@ -1,5 +1,6 @@
 import {Toast} from '@ant-design/react-native';
 import React, {useEffect, useState} from 'react';
+import {DeviceEventEmitter} from 'react-native';
 import {
   Image,
   SafeAreaView,
@@ -17,6 +18,7 @@ import RiderMapView from './components/RiderMapView';
 
 const Detail = ({route}) => {
   const isDarkMode = useColorScheme() === 'dark';
+  const [tabIndex, setTabIndex] = useState(0);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -26,8 +28,12 @@ const Detail = ({route}) => {
 
   useEffect(() => {
     const {params} = route;
-    const {id} = params;
-    Toast.loading('加载中...');
+    const {id, tabIndex: index} = params;
+    setTabIndex(index);
+    Toast.loading({
+      content: '加载中...',
+      duration: 1,
+    });
 
     order.getOrderDetail(id).then(res => {
       console.log('orderDetail', res);
@@ -35,6 +41,26 @@ const Detail = ({route}) => {
         setOrderDetails(res.result);
       }
     });
+
+    const refreshDetail = DeviceEventEmitter.addListener(
+      'refreshDetail',
+      () => {
+        // Toast.loading({
+        //   content: '加载中...',
+        //   duration: 1,
+        // });
+
+        order.getOrderDetail(id).then(res => {
+          console.log('orderDetail', res);
+          if (res.success) {
+            setOrderDetails(res.result);
+          }
+        });
+      },
+    );
+    return () => {
+      refreshDetail.remove();
+    };
   }, [route]);
 
   return (
@@ -59,7 +85,13 @@ const Detail = ({route}) => {
           <Text style={styles.tipTitle}>送货点</Text>
         </View>
       </View>
-      {orderDetail && <BottomAction orderDetail={orderDetail} />}
+      {orderDetail && (
+        <BottomAction
+          tabIndex={tabIndex}
+          orderDetail={orderDetail}
+          pageType={'detail'}
+        />
+      )}
     </SafeAreaView>
   );
 };

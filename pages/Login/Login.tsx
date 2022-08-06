@@ -1,6 +1,8 @@
-import React, {useState} from 'react';
+import {Provider} from '@ant-design/react-native';
+import React, {useEffect, useState} from 'react';
 import {
-  DeviceEventEmitter,
+  NativeModules,
+  Platform,
   SafeAreaView,
   StatusBar,
   StyleSheet,
@@ -8,18 +10,39 @@ import {
   View,
 } from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+import Identify from '../../utils/Identify';
 
 import ConfirmProtocol from './components/ConfirmProtocol';
 import LgoinInput from './components/LoginInput';
 
-const Login = ({navigation}) => {
+const Login = ({navigation, route}) => {
   const isDarkMode = useColorScheme() === 'dark';
+
+  console.log('navigation', route);
+  const [isProtocolSelect, setProtocolSelect] = useState(false);
+  const [loginType, setLoginType] = useState('start');
+
+  useEffect(() => {
+    const {source} = route.params || {};
+    if (source === 'webview') {
+      setProtocolSelect(true);
+      setLoginType(source);
+    }
+
+    //   Identify().then(res => {
+    //     setLoadStatus(true);
+    //     if (Platform.OS === 'ios') {
+    //       NativeModules.SplashScreen.hide();
+    //     }
+    //     if (res.isLogin) {
+    //       navigation.replace('Home');
+    //     }
+    //   });
+  }, [navigation, route.params]);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
-
-  const [isProtocolSelect, setProtocolSelect] = useState(false);
 
   const changeSelect = (state: boolean) => {
     setProtocolSelect(state);
@@ -28,34 +51,26 @@ const Login = ({navigation}) => {
   const navigateReset = () => {
     navigation.replace('Home');
 
-    DeviceEventEmitter.emit('refresh');
+    // DeviceEventEmitter.emit('refresh');
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <View style={styles.innerContainer}>
-        <LgoinInput
-          isProtocolSelect={isProtocolSelect}
-          navigateReset={navigateReset}
-        />
-
-        {/* <TouchableOpacity activeOpacity={0.7} style={styles.wxButton}>
-          <Text style={styles.buttonText}>微信用户一键登录</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          activeOpacity={0.7}
-          style={styles.phoneButton}
-          onPress={() => {}}>
-          <Text style={styles.buttonText}>手机登录</Text>
-        </TouchableOpacity> */}
-
-        <ConfirmProtocol
-          changeSelect={changeSelect}
-          isSelect={isProtocolSelect}
-        />
-      </View>
-    </SafeAreaView>
+    <Provider>
+      <SafeAreaView style={backgroundStyle}>
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        <View style={styles.innerContainer}>
+          <LgoinInput
+            isProtocolSelect={isProtocolSelect}
+            navigateReset={navigateReset}
+          />
+          <ConfirmProtocol
+            changeSelect={changeSelect}
+            isSelect={isProtocolSelect}
+            type={loginType}
+          />
+        </View>
+      </SafeAreaView>
+    </Provider>
   );
 };
 

@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     padding: 12,
     borderRadius: 7,
+    marginBottom: 10,
   },
   head: {
     borderBottomWidth: 1,
@@ -40,12 +41,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 20,
+    fontSize: 15,
   },
   subTitle: {
     flex: 1,
     textAlign: 'right',
-    fontSize: 16,
+    fontSize: 13,
     fontWeight: 'bold',
   },
   subInfos: {
@@ -65,10 +66,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   orderTitle: {
-    fontSize: 16,
+    fontSize: 13,
   },
   orderNum: {
-    fontSize: 16,
+    fontSize: 13,
   },
   copyButton: {
     paddingHorizontal: 6,

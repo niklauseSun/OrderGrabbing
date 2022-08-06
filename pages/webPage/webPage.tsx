@@ -1,26 +1,32 @@
 import React, {useRef, useState} from 'react';
-import WebView, {WebViewNavigation} from 'react-native-webview';
-import {Image, StyleSheet, TouchableOpacity} from 'react-native';
+import WebView from 'react-native-webview';
+import {
+  DeviceEventEmitter,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ToDetail from '../../utils/ToDetail';
+import {Modal} from '@ant-design/react-native';
 
 const MessageType = {
   logout: 'logout',
   detail: 'orderDetail',
   closeWebview: 'closeWebview',
+  refreshRiderInfo: 'refreshRiderInfo',
+  identify: 'identify',
 };
 
 const WebPage = props => {
   console.log('props', props);
   const {route, navigation} = props;
   const {params} = route;
-  const {url, token} = params;
+  const {url, token, mobilePhone} = params;
   const webViewRef = useRef<WebView>(null);
   const [canGoBack, setCanGoBack] = useState(false);
 
-  const handleWebViewNavigationStateChange = (
-    nativeNavigation: WebViewNavigation,
-  ) => {
+  const handleWebViewNavigationStateChange = nativeNavigation => {
     console.log('nativeEvent', nativeNavigation);
     const {title, canGoBack: canGo} = nativeNavigation;
     navigation.setOptions({
@@ -44,7 +50,6 @@ const WebPage = props => {
 
             if (canGoBack) {
               webViewRef.current && webViewRef.current.goBack();
-              webViewRef.current && webViewRef.current.reload();
             } else {
               navigation.goBack();
             }
@@ -61,10 +66,12 @@ const WebPage = props => {
   const injectedJS = `
     (function() {
       window.localStorage.setItem('token', '${token}');
+      window.localStorage.setItem('userPhone', '${mobilePhone || ''}')
     })();
   `;
 
-  const onMessageHandle = (e: any) => {
+  const onMessageHandle = async (e: any) => {
+    console.log('onMessage', e.nativeEvent.data);
     const str = e.nativeEvent.data;
     const obj = JSON.parse(str);
 
@@ -73,13 +80,38 @@ const WebPage = props => {
         props.navigation.goBack();
         break;
       case MessageType.logout:
-        AsyncStorage.setItem('localToken', '').then(() => {
-          props.navigation.replace('Login');
-        });
+        Modal.alert('推出登录', '确定要退出登录吗？', [
+          {text: '取消', onPress: () => console.log('cancel')},
+          {
+            text: '确认',
+            onPress: async () => {
+              await AsyncStorage.setItem('localToken', '');
+              props.navigation.reset({
+                index: 0,
+                routes: [
+                  {
+                    name: 'Login',
+                    params: {
+                      source: 'webview',
+                    },
+                  },
+                ],
+              });
+            },
+          },
+        ]);
+
         break;
       case MessageType.detail:
         const {data} = obj;
-        ToDetail(data.id);
+        ToDetail({id: data.id});
+        break;
+      case MessageType.refreshRiderInfo:
+        DeviceEventEmitter.emit('refreshStatus');
+        break;
+      case MessageType.identify:
+        props.navigation.goBack();
+        DeviceEventEmitter.emit('refreshStatus');
         break;
     }
   };
@@ -89,9 +121,6 @@ const WebPage = props => {
       ref={webViewRef}
       style={styles.bgContainer}
       source={{uri: url, headers: {'Cache-Control': 'no-cache'}}}
-      onLoadEnd={res => {
-        console.log('res', res.nativeEvent);
-      }}
       injectedJavaScript={injectedJS}
       onMessage={onMessageHandle}
       onNavigationStateChange={handleWebViewNavigationStateChange}

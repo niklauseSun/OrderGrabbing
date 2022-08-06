@@ -8,13 +8,16 @@ const rider = {
     return request('/api/rider/captcha-login', params);
   },
   loginWithPassword: async (params: any) => {
-    return request('/api/rider/password-login', params);
+    return request('/api/rider/password-login', params, false);
   },
   getRiderInfo: async () => {
-    return query('/api/rider/query-rider-info');
+    return query('/api/rider/query-rider-info', true);
   },
   switchUserStatus: async (params: any) => {
     return request('/api/rider/change-rider-status?status=' + params.status);
+  },
+  updateRiderLocation: async (params: any) => {
+    return request('/api/rider/upload-location', params, true);
   },
 };
 

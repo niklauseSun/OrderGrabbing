@@ -5,6 +5,7 @@ export interface OrderGoodsDetailDto {
   goodsCode: string;
   goodsName: string;
   goodsPrice: number;
+  goodsQty: number;
 }
 
 export interface OrderPriceDetailDetDTO {
@@ -40,6 +41,7 @@ export interface OrderDetailProps {
   receiveOrderPicture?: boolean;
   remark?: string;
   riderOrderId?: string;
+  remainArriveTime: number;
   riderToSendAddressDistance?: string;
   sendMessage: LocationInfoProps;
   sendToReceiveAddressDistance?: string;

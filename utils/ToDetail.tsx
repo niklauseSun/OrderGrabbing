@@ -1,7 +1,7 @@
 import {navigate} from './RootNavigation';
 
-const ToDetail = (id: string) => {
-  navigate('Detail', {id: id});
+const ToDetail = (param: any) => {
+  navigate('Detail', param);
 };
 
 export default ToDetail;

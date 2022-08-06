@@ -1,10 +1,12 @@
 import {Modal, Toast} from '@ant-design/react-native';
 import React, {useState} from 'react';
+import {DeviceEventEmitter} from 'react-native';
 import {Linking} from 'react-native';
 import {TouchableOpacity, Text, View, StyleSheet, Image} from 'react-native';
 import {OrderCardProps} from '../../interfaces/locationsProps';
 import CancelOrder from '../../utils/CancelOrder';
 import CancelTransferOrder from '../../utils/CancelTranferOrder';
+import IdUtils from '../../utils/IdUtils';
 import ToTakePic from '../../utils/ToTakePic';
 import UpdateOrder from '../../utils/UpdateOrder';
 import GrabOrder from '../GrabOrder';
@@ -13,6 +15,8 @@ import TransferOrderModal from './TransferOrderModal';
 interface CardActionsInterface {
   order: OrderCardProps;
   confirmType: string;
+  pageType: string; // list || detail
+  tabIndex?: number;
 }
 
 const CardActions = (props: CardActionsInterface) => {
@@ -21,6 +25,16 @@ const CardActions = (props: CardActionsInterface) => {
   const confirmType = props.confirmType || 'photo';
   const [showPhoneView, setPhoneView] = useState(false);
   const [showTransfer, setTransfer] = useState(false);
+
+  const refreshList = () => {
+    console.log('refresh list');
+    if (props.pageType === 'detail') {
+      DeviceEventEmitter.emit('refreshDetail');
+      DeviceEventEmitter.emit('refresh', props.tabIndex);
+    } else {
+      DeviceEventEmitter.emit('refresh', props.tabIndex);
+    }
+  };
   // type
   // wait: 待抢单 waitStore: 待到店
   // waitPackage 待取货
@@ -34,36 +48,51 @@ const CardActions = (props: CardActionsInterface) => {
   // 已送达 10000020
   // 已取消 10000025
   const cancelOrder = () => {
-    CancelOrder(props.order.id as string);
+    CancelOrder(props.order.id as string, () => {
+      refreshList();
+    });
   };
 
   const confirmToStore = () => {
-    UpdateOrder.GetStore(props.order.id as string);
+    UpdateOrder.GetStore(props.order.id as string, () => {
+      refreshList();
+    });
   };
 
   const confirmGetOrderFromStore = () => {
-    UpdateOrder.confirmGetFromStore(props.order.id as string);
+    UpdateOrder.confirmGetFromStore(props.order.id as string, undefined, () => {
+      refreshList();
+    });
   };
 
   const confirmGetOrderWithPic = () => {
     ToTakePic((res: string) => {
-      UpdateOrder.confirmGetFromStore(props.order.id as string, res);
+      UpdateOrder.confirmGetFromStore(props.order.id as string, res, () => {
+        refreshList();
+      });
     });
   };
 
   const confirmSendOrder = () => {
-    UpdateOrder.deliverySuccess(props.order.id as string);
+    UpdateOrder.deliverySuccess(props.order.id as string, undefined, () => {
+      refreshList();
+    });
   };
 
   const confirmSendOrderWithPic = () => {
     ToTakePic((res: string) => {
-      UpdateOrder.deliverySuccess(props.order.id as string, res);
+      UpdateOrder.deliverySuccess(props.order.id as string, res, () => {
+        refreshList();
+      });
     });
   };
 
   const confirmTransferOrder = (reason: string) => {
     console.log('transferReason', reason);
-    UpdateOrder.trasferOrder(props.order.id as string, reason);
+    UpdateOrder.trasferOrder(props.order.id as string, reason, () => {
+      refreshList();
+      setTransfer(false);
+    });
   };
 
   const showPhoneModal = () => {
@@ -75,16 +104,36 @@ const CardActions = (props: CardActionsInterface) => {
     let tel = 'tel:' + phone; // 目标电话
     Linking.canOpenURL(tel).then(res => {
       if (res) {
-        Linking.canOpenURL(tel);
+        Linking.openURL(tel);
       } else {
-        Toast.info('无法拨打电话！');
+        Toast.info({
+          content: '无法拨打电话！',
+        });
       }
     });
   };
 
+  if (props.order.echoButton === 2) {
+    return (
+      <View style={styles.bottomView}>
+        <GrabOrder
+          pageType={props.pageType}
+          order={props.order}
+          tabIndex={props.tabIndex}
+        />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.bottomView}>
-      {status === '10000000' && <GrabOrder order={props.order} />}
+      {status === '10000000' && (
+        <GrabOrder
+          pageType={props.pageType}
+          order={props.order}
+          tabIndex={props.tabIndex}
+        />
+      )}
       {status === '10000005' && props.order.echoButton !== 3 && (
         <View style={styles.buttonViews}>
           <TouchableOpacity
@@ -111,7 +160,9 @@ const CardActions = (props: CardActionsInterface) => {
             activeOpacity={0.7}
             style={styles.bottomButton}
             onPress={() => {
-              CancelTransferOrder(props.order.id as string);
+              CancelTransferOrder(props.order.id as string, () => {
+                refreshList();
+              });
             }}>
             <Text style={styles.buttomButtonTitle}>取消转单</Text>
           </TouchableOpacity>
@@ -154,25 +205,46 @@ const CardActions = (props: CardActionsInterface) => {
             />
             <Text style={styles.actionTitle}>联系电话</Text>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.7} style={styles.actionButton}>
+          <TouchableOpacity
+            onPress={() => {
+              if (
+                props.order.status === '10000000' ||
+                props.order.status === '10000005' ||
+                props.order.status === '10000010'
+              ) {
+                IdUtils.toAmap({
+                  latitude: props.order.sendMessage.latitude,
+                  longitude: props.order.sendMessage.longitude,
+                });
+              } else {
+                IdUtils.toAmap({
+                  latitude: props.order.receiveMessage.latitude,
+                  longitude: props.order.receiveMessage.longitude,
+                });
+              }
+            }}
+            activeOpacity={0.7}
+            style={styles.actionButton}>
             <Image
               style={styles.actionIcon}
               source={require('../assets/icon_location.png')}
             />
             <Text style={styles.actionTitle}>导航</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={styles.actionButton}
-            onPress={() => {
-              setTransfer(true);
-            }}>
-            <Image
-              style={styles.actionIcon}
-              source={require('../assets/icon_transfer.png')}
-            />
-            <Text style={styles.actionTitle}>立即转单</Text>
-          </TouchableOpacity>
+          {!(props.order.echoButton === 2 || props.order.echoButton === 3) && (
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={styles.actionButton}
+              onPress={() => {
+                setTransfer(true);
+              }}>
+              <Image
+                style={styles.actionIcon}
+                source={require('../assets/icon_transfer.png')}
+              />
+              <Text style={styles.actionTitle}>立即转单</Text>
+            </TouchableOpacity>
+          )}
         </View>
       )}
       {(status === '10000010' || status === '10000015') && (
@@ -189,7 +261,30 @@ const CardActions = (props: CardActionsInterface) => {
             />
             <Text style={styles.actionTitle}>联系电话</Text>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.7} style={styles.actionButton}>
+          <TouchableOpacity
+            onPress={() => {
+              // 待调度 10000000
+              // 待到店 10000005
+              // 待取货 10000010
+
+              if (
+                props.order.status === '10000000' ||
+                props.order.status === '10000005' ||
+                props.order.status === '10000010'
+              ) {
+                IdUtils.toAmap({
+                  latitude: props.order.sendMessage.latitude,
+                  longitude: props.order.sendMessage.longitude,
+                });
+              } else {
+                IdUtils.toAmap({
+                  latitude: props.order.receiveMessage.latitude,
+                  longitude: props.order.receiveMessage.longitude,
+                });
+              }
+            }}
+            activeOpacity={0.7}
+            style={styles.actionButton}>
             <Image
               style={styles.actionIcon}
               source={require('../assets/icon_location.png')}
@@ -217,15 +312,17 @@ const CardActions = (props: CardActionsInterface) => {
               <Text style={styles.nameText}>
                 {props.order.sendMessage.name}
               </Text>
-              <Text style={styles.phoneText}>
-                {props.order.sendMessage.phone}
-              </Text>
+
               <TouchableOpacity
                 activeOpacity={0.7}
-                style={styles.actionButton}
+                style={styles.phoneButton}
                 onPress={() => {
+                  console.log('phone', props.order.sendMessage.phone);
                   call(props.order.sendMessage.phone);
                 }}>
+                <Text style={styles.phoneText}>
+                  {props.order.sendMessage.phone}
+                </Text>
                 <Image
                   style={styles.actionIcon}
                   source={require('../assets/icon_phone.png')}
@@ -239,15 +336,16 @@ const CardActions = (props: CardActionsInterface) => {
               <Text style={styles.nameText}>
                 {props.order.receiveMessage.name}
               </Text>
-              <Text style={styles.phoneText}>
-                {props.order.receiveMessage.phone}
-              </Text>
+
               <TouchableOpacity
                 activeOpacity={0.7}
-                style={styles.actionButton}
+                style={styles.phoneButton}
                 onPress={() => {
                   call(props.order.receiveMessage.phone);
                 }}>
+                <Text style={styles.phoneText}>
+                  {props.order.receiveMessage.phone}
+                </Text>
                 <Image
                   style={styles.actionIcon}
                   source={require('../assets/icon_phone.png')}
@@ -311,7 +409,7 @@ const ConfirmButton = (props: any) => {
         onPress={() => {
           confirmSendOrderWithPic();
         }}>
-        <Text style={styles.buttomButtonTitle}>拍照送达</Text>
+        <Text style={styles.buttomButtonTitle}>拍照完成</Text>
       </TouchableOpacity>
     );
   }
@@ -322,7 +420,7 @@ const ConfirmButton = (props: any) => {
       onPress={() => {
         confirmSendOrder();
       }}>
-      <Text style={styles.buttomButtonTitle}>确认送达</Text>
+      <Text style={styles.buttomButtonTitle}>确认完成</Text>
     </TouchableOpacity>
   );
 };
@@ -333,6 +431,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     display: 'flex',
     alignItems: 'center',
+    borderRadius: 10,
   },
   buttonViews: {
     display: 'flex',
@@ -397,6 +496,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  phoneButton: {
+    flex: 1,
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
   detailInfos: {
     height: 500,
     width: '100%',
@@ -442,9 +547,10 @@ const styles = StyleSheet.create({
   phoneText: {
     fontSize: 14,
     color: '#333333',
+    flex: 1,
   },
   nameText: {
-    width: 60,
+    width: 100,
   },
 });
 

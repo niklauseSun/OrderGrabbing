@@ -36,6 +36,7 @@ interface OrderCardProps {
 interface OrderProps {
   order: OrderCardProps;
   type: string | 'waitGrab' | 'waitPackage' | 'delivery';
+  tabIndex: number;
 }
 
 const OrderCard = (props: OrderProps) => {
@@ -43,7 +44,10 @@ const OrderCard = (props: OrderProps) => {
     <View style={styles.card}>
       <Pressable
         onPress={() => {
-          ToDetail(props.order.id);
+          ToDetail({
+            id: props.order.id,
+            tabIndex: props.tabIndex,
+          });
         }}>
         <View style={styles.cardHead}>
           <Image
@@ -76,8 +80,19 @@ const OrderCard = (props: OrderProps) => {
             <Text style={styles.orangeTagTitle}>备注：{}</Text>
           </View>
         )}
-        <CardActions order={props.order} confirmType={'photo'} />
+        <CardActions
+          order={props.order}
+          confirmType={'photo'}
+          pageType={'list'}
+          tabIndex={props.tabIndex}
+        />
       </Pressable>
+      {(props.order.echoButton === 2 || props.order.echoButton === 3) && (
+        <Image
+          style={styles.transferIcon}
+          source={require('./assets/icon_transfer.png')}
+        />
+      )}
     </View>
   );
 };
@@ -106,7 +121,8 @@ const styles = StyleSheet.create({
   cardHeadInfoText: {
     display: 'flex',
     flex: 1,
-    fontSize: 16,
+    fontSize: 14,
+    fontWeight: 'bold',
     color: '#333333',
   },
   cardHeadPriceText: {
@@ -145,6 +161,13 @@ const styles = StyleSheet.create({
   orangeTagTitle: {
     fontSize: 14,
     color: '#333333',
+  },
+  transferIcon: {
+    height: 81,
+    width: 64,
+    position: 'absolute',
+    right: 0,
+    top: 50,
   },
 });
 

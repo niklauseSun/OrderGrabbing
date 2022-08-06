@@ -3,12 +3,14 @@ import {query, request} from './ajax';
 interface GrapProps {
   pageSize?: number;
   id?: string;
+  hideToast?: boolean;
 }
 
 interface deliveryProps {
   pageSize?: number;
   pageIndex?: number;
   tab: number;
+  hideToast?: boolean;
 }
 
 const order = {
@@ -35,6 +37,10 @@ const order = {
   getOrderDetail: async (id: string) => {
     let url = '/api/delivery-order/query-delivery-order-app-detail?id=' + id;
     return query(url);
+  },
+  getTransferOrder: async (params: any) => {
+    let url = '/api/rider/order/receive-rider-order';
+    return request(url, params);
   },
 };
 

@@ -1,6 +1,16 @@
-import {PermissionsAndroid, Platform} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import _ from 'lodash';
+import {
+  Dimensions,
+  Linking,
+  PermissionsAndroid,
+  PixelRatio,
+  Platform,
+  StyleSheet,
+} from 'react-native';
 import {Geolocation, Position} from 'react-native-amap-geolocation';
-import { WatchLocation } from './types';
+import {rider} from '../api';
+import {LatLng} from './types';
 const IdUtils = {
   isPhoneNum(num: string | number) {
     let phone = num + '';
@@ -40,11 +50,72 @@ const IdUtils = {
       ]);
     }
 
-    return new Promise((resolve, reject: any) => {
-      Geolocation.watchPosition((coordiate: Position) => {
-        resolve(coordiate);
+    let beginTime = 0;
+    Geolocation.watchPosition((coordiate: Position) => {
+      let endTime = new Date().getTime();
+
+      if (beginTime === 0 || (endTime - beginTime) / 1000 > 30) {
+        beginTime = new Date().getTime();
+        const {location} = coordiate;
+        let loca: LatLng = {
+          latitude: Number(location.latitude.toFixed(6)),
+          longitude: Number(location.longitude.toFixed(6)),
+        };
+
+        rider.updateRiderLocation({
+          latitude: location.latitude + '',
+          longitude: location.longitude + '',
+        });
+
+        AsyncStorage.setItem('currentLocation', JSON.stringify(loca));
+      }
+
+      _.debounce(() => {});
+    });
+  },
+
+  toAmap(location: LatLng) {
+    if (Platform.OS === 'android') {
+      let url = `amapuri://openFeature?featureName=OnRideNavi&rideType=elebike&sourceApplication=appname&lat=${location.latitude}&lon=${location.longitude}&dev=0`;
+      Linking.openURL(url);
+    } else {
+      let url = `amapuri://openFeature?featureName=OnRideNavi&rideType=elebike&sourceApplication=appname&lat=${location.latitude}&lon=${location.longitude}&dev=0`;
+      Linking.canOpenURL(url).then(res => {
+        if (res) {
+          Linking.openURL(url);
+        }
       });
-    })
+    }
+  },
+
+  translateStyle() {
+    const dp2px = dp => PixelRatio.getPixelSizeForLayoutSize(dp);
+    // const px2dp = px => PixelRatio.roundToNearestPixel(px);
+    let designSize = {width: 750, height: 1344}; //假设设计尺寸为：720*1280
+    let pxRatio = PixelRatio.get();
+    let win_width = Dimensions.get('window').width;
+    let win_height = Dimensions.get('window').height;
+    let width = dp2px(win_width);
+    let height = dp2px(win_height);
+    let design_scale = designSize.width / width;
+    height = height * design_scale;
+    let scale = 1 / pxRatio / design_scale;
+
+    const styles = StyleSheet.create({
+      container: {
+        width: width,
+        height: height,
+        transform: [
+          {translateX: -width * 0.5},
+          {translateY: -height * 0.5},
+          {scale: scale},
+          {translateX: width * 0.5},
+          {translateY: height * 0.5},
+        ],
+      },
+    });
+
+    return styles;
   },
 };
 

@@ -19,7 +19,6 @@ import Detail from './pages/detail/detail';
 import CameraPage from './pages/camera/CameraPage';
 import ScanCamera from './pages/scanCamera/scanCamera';
 import WebPage from './pages/webPage/webPage';
-import {Text, TouchableOpacity} from 'react-native';
 import Provider from '@ant-design/react-native/lib/provider';
 import {navigationRef} from './utils/RootNavigation';
 
@@ -28,19 +27,24 @@ import {Platform} from 'react-native';
 import {init} from 'react-native-amap-geolocation/src';
 
 import 'react-native-reanimated';
+import {Toast} from '@ant-design/react-native';
+
+Toast.config({
+  duration: 0.6,
+});
 
 // 地图
 AMapSdk.init(
   Platform.select({
-    android: 'c52c7169e6df23490e3114330098aaac',
-    ios: '57b7dcf824bf28a372f2bb5031a8628b',
+    android: '9b19a59f94881372e6a6f57c2eba8abc',
+    ios: '486dc6cedc8fd2c6fda9b8f6ca84e117',
   }),
 );
 
 // 定位
 init({
-  ios: '9bd6c82e77583020a73ef1af59d0c759',
-  android: '57b7dcf824bf28a372f2bb5031a8628b',
+  ios: '486dc6cedc8fd2c6fda9b8f6ca84e117',
+  android: '9b19a59f94881372e6a6f57c2eba8abc',
 });
 
 const Stack = createNativeStackNavigator();
@@ -58,23 +62,15 @@ const App = () => {
           <Stack.Screen
             key={'Login'}
             name="Login"
+            options={{title: '登录', headerShown: false}} // 隐藏头
             component={LoginPage}
-            options={{title: '登录', headerBackTitle: ''}}
           />
-
           <Stack.Screen
             name="Detail"
             component={Detail}
             options={{
               title: '订单详情',
               headerBackTitle: '',
-              headerRight: () => {
-                return (
-                  <TouchableOpacity activeOpacity={0.7}>
-                    <Text>客服</Text>
-                  </TouchableOpacity>
-                );
-              },
             }}
           />
           <Stack.Screen

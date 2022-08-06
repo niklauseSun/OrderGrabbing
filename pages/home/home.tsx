@@ -3,10 +3,11 @@ import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   StatusBar,
-  useColorScheme,
   StyleSheet,
   DeviceEventEmitter,
   View,
+  Platform,
+  NativeModules,
 } from 'react-native';
 
 import Identify from '../../utils/Identify';
@@ -15,16 +16,37 @@ import Header from './components/header';
 import TabContent from './components/tabContent';
 import {Position} from 'react-native-amap-geolocation/src';
 import {LatLng} from '../../utils/types';
+import {rider} from '../../api';
 
 const App = (props: {navigation: any}) => {
-  const isDarkMode = useColorScheme() === 'dark';
-
   const [isLogin, setLogStatus] = useState(false);
   const [status, setStatus] = useState('');
   const [infoStatus, setInfoStatus] = useState('');
-  const [loading, setLoading] = useState(true);
+
+  const getLocation = () => {
+    IdUtils.toGetLocation().then(res => {
+      console.log('getLocation', res);
+      const {location} = res as Position;
+      let loca: LatLng = {
+        latitude: Number(location.latitude.toFixed(6)),
+        longitude: Number(location.longitude.toFixed(6)),
+      };
+      rider
+        .updateRiderLocation({
+          latitude: location.latitude + '',
+          longitude: location.longitude + '',
+        })
+        .then(ret => {
+          console.log('update location', ret);
+        });
+      AsyncStorage.setItem('currentLocation', JSON.stringify(loca));
+    });
+  };
 
   useEffect(() => {
+    if (Platform.OS === 'ios') {
+      NativeModules.SplashScreen.hide();
+    }
     Identify(false).then(res => {
       console.log('Identify', res);
       if (res.isLogin) {
@@ -35,94 +57,57 @@ const App = (props: {navigation: any}) => {
         setInfoStatus(info);
         AsyncStorage.setItem('status', stat);
         AsyncStorage.setItem('infoStatus', info);
-
-        setLoading(false);
       } else {
-        props.navigation.replace('Login');
+        props.navigation.reset({
+          index: 0,
+          routes: [{name: 'Login'}],
+        });
       }
     });
-    DeviceEventEmitter.addListener('refreshStatus', () => {
-      console.log('refreshStatus');
-      Identify(false).then(res => {
-        console.log('Identify', res);
-        if (res) {
-          // 如果成功了
-          const {status: stat, infoStatus: info} = res;
-          setStatus(stat);
-          setInfoStatus(info);
-        }
-      });
-    });
+    const refreshStatus = DeviceEventEmitter.addListener(
+      'refreshStatus',
+      () => {
+        console.log('refreshStatus');
+        Identify(false).then(res => {
+          console.log('Identify', res);
+          if (res) {
+            // 如果成功了
+            const {status: stat, infoStatus: info} = res;
+            setStatus(stat);
+            setInfoStatus(info);
+          }
+        });
+      },
+    );
 
-    IdUtils.watchLocation().then(value => {
-      console.log('location', value);
+    if (Platform.OS === 'android') {
+      getLocation();
+      setInterval(() => {
+        getLocation();
+      }, 30 * 1000);
+    }
 
-      const {location} = value as Position;
-      let loca: LatLng = {
-        latitude: Number(location.latitude.toFixed(6)),
-        longitude: Number(location.longitude.toFixed(6)),
-      };
-      AsyncStorage.setItem('currentLocation', JSON.stringify(loca));
-    });
+    if (Platform.OS === 'ios') {
+      IdUtils.watchLocation();
+    }
+    return () => {
+      refreshStatus.remove();
+    };
   }, [props.navigation]);
 
-  if (loading) {
-    return (
-      <SafeAreaView>
-        <View />
-      </SafeAreaView>
-    );
-  }
-
   return (
-    <SafeAreaView style={styles.homeBg}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor="#1677FE"
-      />
+    <View style={styles.homeBg}>
+      <SafeAreaView style={styles.topSafeArea} />
+      <StatusBar backgroundColor="#1677FE" barStyle={'light-content'} />
+
       <Header
         status={status}
         navigation={props.navigation}
         infoStatus={infoStatus}
       />
       <TabContent isLogin={isLogin} navigation={props.navigation} />
-      {/*
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <TouchableOpacity
-          onPress={() => {
-            console.log('去登录');
-            ToLogin({navigation: navigation});
-            // navigation.navigate('Login');
-          }}>
-          <Text>去登录</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('Detail');
-          }}>
-          <Text>去详情</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => {}}>
-          <Text>去验证</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            GetOrder({
-              visible: true,
-            });
-          }}>
-          <Text>抢单</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            CancelOrder();
-          }}>
-          <Text>去取消</Text>
-        </TouchableOpacity>
-      </ScrollView> */}
-    </SafeAreaView>
+      <SafeAreaView style={styles.bottomSafeArea} />
+    </View>
   );
 };
 
@@ -130,6 +115,14 @@ const styles = StyleSheet.create({
   homeBg: {
     backgroundColor: '#1677FE',
     flex: 1,
+  },
+  topSafeArea: {
+    backgroundColor: '#1677FE',
+    flex: 0,
+  },
+  bottomSafeArea: {
+    backgroundColor: 'white',
+    flex: 0,
   },
 });
 

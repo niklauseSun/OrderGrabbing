@@ -7,13 +7,16 @@ import {
   View,
   Image,
   Pressable,
+  DeviceEventEmitter,
 } from 'react-native';
 import {OrderProps} from '../../interfaces/locationsProps';
 
 import LocationInfo from '../LocationInfo';
 import Button from '../Button';
-import GetOrder from '../../utils/GetOrder';
+import GetOrder, {receiveTransferOrder} from '../../utils/GetOrder';
+import _ from 'lodash';
 const GrabOrder = (props: OrderProps) => {
+  console.log('grabOrder', props.order);
   const {order} = props;
   const [visible, setVisible] = useState(false);
   return (
@@ -23,7 +26,9 @@ const GrabOrder = (props: OrderProps) => {
         onPress={() => {
           setVisible(true);
         }}>
-        <Text style={styles.buttomButtonTitle}>立刻抢单</Text>
+        <Text style={styles.buttomButtonTitle}>
+          {props.order.echoButton === 2 ? '接受转单' : '立刻抢单'}
+        </Text>
       </TouchableOpacity>
       <Modal
         visible={visible}
@@ -66,10 +71,12 @@ const GrabOrder = (props: OrderProps) => {
               />
               <View style={styles.tagView}>
                 <View style={styles.tag}>
-                  <Text style={styles.tagTitle}>{order.goodsCategoryName}</Text>
+                  <Text style={styles.tagTitle}>
+                    {order.goodsCategory || order.goodsCategoryName}
+                  </Text>
                 </View>
               </View>
-              {order.remark !== '' && (
+              {!_.isEmpty(order.remark) && (
                 <View style={styles.orangeTag}>
                   <Text style={styles.orangeTagTitle}>
                     备注：{order.remark}
@@ -89,9 +96,33 @@ const GrabOrder = (props: OrderProps) => {
                   onPress={() => {
                     setVisible(false);
                     console.log('order', order);
-                    GetOrder({
-                      deliveryOrderId: order.id,
-                    });
+
+                    if (props.order.echoButton === 2) {
+                      receiveTransferOrder({
+                        deliveryOrderId: order.id,
+                        transferRiderOrderId: order.riderOrderId,
+                        callBack: () => {
+                          if (props.pageType === 'detail') {
+                            DeviceEventEmitter.emit('refreshDetail');
+                            DeviceEventEmitter.emit('refresh', props.tabIndex);
+                          } else {
+                            DeviceEventEmitter.emit('refresh', props.tabIndex);
+                          }
+                        },
+                      });
+                    } else {
+                      GetOrder({
+                        deliveryOrderId: order.id,
+                        callBack: () => {
+                          if (props.pageType === 'detail') {
+                            DeviceEventEmitter.emit('refreshDetail');
+                            DeviceEventEmitter.emit('refresh', props.tabIndex);
+                          } else {
+                            DeviceEventEmitter.emit('refresh', props.tabIndex);
+                          }
+                        },
+                      });
+                    }
                   }}
                 />
               </View>
@@ -129,7 +160,7 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     width: 340,
-    height: 290,
+    height: 300,
     backgroundColor: '#fff',
     display: 'flex',
     flexDirection: 'column',

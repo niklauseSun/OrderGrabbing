@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,13 +7,28 @@ import {
   Image,
   Modal,
 } from 'react-native';
+import RNExitApp from 'react-native-exit-app';
+import WebView from 'react-native-webview';
 
 interface ConfirmProtocolProps {
   isSelect?: boolean;
   changeSelect: Function;
+  type: string;
 }
 const ConfirmProtocol = (props: ConfirmProtocolProps) => {
-  const [modalVisible, setModelVisible] = useState(true);
+  console.log('type', props.type);
+  const [modalVisible, setModelVisible] = useState(false);
+  const [webModal, setWebModal] = useState(false);
+  const [showUrl, setShowUrl] = useState('');
+  const [title, setTitle] = useState('《用户协议》');
+
+  useEffect(() => {
+    if (props.type !== 'webview') {
+      setModelVisible(true);
+    } else {
+      setModelVisible(false);
+    }
+  }, [props.type]);
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -38,17 +53,35 @@ const ConfirmProtocol = (props: ConfirmProtocolProps) => {
         )}
       </TouchableOpacity>
       <Text>我已阅读并同意</Text>
-      <TouchableOpacity activeOpacity={0.7} onPress={() => {}}>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={() => {
+          console.log('《用户协议》');
+          setShowUrl(
+            'https://rider-test-app.zhuopaikeji.com/api/user-agreement?tenant_code=XXX',
+          );
+          setWebModal(true);
+          setTitle('《用户协议》');
+        }}>
         <Text style={styles.pressStyle}>《用户协议》</Text>
       </TouchableOpacity>
       <Text>和</Text>
-      <TouchableOpacity activeOpacity={0.7}>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={() => {
+          setShowUrl(
+            'https://rider-test-app.zhuopaikeji.com/api/privacy-policy?tenant_code=XXX',
+          );
+          setWebModal(true);
+          console.log('《隐私政策》');
+          setTitle('《隐私政策》');
+        }}>
         <Text style={styles.pressStyle}>《隐私政策》</Text>
       </TouchableOpacity>
       <Modal
-        presentationStyle="overFullScreen"
+        presentationStyle="fullScreen"
         statusBarTranslucent
-        visible={modalVisible}
+        visible={modalVisible && !webModal}
         onRequestClose={() => {
           setModelVisible(!modalVisible);
         }}>
@@ -68,7 +101,33 @@ const ConfirmProtocol = (props: ConfirmProtocolProps) => {
               </Text>
               <Text />
               <Text>
-                &nbsp;&nbsp;&nbsp;&nbsp;您可阅读《用户协议》和《隐私政策》了解详细信息。如果您同意、请点击按钮开始接受我们的服务。
+                &nbsp;&nbsp;&nbsp;&nbsp;您可阅读
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => {
+                    console.log('《用户协议》');
+                    setShowUrl(
+                      'https://rider-test-app.zhuopaikeji.com/api/user-agreement?tenant_code=XXX',
+                    );
+                    setWebModal(true);
+                    setTitle('《用户协议》');
+                  }}>
+                  <Text style={styles.pressStyle}>《用户协议》</Text>
+                </TouchableOpacity>
+                和
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => {
+                    setShowUrl(
+                      'https://rider-test-app.zhuopaikeji.com/api/privacy-policy?tenant_code=XXX',
+                    );
+                    setWebModal(true);
+                    console.log('《隐私政策》');
+                    setTitle('《隐私政策》');
+                  }}>
+                  <Text style={styles.pressStyle}>《隐私政策》</Text>
+                </TouchableOpacity>
+                了解详细信息。如果您同意、请点击按钮开始接受我们的服务。
               </Text>
             </View>
             <View style={styles.bottomActions}>
@@ -87,12 +146,38 @@ const ConfirmProtocol = (props: ConfirmProtocolProps) => {
                 onPress={() => {
                   setModelVisible(!modalVisible);
                   // TODO 如何关闭APP
+                  RNExitApp.exitApp();
                 }}>
                 <Text style={styles.bottomButtonTitle}>不同意并退出APP</Text>
               </TouchableOpacity>
             </View>
           </View>
         </TouchableOpacity>
+      </Modal>
+      <Modal
+        presentationStyle="overFullScreen"
+        visible={webModal}
+        onRequestClose={() => {
+          setWebModal(!webModal);
+        }}>
+        <View style={styles.centeredView}>
+          <View style={styles.webModalView}>
+            <View style={styles.webTitleView}>
+              <Text style={styles.webTitle}>{title}</Text>
+            </View>
+            <WebView style={styles.webview} source={{uri: showUrl}} />
+            <View>
+              <TouchableOpacity
+                style={styles.confirmButon}
+                activeOpacity={0.7}
+                onPress={() => {
+                  setWebModal(!webModal);
+                }}>
+                <Text style={styles.confirmButonTitle}>确认</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
       </Modal>
     </View>
   );
@@ -174,6 +259,46 @@ const styles = StyleSheet.create({
   bottomButtonTitle: {
     fontSize: 16,
     color: '#333333',
+  },
+  webModalView: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 360,
+    height: 500,
+    borderRadius: 10,
+    backgroundColor: '#fff',
+    paddingBottom: 12,
+    paddingRight: 24,
+    paddingLeft: 24,
+  },
+  webview: {
+    display: 'flex',
+    flex: 1,
+    width: 340,
+    height: '100%',
+  },
+  webTitleView: {
+    height: 50,
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  webTitle: {
+    fontSize: 18,
+    color: '#333',
+  },
+  confirmButon: {
+    width: 120,
+    height: 50,
+    borderRadius: 10,
+    backgroundColor: '#1677FE',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 12,
+  },
+  confirmButonTitle: {
+    fontSize: 16,
+    color: '#fff',
   },
 });
 

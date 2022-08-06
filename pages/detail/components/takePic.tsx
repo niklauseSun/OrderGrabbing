@@ -1,38 +1,40 @@
 import React from 'react';
-import {TouchableOpacity, Text, View, StyleSheet, Image} from 'react-native';
-import ToTakePic from '../../../utils/ToTakePic';
+import {Text, View, StyleSheet, Image} from 'react-native';
 
-const TakePic = () => {
+const TakePic = props => {
+  console.log('pic', props.orderDetail);
   return (
     <View style={styles.container}>
       <View style={styles.head}>
         <Text style={styles.title}>拍照留存</Text>
       </View>
       <View style={styles.subInfos}>
-        <View style={styles.imagePick}>
-          <TouchableOpacity style={styles.takeButton} activeOpacity={0.7}>
-            <Image
-              style={styles.takePic}
-              source={require('./assets/icon_take_pic.png')}
-            />
-          </TouchableOpacity>
-          <Text>取件拍照</Text>
-        </View>
-        <View style={styles.imagePick}>
-          <TouchableOpacity
-            style={styles.takeButton}
-            activeOpacity={0.7}
-            onPress={() => {
-              console.log('takePick');
-              ToTakePic();
-            }}>
-            <Image
-              style={styles.takePic}
-              source={require('./assets/icon_take_pic.png')}
-            />
-          </TouchableOpacity>
-          <Text>完成拍照</Text>
-        </View>
+        {props.orderDetail.collectOrderPicture && (
+          <View style={styles.imagePick}>
+            <View style={styles.takeButton}>
+              <Image
+                style={styles.takePic}
+                source={{
+                  uri: props.orderDetail.pickUpOrderPhotoUrl,
+                }}
+              />
+            </View>
+            <Text>取件拍照</Text>
+          </View>
+        )}
+        {props.orderDetail.receiveOrderPicture && (
+          <View style={styles.imagePick}>
+            <View style={styles.takeButton}>
+              <Image
+                style={styles.takePic}
+                source={{
+                  uri: props.orderDetail.receiveOrderPhotoUrl,
+                }}
+              />
+            </View>
+            <Text>完成拍照</Text>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -42,7 +44,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
     marginHorizontal: 14,
-    marginTop: 10,
     padding: 12,
     borderRadius: 7,
     marginBottom: 10,
@@ -87,8 +88,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   takePic: {
-    width: 60,
-    height: 60,
+    width: '100%',
+    height: '100%',
   },
 });
 export default TakePic;

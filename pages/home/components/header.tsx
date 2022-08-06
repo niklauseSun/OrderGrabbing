@@ -23,13 +23,13 @@ const Header = (props: HeaderProps) => {
   const {infoStatus, status} = props;
   console.log('header props', props);
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.headerContent}>
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => {
             ToWebPage(
-              'https://rider-test-app.zhuopaikeji.com/pages/mainPage/mine/mine',
+              'https://rider-test-app.zhuopaikeji.com/pages/mainPage/mine/mine#/pages/mainPage/mine/mine',
             );
           }}>
           <Image
@@ -43,13 +43,14 @@ const Header = (props: HeaderProps) => {
         )}
         {infoStatus === '10150010' && <SwitchStatsu status={status} />}
         <TouchableOpacity activeOpacity={0.7}>
-          <Image
+          {/* <Image
             style={styles.iconMessage}
             source={require('./assets/icon_message.png')}
-          />
+          /> */}
+          <View style={styles.iconMessage} />
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -60,14 +61,18 @@ const IdentifyStatus = (props: any) => {
       activeOpacity={1}
       style={styles.idView}
       onPress={() => {
-        ToWebPage(
-          'https://rider-test-app.zhuopaikeji.com/pages/realName/index',
-        );
+        if (props.infoStatus === '10150000') {
+          ToWebPage(
+            'https://rider-test-app.zhuopaikeji.com/pages/realName/index#/pages/realName/index',
+          );
+        }
       }}>
-      <View style={styles.idLine} />
+      {(props.infoStatus === '10150000' ||
+        props.infoStatus === '10150005' ||
+        props.infoStatus === '10150015') && <View style={styles.idLine} />}
       {props.infoStatus === '10150000' && (
         <>
-          <Text style={styles.idTitle}>审核中</Text>
+          <Text style={styles.idTitle}>未认证</Text>
           <Image
             style={styles.idIcon}
             source={require('./assets/id_status_ing.png')}
@@ -76,7 +81,7 @@ const IdentifyStatus = (props: any) => {
       )}
       {props.infoStatus === '10150005' && (
         <>
-          <Text style={styles.idTitle}>审核中</Text>
+          <Text style={styles.idTitle}>认证中</Text>
           <Image
             style={styles.idIcon}
             source={require('./assets/id_status_ing.png')}
@@ -131,16 +136,16 @@ const SwitchStatsu = props => {
                 }
               }}>
               <Text style={styles.popButtonTitle}>
-                {status === '10100010' ? '接单中' : '休息中'}
+                {status === '10100005' ? '接单中' : '休息中'}
               </Text>
             </TouchableOpacity>
           </Popover.Item>
         }>
         <View style={styles.titleView}>
-          {status === '10100010' && (
+          {status === '10100005' && (
             <Text style={styles.switchTitle}>休息中</Text>
           )}
-          {status === '10100005' && (
+          {status === '10100010' && (
             <Text style={styles.switchTitle}>接单中</Text>
           )}
           <Image
@@ -183,7 +188,7 @@ const styles = StyleSheet.create({
   },
   idTitle: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 14,
     marginRight: 5,
   },
   idIcon: {
