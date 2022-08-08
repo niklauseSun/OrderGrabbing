@@ -172,6 +172,15 @@ const InnerDetail = (props: InnerDetailProps) => {
                   />
                 </View>
               )}
+              /* 展示倒计时*/
+            {orderDetail.status === '10000005' ||
+              orderDetail.status === '10000010' ||
+              orderDetail.status === '10000015' && (
+                  <View style={styles.textNormal}>
+                      <Text style={timeOutFlag && styles.timeOut}>{textStatus}</Text>
+                  </View>
+              )}
+              /* 以上这段代码为展示倒计时*/
             {getOderText(orderDetail.status as string)}
           </View>
           <View style={styles.topLine} />
@@ -310,6 +319,16 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  textNormal: {
+    fontSize: 14,
+    color: '#333333',
+    display: 'flex',
+    flexDirection: 'row'
+  },
+  timeOut: {
+    color: 'red',
+    textAlign: 'right'
   },
   orderNumIcon: {
     width: 23,
