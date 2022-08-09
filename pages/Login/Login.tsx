@@ -28,16 +28,6 @@ const Login = ({navigation, route}) => {
       setProtocolSelect(true);
       setLoginType(source);
     }
-
-    //   Identify().then(res => {
-    //     setLoadStatus(true);
-    //     if (Platform.OS === 'ios') {
-    //       NativeModules.SplashScreen.hide();
-    //     }
-    //     if (res.isLogin) {
-    //       navigation.replace('Home');
-    //     }
-    //   });
   }, [navigation, route.params]);
 
   const backgroundStyle = {
@@ -50,8 +40,6 @@ const Login = ({navigation, route}) => {
 
   const navigateReset = () => {
     navigation.replace('Home');
-
-    // DeviceEventEmitter.emit('refresh');
   };
 
   return (

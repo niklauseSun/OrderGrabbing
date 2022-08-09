@@ -86,7 +86,7 @@ const InnerDetail = (props: InnerDetailProps) => {
               预计{orderDetail.remainArriveTime}分钟送到
             </Text>
             <Text style={styles.cardHeadPriceText}>
-              ￥{orderDetail.payAmount}
+              ￥{orderDetail.commission}
             </Text>
           </View>
           <LocationInfo

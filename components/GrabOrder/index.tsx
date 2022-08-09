@@ -57,7 +57,7 @@ const GrabOrder = (props: OrderProps) => {
                   预计{order.remainArriveTime}分钟送到
                 </Text>
                 <Text style={styles.cardHeadPriceText}>
-                  ￥{order.payAmount}
+                  ￥{order.commission}
                 </Text>
               </View>
               <LocationInfo
