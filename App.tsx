@@ -8,7 +8,7 @@
  * @format
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import {NavigationContainer} from '@react-navigation/native';
 import createNativeStackNavigator from '@react-navigation/native-stack/lib/module/navigators/createNativeStackNavigator';
@@ -23,11 +23,12 @@ import Provider from '@ant-design/react-native/lib/provider';
 import {navigationRef} from './utils/RootNavigation';
 
 import {AMapSdk} from 'react-native-amap3d';
-import {Platform} from 'react-native';
+import {DeviceEventEmitter, Platform} from 'react-native';
 import {init} from 'react-native-amap-geolocation/src';
 
 import 'react-native-reanimated';
 import {Toast} from '@ant-design/react-native';
+import JPush from 'jpush-react-native';
 
 Toast.config({
   duration: 0.6,
@@ -50,6 +51,55 @@ init({
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+  useEffect(() => {
+    console.log('init', JPush);
+    // JPush.init({
+    //   appKey: '0518b2aa5c67e6377c0692f5',
+    //   channel: 'dev',
+    //   production: false,
+    // });
+
+    JPush.setBadge({
+      appBadge: 0,
+      badge: 0,
+    });
+
+    const connectListener = result => {
+      console.log('connectListener:' + JSON.stringify(result));
+    };
+    JPush.addConnectEventListener(connectListener);
+    //通知回调
+    const notificationListener = result => {
+      console.log('notificationListener:', result);
+      const {extras} = result;
+      const {type} = extras;
+      if (type === 'new_order') {
+        DeviceEventEmitter.emit('refresh', 0);
+      }
+    };
+    JPush.addNotificationListener(notificationListener);
+    //本地通知回调
+    const localNotificationListener = result => {
+      console.log('localNotificationListener:' + JSON.stringify(result));
+    };
+    JPush.addLocalNotificationListener(localNotificationListener);
+    //自定义消息回调
+    // this.customMessageListener = result => {
+    //     console.log("customMessageListener:" + JSON.stringify(result))
+    // };
+    // JPush.addCustomMessagegListener(this.customMessageListener);
+    //tag alias事件回调
+    const tagAliasListener = result => {
+      console.log('tagAliasListener:' + JSON.stringify(result));
+    };
+    JPush.addTagAliasListener(tagAliasListener);
+    //手机号码事件回调
+    const mobileNumberListener = result => {
+      console.log('mobileNumberListener:' + JSON.stringify(result));
+    };
+    JPush.addMobileNumberListener(mobileNumberListener);
+  }, []);
+
   return (
     <Provider>
       <NavigationContainer ref={navigationRef}>

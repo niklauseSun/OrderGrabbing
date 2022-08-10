@@ -8,7 +8,9 @@ install! 'cocoapods', :deterministic_uuids => false
 
 target 'MyApp' do
   # pod 'boost', :podspec => '../node_modules/react-native/third-party-podspecs/boost.podspec'
-  pod 'JPush'
+
+#  pod 'JPush', :podspec => '../node_modules/jpush-react-native/JPush.podspec'
+#  pod 'JCore', :podspec => '../node_modules/jcore-react-native/JCore.podspec'
   config = use_native_modules!
   pod 'IQKeyboardManager'
 
