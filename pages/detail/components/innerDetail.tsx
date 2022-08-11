@@ -172,7 +172,7 @@ const InnerDetail = (props: InnerDetailProps) => {
                   />
                 </View>
               )}
-              /* 展示倒计时*/
+              {/* 展示倒计时*/}
             {orderDetail.status === '10000005' ||
               orderDetail.status === '10000010' ||
               orderDetail.status === '10000015' && (
@@ -180,7 +180,7 @@ const InnerDetail = (props: InnerDetailProps) => {
                       <Text style={timeOutFlag && styles.timeOut}>{textStatus}</Text>
                   </View>
               )}
-              /* 以上这段代码为展示倒计时*/
+              {/* 以上这段代码为展示倒计时*/}
             {getOderText(orderDetail.status as string)}
           </View>
           <View style={styles.topLine} />
@@ -190,7 +190,7 @@ const InnerDetail = (props: InnerDetailProps) => {
               source={require('./assets/icon_time.png')}
             />
             <Text style={styles.cardHeadInfoText}>
-              预计{orderDetail.remainArriveTime}分钟送到
+              {orderDetail.remainArriveTime}分钟内送达
             </Text>
             <Text style={styles.cardHeadPriceText}>
               ￥{orderDetail.commission}

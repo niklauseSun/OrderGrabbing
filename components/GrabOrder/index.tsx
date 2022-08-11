@@ -54,7 +54,7 @@ const GrabOrder = (props: OrderProps) => {
                   source={{uri: order.sourceLogo}}
                 />
                 <Text style={styles.cardHeadInfoText}>
-                  预计{order.remainArriveTime}分钟送到
+                  {order.remainArriveTime}分钟内送达
                 </Text>
                 <Text style={styles.cardHeadPriceText}>
                   ￥{order.commission}

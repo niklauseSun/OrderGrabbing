@@ -55,7 +55,7 @@ const OrderCard = (props: OrderProps) => {
             source={{uri: props.order.sourceLogo}}
           />
           <Text style={styles.cardHeadInfoText}>
-            预计{props.order.remainArriveTime}分钟送到
+            {props.order.remainArriveTime}分钟内送达
           </Text>
           <Text style={styles.cardHeadPriceText}>
             ￥{props.order.commission}

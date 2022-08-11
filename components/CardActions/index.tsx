@@ -306,7 +306,7 @@ const CardActions = (props: CardActionsInterface) => {
           </View>
           <View style={styles.phoneItemView}>
             <View style={styles.phoneItemTitleView}>
-              <Text style={styles.phoneItemTitle}>取货人</Text>
+              <Text style={styles.phoneItemTitle}>发货人</Text>
             </View>
             <View style={styles.phoneInfos}>
               <Text style={styles.nameText}>
