@@ -160,7 +160,7 @@ const OrderCard = (props: OrderProps) => {
               {props.order.remainArriveTime}分钟内送达
             </Text>
           <Text style={styles.cardHeadPriceText}>
-            ￥{props.order.commission}2
+            ￥{props.order.commission}
           </Text>
         </View>
         { /* 展示倒计时*/}
