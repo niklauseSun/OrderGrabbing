@@ -1,6 +1,6 @@
-import {Toast} from '@ant-design/react-native';
-import React, {useEffect, useState} from 'react';
-import {DeviceEventEmitter} from 'react-native';
+import { Toast } from '@ant-design/react-native';
+import React, { useEffect, useState } from 'react';
+import { DeviceEventEmitter } from 'react-native';
 import {
   Image,
   SafeAreaView,
@@ -10,13 +10,13 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {order} from '../../api';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { order } from '../../api';
 
 import BottomAction from './components/bottomAction';
 import RiderMapView from './components/RiderMapView';
 
-const Detail = ({route}) => {
+const Detail = ({ route }) => {
   const isDarkMode = useColorScheme() === 'dark';
   const [tabIndex, setTabIndex] = useState(0);
 
@@ -27,8 +27,8 @@ const Detail = ({route}) => {
   const [orderDetail, setOrderDetails] = useState(undefined);
 
   useEffect(() => {
-    const {params} = route;
-    const {id, tabIndex: index} = params;
+    const { params } = route;
+    const { id, tabIndex: index } = params;
     setTabIndex(index);
     Toast.loading({
       content: '加载中...',
@@ -36,7 +36,7 @@ const Detail = ({route}) => {
     });
 
     order.getOrderDetail(id).then(res => {
-      console.log('orderDetail', res);
+      console.log('orderDetail111', res);
       if (res.success) {
         setOrderDetails(res.result);
       }
@@ -51,7 +51,7 @@ const Detail = ({route}) => {
         // });
 
         order.getOrderDetail(id).then(res => {
-          console.log('orderDetail', res);
+          console.log('orderDetail111', res);
           if (res.success) {
             setOrderDetails(res.result);
           }

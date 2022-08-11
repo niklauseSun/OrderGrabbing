@@ -52,7 +52,7 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
   useEffect(() => {
-    console.log('init', JPush);
+    // console.log('init', JPush);
     // JPush.init({
     //   appKey: '0518b2aa5c67e6377c0692f5',
     //   channel: 'dev',
@@ -155,5 +155,7 @@ const App = () => {
     </Provider>
   );
 };
+
+// const app = () => {}
 
 export default App;
