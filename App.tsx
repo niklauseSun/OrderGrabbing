@@ -30,6 +30,8 @@ import 'react-native-reanimated';
 import {Toast} from '@ant-design/react-native';
 import JPush from 'jpush-react-native';
 
+import Sound from 'react-native-sound';
+
 Toast.config({
   duration: 0.6,
 });
@@ -51,13 +53,54 @@ init({
 const Stack = createNativeStackNavigator();
 
 const App = () => {
+  const speak = type => {
+    switch (type) {
+      case 'cancel':
+        let demoAudio_cancel = require('./assets/new_order.mp3'); //支持众多格式
+        const s_cancel = new Sound(demoAudio_cancel, e => {
+          if (e) {
+            console.log('播放失败');
+            return;
+          }
+          s_cancel.play(() => s_cancel.release());
+        });
+        break;
+      case 'new':
+        let demoAudio_new = require('./assets/new_order.mp3'); //支持众多格式
+        const s_new = new Sound(demoAudio_new, e => {
+          if (e) {
+            console.log('播放失败');
+            return;
+          }
+          s_new.play(() => s_new.release());
+        });
+        break;
+      case 'transfer':
+        let demoAudio_transfer = require('./assets/new_order.mp3'); //支持众多格式
+        const s_tansfer = new Sound(demoAudio_transfer, e => {
+          if (e) {
+            console.log('播放失败');
+            return;
+          }
+          s_tansfer.play(() => s_tansfer.release());
+        });
+        break;
+    }
+  };
+
   useEffect(() => {
-    // console.log('init', JPush);
-    // JPush.init({
-    //   appKey: '0518b2aa5c67e6377c0692f5',
-    //   channel: 'dev',
-    //   production: false,
-    // });
+    console.log('init', Platform.OS);
+
+    console.log('fff');
+    if (Platform.OS === 'android') {
+      JPush.requestPermission();
+      JPush.setLoggerEnable(true);
+      JPush.init({
+        appKey: '0518b2aa5c67e6377c0692f5',
+        titchannelle: 'dev',
+        production: false,
+      });
+    }
 
     JPush.setBadge({
       appBadge: 0,
@@ -71,10 +114,17 @@ const App = () => {
     //通知回调
     const notificationListener = result => {
       console.log('notificationListener:', result);
-      const {extras} = result;
-      const {type} = extras;
+      const {extras = {}} = result || {};
+      const {type = ''} = extras || {};
       if (type === 'new_order') {
-        DeviceEventEmitter.emit('refresh', 0);
+        DeviceEventEmitter.emit('notificationRefresh');
+        speak('new');
+      } else if (type === 'cancel_order') {
+        DeviceEventEmitter.emit('notificationRefresh');
+        speak('cancel');
+      } else if (type === 'transfer_order') {
+        DeviceEventEmitter.emit('notificationRefresh');
+        speak('transfer_order');
       }
     };
     JPush.addNotificationListener(notificationListener);

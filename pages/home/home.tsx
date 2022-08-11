@@ -36,8 +36,8 @@ const App = (props: {navigation: any}) => {
           latitude: location.latitude + '',
           longitude: location.longitude + '',
         })
-        .then(ret => {
-          console.log('update location', ret);
+        .then(() => {
+          // console.log('update location', ret);
         });
       AsyncStorage.setItem('currentLocation', JSON.stringify(loca));
     });

@@ -39,8 +39,6 @@ const TabContent = (props: TabContentProps) => {
       });
     }
 
-    console.log('tabIndex', index);
-
     setOrderList([]);
 
     if (index === 0) {
@@ -114,17 +112,27 @@ const TabContent = (props: TabContentProps) => {
   }, [tabIndex]);
 
   useEffect(() => {
-    const refreshList = DeviceEventEmitter.addListener(
-      'refresh',
-      function (index) {
-        console.log('refresh 111', index);
-        queryList(index, true);
-      },
-    );
+    const refreshList = DeviceEventEmitter.addListener('refresh', index => {
+      console.log('refresh 111', index);
+      console.log('tabIndex 111', tabIndex);
+      queryList(index, true);
+    });
     return () => {
       refreshList.remove();
     };
   }, []);
+
+  useEffect(() => {
+    const notificationRefresh = DeviceEventEmitter.addListener(
+      'notificationRefresh',
+      () => {
+        queryList(tabIndex);
+      },
+    );
+    return () => {
+      notificationRefresh.remove();
+    };
+  }, [tabIndex]);
 
   return (
     // <View style={styles.content}>
