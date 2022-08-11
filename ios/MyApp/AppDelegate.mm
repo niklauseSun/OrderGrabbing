@@ -41,7 +41,7 @@
 
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   
-  [JPUSHService setupWithOption:launchOptions appKey:@"0518b2aa5c67e6377c0692f5" channel:@"devlopment" apsForProduction:NO];
+  [JPUSHService setupWithOption:launchOptions appKey:@"0518b2aa5c67e6377c0692f5" channel:@"development" apsForProduction:NO];
   //notice: 3.0.0 及以后版本注册可以这样写，也可以继续用之前的注册方式
   JPUSHRegisterEntity * entity = [[JPUSHRegisterEntity alloc] init];
   if (@available(iOS 12.0, *)) {

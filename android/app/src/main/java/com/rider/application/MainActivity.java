@@ -1,10 +1,11 @@
-package com.myapp;
+package com.rider.application;
 
 import android.annotation.SuppressLint;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.ReactRootView;
+import com.rider.application.BuildConfig;
 
 public class MainActivity extends ReactActivity {
 

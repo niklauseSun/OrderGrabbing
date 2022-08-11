@@ -12,6 +12,7 @@ import IdUtils from '../../../utils/IdUtils';
 import {Toast} from '@ant-design/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Identify from '../../../utils/Identify';
+import JPush from 'jpush-react-native';
 
 interface LoginInputProps {
   isProtocolSelect?: boolean;
@@ -40,6 +41,13 @@ const LoginInput = (props: LoginInputProps) => {
     if (phone && password) {
       setCanLogin(true);
     }
+  };
+
+  const setTag = (sysUserId: string) => {
+    JPush.setAlias({
+      alias: '10001' + sysUserId + '1',
+      sequence: 1,
+    });
   };
 
   useEffect(() => {
@@ -177,6 +185,7 @@ const LoginInput = (props: LoginInputProps) => {
                 console.log('res', res);
                 const {success, result, message} = res;
                 if (success) {
+                  setTag(result.sysUserId);
                   const {token} = result;
                   AsyncStorage.setItem('localToken', token).then(() => {
                     Identify().then(re => {
@@ -200,6 +209,7 @@ const LoginInput = (props: LoginInputProps) => {
                 console.log('res', res);
                 const {success, result} = res;
                 if (success) {
+                  setTag(result.sysUserId);
                   const {token} = result;
                   AsyncStorage.setItem('localToken', token).then(() => {
                     props.navigateReset();

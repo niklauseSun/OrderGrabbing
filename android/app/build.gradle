@@ -135,12 +135,17 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        applicationId "com.myapp"
+        applicationId "com.rider.application"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
+
+        manifestPlaceholders = [
+                JPUSH_APPKEY: "0518b2aa5c67e6377c0692f5",         //在此替换你的APPKey
+                JPUSH_CHANNEL: "development"        //在此替换你的channel
+        ]
 
         if (isNewArchitectureEnabled()) {
             // We configure the NDK build only if you decide to opt-in for the New Architecture.
