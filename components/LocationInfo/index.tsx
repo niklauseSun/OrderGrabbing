@@ -38,10 +38,10 @@ const LocationInfo = (props: LocationProps) => {
           />
         </View>
         <View style={styles.targetLocation}>
-          <Text style={styles.targetLocationTitle} numberOfLines={1}>
+          <Text style={styles.targetLocationTitle} numberOfLines={3}>
             {props.sendMessage.storeName}
           </Text>
-          <Text style={styles.targetLocationSubTitle} numberOfLines={2}>
+          <Text style={styles.targetLocationSubTitle} numberOfLines={3}>
             {props.sendMessage.address}
           </Text>
           {props.status !== '10000000' && (
@@ -63,7 +63,7 @@ const LocationInfo = (props: LocationProps) => {
           </View>
         </View>
         <View style={styles.targetLocation}>
-          <Text style={styles.targetLocationTitle} numberOfLines={1}>
+          <Text style={styles.targetLocationTitle} numberOfLines={3}>
             {props.receiveMessage.address}
           </Text>
           {props.status !== '10000000' && (
@@ -115,7 +115,7 @@ const styles = StyleSheet.create({
   },
   targetLine: {
     width: 1,
-    height: 30,
+    height: 20,
     backgroundColor: '#e3e3e3',
   },
   targetLocation: {
@@ -130,14 +130,14 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     color: '#333',
     marginBottom: 2,
-    height: 24,
+    // height: 24,
   },
   targetLocationSubTitle: {
     fontSize: 13,
     color: '#333',
     lineHeight: 19,
     fontWeight: 'bold',
-    height: 20,
+    // height: 20,
   },
   phone: {
     fontSize: 13,

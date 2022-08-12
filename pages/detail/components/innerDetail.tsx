@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   TouchableOpacity,
   Text,
@@ -14,12 +14,12 @@ import GoodsInfo from './goodsInfo';
 import OrderInfo from './orderInfo';
 import OrderPay from './orderPay';
 import TakePic from './takePic';
-import { OrderDetailProps } from '../../../interfaces/OrderDetailProps';
+import {OrderDetailProps} from '../../../interfaces/OrderDetailProps';
 interface InnerDetailProps {
   orderDetail: OrderDetailProps;
 }
 const InnerDetail = (props: InnerDetailProps) => {
-  const { orderDetail } = props;
+  const {orderDetail} = props;
   const [bottom, setBottom] = useState(false);
   const [timeOutFlag, setTimeOutFlag] = useState(false);
   const [textStatus, setTextStatus] = useState('');
@@ -34,15 +34,24 @@ const InnerDetail = (props: InnerDetailProps) => {
     // const futureArriveTime = '2022-06-08 23:50:20';
     if (orderDetail.status === '10000005') {
       textStatus = '到店';
-      completeDate = new Date(Date.parse(orderDetail.futureArriveStoreTime.replace(/-/g, '/')));
+      completeDate = new Date(
+        Date.parse(orderDetail.futureArriveStoreTime.replace(/-/g, '/')),
+      );
       // completeDate = new Date(Date.parse(futureArriveStoreTime));
-    } else if (orderDetail.status === '10000010' && orderDetail.takeGoodsLastTime) {
+    } else if (
+      orderDetail.status === '10000010' &&
+      orderDetail.takeGoodsLastTime
+    ) {
       textStatus = '取货';
-      completeDate = new Date(Date.parse(orderDetail.takeGoodsLastTime.replace(/-/g, '/')));
+      completeDate = new Date(
+        Date.parse(orderDetail.takeGoodsLastTime.replace(/-/g, '/')),
+      );
       // completeDate = new Date(Date.parse(futureArriveTime));
     } else if (orderDetail.status === '10000015') {
       textStatus = '送达';
-      completeDate = new Date(Date.parse(orderDetail.futureArriveTime.replace(/-/g, '/')));
+      completeDate = new Date(
+        Date.parse(orderDetail.futureArriveTime.replace(/-/g, '/')),
+      );
     }
     if (completeDate) {
       const diffDate: any = (completeDate - date) / 1000 / 60 / 60; // 获取小时（带小数点）
@@ -76,13 +85,16 @@ const InnerDetail = (props: InnerDetailProps) => {
       }
     }
     // }, 1000)
-  }
+  };
   const timeBackward = (hour, second, minute, textStatus) => {
     const that = this;
     const hourStr = hour >= 1 && hour < 10 ? `0${hour}` : `${hour}`;
     const secondStr = second >= 0 && second < 10 ? `0${second}` : `${second}`;
     const minuteStr = minute >= 0 && minute < 10 ? `0${minute}` : `${minute}`;
-    const dateNow = hour >= 1 ? `${hourStr}:${secondStr}:${minuteStr}` : `${secondStr}:${minuteStr}`;
+    const dateNow =
+      hour >= 1
+        ? `${hourStr}:${secondStr}:${minuteStr}`
+        : `${secondStr}:${minuteStr}`;
     setTextStatus(`剩余${dateNow}秒${textStatus}`);
     if (minute === 0 && second === 0 && hour === 0) {
       setTextStatus(textStatus + '超时');
@@ -113,9 +125,9 @@ const InnerDetail = (props: InnerDetailProps) => {
           }
           timeBackward(hou, sec, min, textStatus);
         }
-      }, 1000)
+      }, 1000);
     }
-  }
+  };
   useEffect(() => {
     countdown();
   }, []);
@@ -155,7 +167,7 @@ const InnerDetail = (props: InnerDetailProps) => {
               orderDetail.echoButton !== 2 && (
                 <View style={styles.orderNumView}>
                   <Image
-                    source={{ uri: orderDetail.sourceLogo }}
+                    source={{uri: orderDetail.sourceLogo}}
                     style={styles.orderNumIcon}
                   />
                   <Text style={styles.orderNumText}>{orderDetail.seq}</Text>
@@ -166,7 +178,7 @@ const InnerDetail = (props: InnerDetailProps) => {
               orderDetail.status !== '10000015' && (
                 <View style={styles.orderNumViewWhite}>
                   <Image
-                    source={{ uri: orderDetail.sourceLogo }}
+                    source={{uri: orderDetail.sourceLogo}}
                     style={styles.orderNumIcon}
                   />
                 </View>
@@ -183,14 +195,16 @@ const InnerDetail = (props: InnerDetailProps) => {
               {/* <Text style={styles.cardHeadInfoText}>
                 预计{orderDetail.remainArriveTime}分钟送到
               </Text> */}
-              { /* 展示倒计时*/}
+              {/* 展示倒计时*/}
               {orderDetail.status === '10000005' ||
-                orderDetail.status === '10000010' ||
-                orderDetail.status === '10000015' ? (
-                  <View style={styles.textNormal}>
-                    <Text style={timeOutFlag && styles.timeOut}>{textStatus}</Text>
-                  </View>
-                ) : null}
+              orderDetail.status === '10000010' ||
+              orderDetail.status === '10000015' ? (
+                <View style={styles.textNormal}>
+                  <Text style={timeOutFlag && styles.timeOut}>
+                    {textStatus}
+                  </Text>
+                </View>
+              ) : null}
               {/* 以上这段代码为展示倒计时*/}
             </View>
             <Text style={styles.cardHeadPriceText}>
@@ -223,8 +237,8 @@ const InnerDetail = (props: InnerDetailProps) => {
 
         {(orderDetail.collectOrderPicture ||
           orderDetail.receiveOrderPicture) && (
-            <TakePic orderDetail={orderDetail} />
-          )}
+          <TakePic orderDetail={orderDetail} />
+        )}
       </ScrollView>
     </View>
   );
@@ -325,11 +339,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#333333',
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
   },
   timeOut: {
     color: 'red',
-    textAlign: 'right'
+    textAlign: 'right',
   },
   orderNumIcon: {
     width: 23,
@@ -356,7 +370,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   cardHeadIcon: {
     width: 21,

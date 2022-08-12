@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 
 import CardActions from '../../../components/CardActions';
 import LocationInfo from '../../../components/LocationInfo';
@@ -43,7 +43,7 @@ interface OrderProps {
 }
 
 const OrderCard = (props: OrderProps) => {
-  const { order } = props;
+  const {order} = props;
   const [timeOutFlag, setTimeOutFlag] = useState(false);
   const [textStatus, setTextStatus] = useState('');
   let timeOutId: any = null;
@@ -52,20 +52,26 @@ const OrderCard = (props: OrderProps) => {
     // setTimeout(() => {
     const date: any = new Date();
     let completeDate: any = null;
-    let textStatus: any = '';
+    let textStatusT: any = '';
     // const futureArriveStoreTime = '2022-06-08 23:40:20';
     // const futureArriveTime = '2022-06-08 23:50:20';
     if (order.status === '10000005') {
-      textStatus = '到店';
-      completeDate = new Date(Date.parse(order.futureArriveStoreTime.replace(/-/g, '/')));
+      textStatusT = '到店';
+      completeDate = new Date(
+        Date.parse(order.futureArriveStoreTime.replace(/-/g, '/')),
+      );
       // completeDate = new Date(Date.parse(futureArriveStoreTime));
     } else if (order.status === '10000010' && order.takeGoodsLastTime) {
-      textStatus = '取货';
-      completeDate = new Date(Date.parse(order.takeGoodsLastTime.replace(/-/g, '/')));
+      textStatusT = '取货';
+      completeDate = new Date(
+        Date.parse(order.takeGoodsLastTime.replace(/-/g, '/')),
+      );
       // completeDate = new Date(Date.parse(futureArriveTime));
     } else if (order.status === '10000015') {
-      textStatus = '送达';
-      completeDate = new Date(Date.parse(order.futureArriveTime.replace(/-/g, '/')));
+      textStatusT = '送达';
+      completeDate = new Date(
+        Date.parse(order.futureArriveTime.replace(/-/g, '/')),
+      );
     }
     if (completeDate) {
       const diffDate: any = (completeDate - date) / 1000 / 60 / 60; // 获取小时（带小数点）
@@ -95,17 +101,19 @@ const OrderCard = (props: OrderProps) => {
       } else {
         setTimeOutFlag(true);
         clearTimeout(timeOutId);
-        setTextStatus(textStatus + '超时');
+        setTextStatus(textStatusT + '超时');
       }
     }
     // }, 1000)
-  }
+  };
   const timeBackward = (hour, second, minute, textStatus) => {
-    const that = this;
     const hourStr = hour >= 1 && hour < 10 ? `0${hour}` : `${hour}`;
     const secondStr = second >= 0 && second < 10 ? `0${second}` : `${second}`;
     const minuteStr = minute >= 0 && minute < 10 ? `0${minute}` : `${minute}`;
-    const dateNow = hour >= 1 ? `${hourStr}:${secondStr}:${minuteStr}` : `${secondStr}:${minuteStr}`;
+    const dateNow =
+      hour >= 1
+        ? `${hourStr}:${secondStr}:${minuteStr}`
+        : `${secondStr}:${minuteStr}`;
     setTextStatus(`剩余${dateNow}秒${textStatus}`);
     if (minute === 0 && second === 0 && hour === 0) {
       setTextStatus(textStatus + '超时');
@@ -136,9 +144,9 @@ const OrderCard = (props: OrderProps) => {
           }
           timeBackward(hou, sec, min, textStatus);
         }
-      }, 1000)
+      }, 1000);
     }
-  }
+  };
   useEffect(() => {
     countdown();
   }, []);
@@ -152,21 +160,37 @@ const OrderCard = (props: OrderProps) => {
           });
         }}>
         <View style={styles.cardHead}>
-          <Image
-            style={styles.cardHeadIcon}
-            source={{uri: props.order.sourceLogo}}
-          />
-          <Text style={styles.cardHeadInfoText}>
-              {props.order.remainArriveTime}分钟内送达
-            </Text>
+          {props.order.status === '10000000' && (
+            <>
+              <Image
+                style={styles.cardHeadIcon}
+                source={{uri: props.order.sourceLogo}}
+              />
+              <Text style={styles.cardHeadInfoText}>
+                {props.order.remainArriveTime}分钟内送达
+              </Text>
+            </>
+          )}
+          {(props.order.status === '10000005' ||
+            props.order.status === '10000010' ||
+            props.order.status === '10000015') &&
+            props.order.echoButton !== 2 && (
+              <View style={styles.orderNumView}>
+                <Image
+                  source={{uri: props.order.sourceLogo}}
+                  style={styles.orderNumIcon}
+                />
+                <Text style={styles.orderNumText}>{props.order.seq}</Text>
+              </View>
+            )}
           <Text style={styles.cardHeadPriceText}>
             ￥{props.order.commission}
           </Text>
         </View>
-        { /* 展示倒计时*/}
+        {/* 展示倒计时*/}
         {order.status === '10000005' ||
-          order.status === '10000010' ||
-          order.status === '10000015' ? (
+        order.status === '10000010' ||
+        order.status === '10000015' ? (
           <View style={styles.textNormal}>
             <Text style={timeOutFlag && styles.timeOut}>{textStatus}</Text>
           </View>
@@ -188,7 +212,7 @@ const OrderCard = (props: OrderProps) => {
         </View>
         {props.order.remark !== '' && (
           <View style={styles.orangeTag}>
-            <Text style={styles.orangeTagTitle}>备注：{ }</Text>
+            <Text style={styles.orangeTagTitle}>备注：{}</Text>
           </View>
         )}
         <CardActions
@@ -220,7 +244,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   cardHeadIcon: {
     width: 21,
@@ -285,11 +309,32 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#333333',
     display: 'flex',
-    flexDirection: 'row-reverse'
+    flexDirection: 'row-reverse',
   },
   timeOut: {
     color: 'red',
-    textAlign: 'right'
+    textAlign: 'right',
+  },
+  orderNumView: {
+    paddingHorizontal: 12,
+    height: 38,
+    backgroundColor: '#F6F6F6',
+    borderTopRightRadius: 19,
+    borderBottomRightRadius: 19,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  orderNumIcon: {
+    width: 23,
+    height: 23,
+    backgroundColor: '#D8D8D8',
+    borderRadius: 4,
+  },
+  orderNumText: {
+    fontSize: 16,
+    color: '#333',
+    marginLeft: 8,
   },
 });
 
