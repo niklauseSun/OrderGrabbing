@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState, useEffect} from 'react';
 import {Image, Pressable, StyleSheet, Text, View} from 'react-native';
 
@@ -34,6 +35,7 @@ interface OrderCardProps {
   id: string;
   collectOrderPicture: boolean;
   receiveOrderPicture: boolean;
+  seq: number;
 }
 
 interface OrderProps {
@@ -57,9 +59,12 @@ const OrderCard = (props: OrderProps) => {
     // const futureArriveTime = '2022-06-08 23:50:20';
     if (order.status === '10000005') {
       textStatusT = '到店';
-      completeDate = new Date(
-        Date.parse(order.futureArriveStoreTime.replace(/-/g, '/')),
-      );
+      if (order.futureArriveStoreTime) {
+        completeDate = new Date(
+          Date.parse(order.futureArriveStoreTime.replace(/-/g, '/')),
+        );
+      }
+
       // completeDate = new Date(Date.parse(futureArriveStoreTime));
     } else if (order.status === '10000010' && order.takeGoodsLastTime) {
       textStatusT = '取货';
@@ -69,9 +74,11 @@ const OrderCard = (props: OrderProps) => {
       // completeDate = new Date(Date.parse(futureArriveTime));
     } else if (order.status === '10000015') {
       textStatusT = '送达';
-      completeDate = new Date(
-        Date.parse(order.futureArriveTime.replace(/-/g, '/')),
-      );
+      if (order.futureArriveTime) {
+        completeDate = new Date(
+          Date.parse(order.futureArriveTime.replace(/-/g, '/')),
+        );
+      }
     }
     if (completeDate) {
       const diffDate: any = (completeDate - date) / 1000 / 60 / 60; // 获取小时（带小数点）
@@ -106,7 +113,7 @@ const OrderCard = (props: OrderProps) => {
     }
     // }, 1000)
   };
-  const timeBackward = (hour, second, minute, textStatus) => {
+  const timeBackward = (hour, second, minute, textShow) => {
     const hourStr = hour >= 1 && hour < 10 ? `0${hour}` : `${hour}`;
     const secondStr = second >= 0 && second < 10 ? `0${second}` : `${second}`;
     const minuteStr = minute >= 0 && minute < 10 ? `0${minute}` : `${minute}`;
@@ -114,9 +121,9 @@ const OrderCard = (props: OrderProps) => {
       hour >= 1
         ? `${hourStr}:${secondStr}:${minuteStr}`
         : `${secondStr}:${minuteStr}`;
-    setTextStatus(`剩余${dateNow}秒${textStatus}`);
+    setTextStatus(`剩余${dateNow}秒${textShow}`);
     if (minute === 0 && second === 0 && hour === 0) {
-      setTextStatus(textStatus + '超时');
+      setTextStatus(textShow + '超时');
       setTimeOutFlag(true);
     } else {
       setTimeOutFlag(false);
@@ -128,7 +135,7 @@ const OrderCard = (props: OrderProps) => {
         let sec = second;
         let hou = hour;
         if (minute === 0 && second === 0 && hour === 0) {
-          timeBackward(0, 0, 0, textStatus);
+          timeBackward(0, 0, 0, textShow);
         } else {
           setTimeOutFlag(false);
           if (second === 0) {
@@ -142,7 +149,7 @@ const OrderCard = (props: OrderProps) => {
           } else {
             min = minute - 1;
           }
-          timeBackward(hou, sec, min, textStatus);
+          timeBackward(hou, sec, min, textShow);
         }
       }, 1000);
     }

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState, useEffect} from 'react';
 import {
   TouchableOpacity,
@@ -29,11 +30,11 @@ const InnerDetail = (props: InnerDetailProps) => {
     // setTimeout(() => {
     const date: any = new Date();
     let completeDate: any = null;
-    let textStatus: any = '';
+    let textStatusT: any = '';
     // const futureArriveStoreTime = '2022-06-08 23:40:20';
     // const futureArriveTime = '2022-06-08 23:50:20';
     if (orderDetail.status === '10000005') {
-      textStatus = '到店';
+      textStatusT = '到店';
       completeDate = new Date(
         Date.parse(orderDetail.futureArriveStoreTime.replace(/-/g, '/')),
       );
@@ -42,13 +43,13 @@ const InnerDetail = (props: InnerDetailProps) => {
       orderDetail.status === '10000010' &&
       orderDetail.takeGoodsLastTime
     ) {
-      textStatus = '取货';
+      textStatusT = '取货';
       completeDate = new Date(
         Date.parse(orderDetail.takeGoodsLastTime.replace(/-/g, '/')),
       );
       // completeDate = new Date(Date.parse(futureArriveTime));
     } else if (orderDetail.status === '10000015') {
-      textStatus = '送达';
+      textStatusT = '送达';
       completeDate = new Date(
         Date.parse(orderDetail.futureArriveTime.replace(/-/g, '/')),
       );
@@ -81,13 +82,12 @@ const InnerDetail = (props: InnerDetailProps) => {
       } else {
         setTimeOutFlag(true);
         clearTimeout(timeOutId);
-        setTextStatus(textStatus + '超时');
+        setTextStatus(textStatusT + '超时');
       }
     }
     // }, 1000)
   };
-  const timeBackward = (hour, second, minute, textStatus) => {
-    const that = this;
+  const timeBackward = (hour, second, minute, textShow) => {
     const hourStr = hour >= 1 && hour < 10 ? `0${hour}` : `${hour}`;
     const secondStr = second >= 0 && second < 10 ? `0${second}` : `${second}`;
     const minuteStr = minute >= 0 && minute < 10 ? `0${minute}` : `${minute}`;
@@ -95,9 +95,9 @@ const InnerDetail = (props: InnerDetailProps) => {
       hour >= 1
         ? `${hourStr}:${secondStr}:${minuteStr}`
         : `${secondStr}:${minuteStr}`;
-    setTextStatus(`剩余${dateNow}秒${textStatus}`);
+    setTextStatus(`剩余${dateNow}秒${textShow}`);
     if (minute === 0 && second === 0 && hour === 0) {
-      setTextStatus(textStatus + '超时');
+      setTextStatus(textShow + '超时');
       setTimeOutFlag(true);
     } else {
       setTimeOutFlag(false);
@@ -109,7 +109,7 @@ const InnerDetail = (props: InnerDetailProps) => {
         let sec = second;
         let hou = hour;
         if (minute === 0 && second === 0 && hour === 0) {
-          timeBackward(0, 0, 0, textStatus);
+          timeBackward(0, 0, 0, textShow);
         } else {
           setTimeOutFlag(false);
           if (second === 0) {
@@ -123,7 +123,7 @@ const InnerDetail = (props: InnerDetailProps) => {
           } else {
             min = minute - 1;
           }
-          timeBackward(hou, sec, min, textStatus);
+          timeBackward(hou, sec, min, textShow);
         }
       }, 1000);
     }
