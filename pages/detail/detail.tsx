@@ -45,11 +45,6 @@ const Detail = ({route}) => {
     const refreshDetail = DeviceEventEmitter.addListener(
       'refreshDetail',
       () => {
-        // Toast.loading({
-        //   content: '加载中...',
-        //   duration: 1,
-        // });
-
         order.getOrderDetail(id).then(res => {
           console.log('orderDetail111', res);
           if (res.success) {

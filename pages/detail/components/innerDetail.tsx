@@ -21,7 +21,7 @@ interface InnerDetailProps {
 }
 const InnerDetail = (props: InnerDetailProps) => {
   const {orderDetail} = props;
-  const [bottom, setBottom] = useState(false);
+  const [bottom, setBottom] = useState(true);
   const [timeOutFlag, setTimeOutFlag] = useState(false);
   const [textStatus, setTextStatus] = useState('');
   let timeOutId: any = null;
