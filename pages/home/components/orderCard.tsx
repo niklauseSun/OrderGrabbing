@@ -50,11 +50,12 @@ const OrderCard = (props: OrderProps) => {
   const [textStatus, setTextStatus] = useState('');
   let timeOutId: any = null;
   const countdown = () => {
+    console.log('fff');
     setTimeOutFlag(false);
     // setTimeout(() => {
     const date: any = new Date();
     let completeDate: any = null;
-    let textStatusT: any = '';
+    let textStatusT: string = '';
     // const futureArriveStoreTime = '2022-06-08 23:40:20';
     // const futureArriveTime = '2022-06-08 23:50:20';
     if (order.status === '10000005') {
@@ -104,7 +105,7 @@ const OrderCard = (props: OrderProps) => {
             minute = diffSecond * 60;
           }
         }
-        timeBackward(hour, second, Math.floor(minute), textStatus);
+        timeBackward(hour, second, Math.floor(minute), textStatusT);
       } else {
         setTimeOutFlag(true);
         clearTimeout(timeOutId);
@@ -113,6 +114,30 @@ const OrderCard = (props: OrderProps) => {
     }
     // }, 1000)
   };
+  function backward(hour, second, minute, textShow) {
+    timeOutId = setTimeout(() => {
+      let min = minute;
+      let sec = second;
+      let hou = hour;
+      if (minute === 0 && second === 0 && hour === 0) {
+        timeBackward(0, 0, 0, textShow);
+      } else {
+        setTimeOutFlag(false);
+        if (second === 0) {
+          if (hour > 0) {
+            hou = hour - 1;
+          }
+        }
+        if (minute === 0) {
+          sec = second - 1;
+          min = 59;
+        } else {
+          min = minute - 1;
+        }
+        timeBackward(hou, sec, min, textShow);
+      }
+    }, 1000);
+  }
   const timeBackward = (hour, second, minute, textShow) => {
     const hourStr = hour >= 1 && hour < 10 ? `0${hour}` : `${hour}`;
     const secondStr = second >= 0 && second < 10 ? `0${second}` : `${second}`;
@@ -127,35 +152,14 @@ const OrderCard = (props: OrderProps) => {
       setTimeOutFlag(true);
     } else {
       setTimeOutFlag(false);
-      backward();
-    }
-    function backward() {
-      timeOutId = setTimeout(() => {
-        let min = minute;
-        let sec = second;
-        let hou = hour;
-        if (minute === 0 && second === 0 && hour === 0) {
-          timeBackward(0, 0, 0, textShow);
-        } else {
-          setTimeOutFlag(false);
-          if (second === 0) {
-            if (hour > 0) {
-              hou = hour - 1;
-            }
-          }
-          if (minute === 0) {
-            sec = second - 1;
-            min = 59;
-          } else {
-            min = minute - 1;
-          }
-          timeBackward(hou, sec, min, textShow);
-        }
-      }, 1000);
+      backward(hour, second, minute, textShow);
     }
   };
   useEffect(() => {
     countdown();
+    return () => {
+      timeOutId = null;
+    };
   }, []);
   return (
     <View style={styles.card}>
@@ -321,6 +325,7 @@ const styles = StyleSheet.create({
   timeOut: {
     color: 'red',
     textAlign: 'right',
+    marginRight: 10,
   },
   orderNumView: {
     paddingHorizontal: 12,

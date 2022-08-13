@@ -12,3 +12,9 @@ export interface LatLng {
 export interface WatchLocation {
   location: LatLng;
 }
+
+export interface LatLngName {
+  longitude: number;
+  latitude: number;
+  dName?: string;
+}

@@ -15,6 +15,7 @@ import {
 import OrderCard from './orderCard';
 import order from '../../../api/order';
 import {Toast} from '@ant-design/react-native';
+import {useFocusEffect} from '@react-navigation/native';
 
 interface TabContentProps {
   isLogin?: boolean;
@@ -135,22 +136,6 @@ const TabContent = (props: TabContentProps) => {
   }, [tabIndex]);
 
   return (
-    // <View style={styles.content}>
-    // <Tabs
-    //   tabs={tabs}
-    //   onTabClick={e => {
-    //     console.log('tabClick', e);
-    //     const {index} = e;
-    //     setOrderList([]);
-    //     queryList(index);
-    //     setIndex(index);
-    //   }}
-    //   swipeable={false}
-    //   tabBarPosition="top"
-    //   tabBarBackgroundColor="#1677FE"
-    //   tabBarInactiveTextColor="#fff"
-    //   tabBarUnderlineStyle={styles.underLineStyle}
-    //   tabBarActiveTextColor="#fff">
     <SafeAreaView style={styles.safeContent}>
       <View style={styles.tabContainer}>
         {tabs.map(({title, index}) => {

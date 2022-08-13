@@ -1,6 +1,6 @@
 import {Toast} from '@ant-design/react-native';
 import React, {useEffect, useState} from 'react';
-import {DeviceEventEmitter} from 'react-native';
+import {DeviceEventEmitter, TouchableOpacity} from 'react-native';
 import {
   Image,
   SafeAreaView,
@@ -16,7 +16,7 @@ import {order} from '../../api';
 import BottomAction from './components/bottomAction';
 import RiderMapView from './components/RiderMapView';
 
-const Detail = ({route}) => {
+const Detail = props => {
   const isDarkMode = useColorScheme() === 'dark';
   const [tabIndex, setTabIndex] = useState(0);
 
@@ -24,10 +24,34 @@ const Detail = ({route}) => {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  React.useLayoutEffect(() => {
+    props.navigation.setOptions({
+      headerLeft: () => (
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => {
+            // console.log('webRef', webViewRef.current);
+            // if (canGoBack) {
+            //   webViewRef.current && webViewRef.current.goBack();
+            // } else {
+            //   navigation.goBack();
+            // }
+            props.navigation.goBack();
+            DeviceEventEmitter.emit('refresh', props.route.params.tabIndex);
+          }}>
+          <Image
+            style={styles.backIcon}
+            source={require('./components/assets/header_back.png')}
+          />
+        </TouchableOpacity>
+      ),
+    });
+  }, [props.navigation, props.tabIndex]);
+
   const [orderDetail, setOrderDetails] = useState(undefined);
 
   useEffect(() => {
-    const {params} = route;
+    const {params} = props.route;
     const {id, tabIndex: index} = params;
     setTabIndex(index);
     Toast.loading({
@@ -56,7 +80,7 @@ const Detail = ({route}) => {
     return () => {
       refreshDetail.remove();
     };
-  }, [route]);
+  }, [props.route]);
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -170,6 +194,16 @@ const styles = StyleSheet.create({
   },
   tipTitle: {
     fontSize: 13,
+  },
+  backButton: {
+    height: 40,
+    width: 40,
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  backIcon: {
+    width: 24,
+    height: 24,
   },
 });
 

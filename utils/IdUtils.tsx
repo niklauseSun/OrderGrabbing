@@ -74,12 +74,12 @@ const IdUtils = {
     });
   },
 
-  toAmap(location: LatLng) {
+  toAmap(location: LatLngName) {
     if (Platform.OS === 'android') {
-      let url = `amapuri://openFeature?featureName=OnRideNavi&rideType=elebike&sourceApplication=appname&lat=${location.latitude}&lon=${location.longitude}&dev=0`;
+      let url = `amapuri://path?sourceApplication=rider&rideType=elebike&sourceApplication=appname&dlat=${location.latitude}&dlon=${location.longitude}&dev=0&dname=${location.dName}`;
       Linking.openURL(url);
     } else {
-      let url = `amapuri://openFeature?featureName=OnRideNavi&rideType=elebike&sourceApplication=appname&lat=${location.latitude}&lon=${location.longitude}&dev=0`;
+      let url = `amapuri://path?sourceApplication=rider&rideType=elebike&sourceApplication=appname&dlat=${location.latitude}&dlon=${location.longitude}&dev=0&dname=${location.dName}`;
       Linking.canOpenURL(url).then(res => {
         if (res) {
           Linking.openURL(url);
