@@ -1,6 +1,14 @@
 import {Toast} from '@ant-design/react-native';
-import React, {useRef, useState} from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useEffect, useRef, useState} from 'react';
+import {
+  Image,
+  PermissionsAndroid,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {useCameraDevices, Camera} from 'react-native-vision-camera';
 import upload from '../../api/upload';
 
@@ -13,6 +21,14 @@ const CameraPage = (props: any) => {
 
   const camera = useRef<Camera>(null);
   const deivce = devices.back;
+
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      PermissionsAndroid.requestMultiple([
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+      ]);
+    }
+  }, []);
 
   if (!deivce) {
     return <Text>加载中</Text>;

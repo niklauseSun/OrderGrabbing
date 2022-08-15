@@ -76,7 +76,8 @@ const IdUtils = {
 
   toAmap(location: LatLngName) {
     if (Platform.OS === 'android') {
-      let url = `amapuri://path?sourceApplication=rider&rideType=elebike&sourceApplication=appname&dlat=${location.latitude}&dlon=${location.longitude}&dev=0&dname=${location.dName}`;
+      let url = `amapuri://route/plan?sourceApplication=rider&dlat=${location.latitude}&dlon=${location.longitude}&dev=0&dname=${location.dName}&t=0`;
+      console.log('url', url);
       Linking.openURL(url);
     } else {
       let url = `amapuri://path?sourceApplication=rider&rideType=elebike&sourceApplication=appname&dlat=${location.latitude}&dlon=${location.longitude}&dev=0&dname=${location.dName}`;
