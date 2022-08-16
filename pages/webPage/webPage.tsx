@@ -9,6 +9,7 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ToDetail from '../../utils/ToDetail';
 import {Modal} from '@ant-design/react-native';
+import config from '../../utils/config';
 
 const MessageType = {
   logout: 'logout',
@@ -66,7 +67,8 @@ const WebPage = props => {
   const injectedJS = `
     (function() {
       window.localStorage.setItem('token', '${token}');
-      window.localStorage.setItem('userPhone', '${mobilePhone || ''}')
+      window.localStorage.setItem('userPhone', '${mobilePhone || ''}');
+      window.localStorage.setItem('tenantCode', '${config.tenantCode}');
     })();
   `;
 

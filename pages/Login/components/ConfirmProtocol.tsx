@@ -112,7 +112,9 @@ const ConfirmProtocol = (props: ConfirmProtocolProps) => {
                   onPress={() => {
                     console.log('《用户协议》');
                     setShowUrl(
-                      'https://rider-test-app.zhuopaikeji.com/api/user-agreement?tenant_code=XXX',
+                      config.protocolHost +
+                        '/api/user-agreement?tenant_code=' +
+                        config.tenantCode,
                     );
                     setWebModal(true);
                     setTitle('《用户协议》');
@@ -124,7 +126,9 @@ const ConfirmProtocol = (props: ConfirmProtocolProps) => {
                   activeOpacity={0.7}
                   onPress={() => {
                     setShowUrl(
-                      'https://rider-test-app.zhuopaikeji.com/api/privacy-policy?tenant_code=XXX',
+                      config.protocolHost +
+                        '/api/privacy-policy?tenant_code=' +
+                        config.tenantCode,
                     );
                     setWebModal(true);
                     console.log('《隐私政策》');
