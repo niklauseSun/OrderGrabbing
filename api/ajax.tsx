@@ -1,5 +1,6 @@
 import {Toast} from '@ant-design/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import config from '../utils/config';
 
 const query = async (url: string, hideToast?: boolean) => {
   try {
@@ -47,7 +48,9 @@ const network = async (url: string, method = 'GET', data = null) => {
   };
   console.log('net', params);
 
-  return fetch('https://rider-test-app.zhuopaikeji.com' + url, params);
+  config.requestHost;
+
+  return fetch(config.requestHost + url, params);
 };
 
 const uploadNetWork = async (url: string, method = 'GET', data = null) => {
@@ -60,14 +63,14 @@ const uploadNetWork = async (url: string, method = 'GET', data = null) => {
   };
   console.log('net', params);
 
-  return fetch('https://rider-test-app.zhuopaikeji.com' + url, params);
+  return fetch(config.requestHost + url, params);
 };
 
 const getHeader = async () => {
   let header = {
     Accept: 'application/json',
     'Content-Type': 'application/json',
-    'tenant-code': '10001',
+    'tenant-code': config.tenantCode,
     Authorization: '',
   };
   try {
@@ -83,7 +86,7 @@ const getHeader = async () => {
 
 const getUploadHeader = async () => {
   let header = {
-    'tenant-code': '10001',
+    'tenant-code': config.tenantCode,
     Authorization: '',
   };
   try {

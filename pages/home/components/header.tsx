@@ -13,6 +13,7 @@ import {
 import {Popover} from '@ant-design/react-native';
 import ToWebPage from '../../../utils/ToWebPage';
 import {rider} from '../../../api';
+import config from '../../../utils/config';
 interface HeaderProps {
   infoStatus: string;
   status: string;
@@ -29,7 +30,8 @@ const Header = (props: HeaderProps) => {
           activeOpacity={0.7}
           onPress={() => {
             ToWebPage(
-              'https://rider-test-app.zhuopaikeji.com/pages/mainPage/mine/mine#/pages/mainPage/mine/mine',
+              config.webHost +
+                '/pages/mainPage/mine/mine#/pages/mainPage/mine/mine',
             );
           }}>
           <Image
@@ -63,7 +65,7 @@ const IdentifyStatus = (props: any) => {
       onPress={() => {
         if (props.infoStatus === '10150000') {
           ToWebPage(
-            'https://rider-test-app.zhuopaikeji.com/pages/realName/index#/pages/realName/index',
+            config.webHost + '/pages/realName/index#/pages/realName/index',
           );
         }
       }}>

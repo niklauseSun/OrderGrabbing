@@ -9,7 +9,6 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import ToDetail from '../../utils/ToDetail';
 import {Modal} from '@ant-design/react-native';
-import JPush from 'jpush-react-native';
 
 const MessageType = {
   logout: 'logout',

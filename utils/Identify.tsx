@@ -2,6 +2,7 @@ import {Modal} from '@ant-design/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {DeviceEventEmitter} from 'react-native';
 import {rider} from '../api';
+import config from './config';
 import ToWebPage from './ToWebPage';
 
 export const IdentifyStatus = {
@@ -52,7 +53,7 @@ const Identify = async (showModal = true) => {
             text: '确认',
             onPress: () => {
               ToWebPage(
-                'https://rider-test-app.zhuopaikeji.com/pages/realName/index#/pages/realName/index',
+                config.webHost + '/pages/realName/index#/pages/realName/index',
               );
             },
           },
@@ -113,7 +114,8 @@ const Identify = async (showModal = true) => {
               text: '去认证',
               onPress: () => {
                 ToWebPage(
-                  'https://rider-test-app.zhuopaikeji.com/pages/realName/index#/pages/realName/index',
+                  config.webHost +
+                    '/pages/realName/index#/pages/realName/index',
                 );
               },
             },
